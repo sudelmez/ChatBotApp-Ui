@@ -1,5 +1,7 @@
-import PostsApiAdapter, {ApiEndpoints} from "../../../api/FetchDataUseCase";
+import PostsApiAdapter, {ApiEndpoints, ApiEndUrls} from "../../../api/FetchDataUseCase";
 import { Question } from "../model/question_model";
+import { AnswerLog } from "../model/answer_log_model";
+
 class QuestionService {
     private postsApi: PostsApiAdapter<Question>;
   
@@ -16,6 +18,12 @@ class QuestionService {
       } catch (error) {
         console.error('Error fetching questions:', error);
         throw error; 
+      }
+    }
+    async postLog(log: AnswerLog){
+      try {
+        await this.postsApi.postAllPosts(ApiEndpoints.QUESTION, ApiEndUrls.LOG,log)
+      } catch (error) {
       }
     }
   }

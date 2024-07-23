@@ -11,12 +11,16 @@ interface CustomSelectProps {
     nextQuestionId: string | null;
     title: string;
   }[];
-  callback: (nextId: number, index: number) => void;
-  isDisabled: boolean;
   index: number;
+  selectedValue: string | null;
+  setSelectedValue: (value: string | null) => void;
+  callback: (nextId: number | null, index: number, questionId: string, answerId: string, categoryId: string, infoPersonId: string) => void;
+  questionId: string;
+  categoryId: string;
+  infoPersonId: string;
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({ values, callback, isDisabled, index }) => {
+const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, setSelectedValue, callback, index, questionId, categoryId, infoPersonId }) => {
   const customStyles: StylesConfig<Option, false> = {
     control: (provided) => ({
       ...provided,
@@ -34,9 +38,11 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, callback, isDisable
   };
 
   const handleChange = (selectedOption: SingleValue<Option>) => {
-    if (selectedOption) {
-      callback(parseInt(selectedOption.value || '-1'), index);
-    }
+    const value = selectedOption?.value?.toString() ?? null;
+    setSelectedValue(value);
+    const nextQuestionId = value ? parseInt(value) : null;
+    const answerId = selectedOption?.value ?? '';
+    callback(nextQuestionId, index, questionId, answerId, categoryId, infoPersonId);
   };
 
   const formattedValues = values.map((value) => ({
@@ -46,11 +52,11 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, callback, isDisable
 
   return (
     <Select
-      isDisabled={isDisabled}
       styles={customStyles}
       onChange={handleChange}
       options={formattedValues}
       placeholder="Lütfen bir cevap seçin."
+      value={formattedValues.find(option => option.value === selectedValue)}
     />
   );
 }
