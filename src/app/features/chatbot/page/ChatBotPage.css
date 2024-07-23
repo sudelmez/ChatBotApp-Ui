@@ -1,0 +1,42 @@
+.Page{
+    padding-top: 10%;
+    padding-bottom: 20%;
+    flex: 1;
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chatbot{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    flex-direction: column;
+}
+
+.items{
+    width: 100%;
+}
+
+.rowButtons{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.header{
+    font-family: "Ledger", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.endheader{
+    font-family: "Ledger", serif;
+    font-weight: 600;
+    font-style: normal;
+    font-size: x-large;
+}

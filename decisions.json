@@ -1,0 +1,211 @@
+[
+  {
+    "id": 1,
+    "question": "Merhaba, nasıl yardımcı olabilirim?",
+    "type": "select",
+    "isDisabled": false,
+    "answers": [
+      {
+        "text": "Lütfen seçim yapınız.",
+        "nextId": -1
+      },
+      {
+        "text": "Hizmetleriniz neler?",
+        "nextId": 2
+      },
+      {
+        "text": "İletişim bilgilerinizi öğrenebilir miyim?",
+        "nextId": 3
+      },
+      {
+        "text": "Projelerinizden bahsedebilir misiniz?",
+        "nextId": 4
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "isDisabled": false,
+    "type": "select",
+    "question": "Hizmetlerimiz arasında web geliştirme, mobil uygulama geliştirme, veritabanı yönetimi ve danışmanlık hizmetleri bulunmaktadır. Hangi konuda daha fazla bilgi almak istersiniz?",
+    "answers": [
+      {
+        "text": "Lütfen seçim yapınız.",
+        "nextId": -1
+      },
+      {
+        "text": "Mobil geliştirme hakkında daha fazla bilgi",
+        "nextId": 5
+      },
+      {
+        "text": "Teşekkürler, başka bir sorum yok.",
+        "nextId": null
+      },{
+        "text": "Bu konu hakkında mail almak istiyorum.",
+        "nextId": 7
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "isDisabled": false,
+    "type": "select",
+    "question": "İletişim bilgilerimiz şu şekildedir: email@example.com. Size nasıl yardımcı olabilirim?",
+    "answers": [
+      {
+        "text": "Lütfen seçim yapınız.",
+        "nextId": -1
+      },
+      {
+        "text":"Genel bilgi için beni arayın.",
+        "nextId": 6
+      },
+      {
+        "text": "Teşekkürler, başka bir sorum yok.",
+        "nextId": null
+      },
+      {
+        "text": "Hizmetleriniz neler?",
+        "nextId": 2
+      },
+      {
+        "text": "Projelerinizden bahsedebilir misiniz?",
+        "nextId": 4
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "isDisabled": false,
+    "type": "select",
+    "question": "Son projelerimiz arasında bir e-ticaret platformu, bir sosyal medya uygulaması ve bir kurumsal web sitesi bulunmaktadır. Bu projelerden biri hakkında detaylı bilgi almak ister misiniz?",
+    "answers": [
+      {
+        "text": "Lütfen seçim yapınız.",
+        "nextId": -1
+      },
+      {
+        "text": "Sosyal medya uygulaması hakkında daha fazla bilgi",
+        "nextId": null
+      },
+      {
+        "text": "Kurumsal web sitesi hakkında daha fazla bilgi",
+        "nextId": null
+      },
+      {
+        "text": "Bu konu hakkında bilgi için beni arayın.",
+        "nextId": 6
+      },
+      {
+        "text": "Teşekkürler, başka bir sorum yok.",
+        "nextId": null
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "isDisabled": false,
+    "type": "select",
+    "question": "Mobil uygulamalarımızı Flutter ile her platforma uygun bir şekilde geliştirmekteyiz.",
+    "answers": [
+      {
+        "text": "Lütfen seçim yapınız.",
+        "nextId": -1
+      },
+      {
+        "text": "Teşekkürler, başka bir sorum yok.",
+        "nextId": null
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "isDisabled": false,
+    "type": "input",
+    "question": "Telefon numaranızı giriniz.",
+    "answers": [
+      {
+        "text": "Kaydet",
+        "nextId": 8,
+        "color": true
+      },
+      {
+        "text": "Vazgeç",
+        "nextId": 9,
+        "color": false
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "isDisabled": false,
+    "type": "input",
+    "question": "Mail adresinizi giriniz.",
+    "answers": [
+      {
+        "text": "Kaydet",
+        "nextId": 8
+      },
+      {
+        "text": "Vazgeç",
+        "nextId": 9
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "isDisabled": false,
+    "type": "select",
+    "question": "Bilginiz kaydedilmiştir. Yardımcı olabileceğim başka bir konu var mı?",
+    "answers": [
+      {
+        "text": "Lütfen seçim yapınız.",
+        "nextId": -1
+      },
+      {
+        "text": "Sosyal medya uygulaması hakkında daha fazla bilgi",
+        "nextId": null
+      },
+      {
+        "text": "Kurumsal web sitesi hakkında daha fazla bilgi",
+        "nextId": null
+      },
+      {
+        "text": "Bu konu hakkında bilgi için beni arayın.",
+        "nextId": 6
+      },
+      {
+        "text": "Teşekkürler, başka bir sorum yok.",
+        "nextId": null
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "isDisabled": false,
+    "type": "select",
+    "question": "İşlem iptal edilmiştir. Yardımcı olabileceğim başka bir konu var mı?",
+    "answers": [
+      {
+        "text": "Lütfen seçim yapınız.",
+        "nextId": -1
+      },
+      {
+        "text": "Sosyal medya uygulaması hakkında daha fazla bilgi",
+        "nextId": null
+      },
+      {
+        "text": "Kurumsal web sitesi hakkında daha fazla bilgi",
+        "nextId": null
+      },
+      {
+        "text": "Bu konu hakkında bilgi için beni arayın.",
+        "nextId": 6
+      },
+      {
+        "text": "Teşekkürler, başka bir sorum yok.",
+        "nextId": null
+      }
+    ]
+  }
+]
