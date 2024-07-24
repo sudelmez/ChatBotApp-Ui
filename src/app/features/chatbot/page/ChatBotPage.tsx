@@ -7,38 +7,40 @@ import CustomButton from "../../../components/form/button/CustomButton";
 import QuestionService from "../services/QuestionService";
 import { Question } from "../model/question_model";
 import { AnswerLog } from "../model/answer_log_model";
-
+// import {CircularProgress} from "@nextui-org/progress"; TODO!!!!
 function ChatBotPage() {
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [fetchedQuestionList, setFetchedQuestionList] = useState<Question[]>([]);
   const [end, setEnd] = useState<string>("");
   const [ind, setInd] = useState<number>(0);
   const [inputVal, setInputVal] = useState<string>("");
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>("");
+  const [selectedAnswerId, setSelectedAnswerId] = useState<string | null>("");
   const [buttonVis, setButtonVis] = useState<boolean>(false);
+  const [loading,setLoading]=useState<boolean>(false);
   const service = new QuestionService();
-
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const questions = await service.getQuestions();
-        setFetchedQuestionList(questions);
-        if (questions.length > 0) {
-          setQuestionList([questions[0]]);
-        }
-        console.log("fetched questions");
-        console.log(questions);
-      } catch (error) {
-        console.error('Error fetching questions:', error);
+  const fetchQuestions = async () => {
+    try {
+      const questions = await service.getQuestions();
+      setFetchedQuestionList(questions);
+      if (questions.length > 0) {
+        setQuestionList([questions[0]]);
       }
-    };
+      console.log("fetched questions");
+      console.log(questions);
+    } catch (error) {
+      console.error('Error fetching questions:', error);
+    }
+  };
+  useEffect(() => {
+    setLoading(true);
     fetchQuestions();
+    setLoading(false);
   }, []);
 
-  const sendLog = async (questionId: string, categoryId: string, infoPersonId: string) => {
+  const sendLog = async (questionId: string, answerId:string, categoryId: string, infoPersonId: string) => {
     const log: AnswerLog = {
       questionId: questionId,
-      answerId: selectedAnswer?.toString() || "",
+      answerId: answerId || "",
       answerInput: inputVal || "",
       categoryId: categoryId,
       infoPersonId: infoPersonId
@@ -47,15 +49,13 @@ function ChatBotPage() {
     await service.postLog(log);
   }
 
-  const callBackInput = (val: string, questionId: string, categoryId: string, infoPersonId: string) => {
+  const callBackInput = (val: string) => {
     setButtonVis(true);
     setInputVal(val);
-    sendLog(questionId, categoryId, infoPersonId);
   }
 
   const callbackSelected = (nextId: number | null, index: number, questionId: string, answerId: string, categoryId: string, infoPersonId: string) => {
-    setSelectedAnswer(answerId);
-    sendLog(questionId, categoryId, infoPersonId);
+    sendLog(questionId, answerId, categoryId, infoPersonId);
     if (nextId === -1) {
       return;
     } else if (nextId === null) {
@@ -84,16 +84,15 @@ function ChatBotPage() {
     <div className="Page">
       <NavBar title={"Chat Bot"}></NavBar>
       <div className="chatbot">
-        {questionList.map((value, index) => {
-          return (
+      {loading == false ?(questionList.map((value, index) => {
+        return (
             <div key={index} className="items">
               <h2 className="header">{value.title}</h2>
               {value.answerType.title === "select" ? (
                 <CustomSelect
                   index={index}
                   values={value.answers}
-                  selectedValue={selectedAnswer}
-                  setSelectedValue={setSelectedAnswer}
+                  selectedValue={selectedAnswerId}
                   callback={callbackSelected}
                   questionId={value.questionId}
                   categoryId={value.category.categoryId}
@@ -101,19 +100,24 @@ function ChatBotPage() {
                 ></CustomSelect>
               ) : (
                 <div>
-                  <CustomInput index={index} callback={(val) => callBackInput(val, value.questionId, value.category.categoryId, "347652")} title={"Değer giriniz."}></CustomInput>
+                  <CustomInput index={index} callback={(val) => callBackInput(val)} title={"Değer giriniz."}></CustomInput>
                   {buttonVis === true && <div className="rowButtons">
                     {value.answers.map((val) => {
                       return (
+                        // TODO control et
                         <CustomButton key={val.title} handlePress={() => callbackSelected(parseInt(val.nextQuestionId ?? '-1'), index, value.questionId, val.answerId, value.category.categoryId, "347652")} title={val.title}></CustomButton>
                       );
                     })}
-                  </div>}
+                    </div>}
                 </div>
               )}
             </div>
           );
-        })}
+        })):( <div>
+          {/* <CircularProgress/> */}
+          <h3>Loading</h3> 
+          {/* TODO circle progres bar eklenecek */}
+        </div>) }  
         <h2 className="endheader">{end}</h2>
       </div>
     </div>

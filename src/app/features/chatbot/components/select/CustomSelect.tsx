@@ -2,25 +2,26 @@ import React from 'react';
 import Select, { StylesConfig, SingleValue } from 'react-select';
 
 interface Option {
-  value: string | null;
   label: string;
+  answerId: string;
+  nextQuestionId:string | null;
 }
 
 interface CustomSelectProps {
   values: {
     nextQuestionId: string | null;
     title: string;
+    answerId: string;
   }[];
   index: number;
   selectedValue: string | null;
-  setSelectedValue: (value: string | null) => void;
   callback: (nextId: number | null, index: number, questionId: string, answerId: string, categoryId: string, infoPersonId: string) => void;
   questionId: string;
   categoryId: string;
   infoPersonId: string;
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, setSelectedValue, callback, index, questionId, categoryId, infoPersonId }) => {
+const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, callback, index, questionId, categoryId, infoPersonId }) => {
   const customStyles: StylesConfig<Option, false> = {
     control: (provided) => ({
       ...provided,
@@ -38,16 +39,15 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, setS
   };
 
   const handleChange = (selectedOption: SingleValue<Option>) => {
-    const value = selectedOption?.value?.toString() ?? null;
-    setSelectedValue(value);
-    const nextQuestionId = value ? parseInt(value) : null;
-    const answerId = selectedOption?.value ?? '';
-    callback(nextQuestionId, index, questionId, answerId, categoryId, infoPersonId);
+    const selectedAnswerId = selectedOption?.answerId?.toString() ?? '';
+    const nextQuestionId = parseInt(selectedOption?.nextQuestionId ?? '');
+    callback(nextQuestionId, index, questionId, selectedAnswerId, categoryId, infoPersonId);
   };
 
   const formattedValues = values.map((value) => ({
-    value: value.nextQuestionId,
     label: value.title,
+    answerId: value.answerId,
+    nextQuestionId: value.nextQuestionId
   }));
 
   return (
@@ -56,7 +56,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, setS
       onChange={handleChange}
       options={formattedValues}
       placeholder="Lütfen bir cevap seçin."
-      value={formattedValues.find(option => option.value === selectedValue)}
+      value={formattedValues.find(option => option.answerId === selectedValue)}
     />
   );
 }
