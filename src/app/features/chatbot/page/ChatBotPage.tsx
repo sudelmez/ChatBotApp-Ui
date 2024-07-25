@@ -104,7 +104,6 @@ function ChatBotPage() {
                   {buttonVis === true && <div className="rowButtons">
                     {value.answers.map((val) => {
                       return (
-                        // TODO control et
                         <CustomButton key={val.title} handlePress={() => callbackSelected(parseInt(val.nextQuestionId ?? '-1'), index, value.questionId, val.answerId, value.category.categoryId, "347652")} title={val.title}></CustomButton>
                       );
                     })}
