@@ -4,6 +4,7 @@ import './index.css';
 import App from './app/App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+import UserProvider from './app/hooks/user_provider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -11,9 +12,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
      <BrowserRouter>
-            {/* <QuestionService> */}
+              <UserProvider>
                 <App />
-            {/* </QuestionService> */}
+              </UserProvider>
         </BrowserRouter>
   </React.StrictMode>
 );

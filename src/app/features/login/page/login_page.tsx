@@ -4,8 +4,12 @@ import { LoginRequestModel } from '../model/login_request_model';
 import LoginService from '../services/login_service';
 import './login_page.css';
 import { useState } from 'react';
+import { useUserContext } from "../../../context/user_context";
+import { useNavigate } from 'react-router-dom';
 
 function LoginPage(){
+    const { setToken } = useUserContext();
+    const navigate = useNavigate();
     const [username, setUsername]=useState<string>("");
     const [password, setPassword]=useState<string>("");
     const service = new LoginService();
@@ -23,6 +27,11 @@ function LoginPage(){
           
         console.log(data);
         var response=await service.Login(data);
+        const token = response.token; 
+        if (token) {
+            setToken(token);
+            navigate('/chatbot');
+        }
         console.log("login response");
         console.log(response);
     }

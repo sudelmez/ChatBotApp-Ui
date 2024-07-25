@@ -13,6 +13,9 @@ export enum ApiEndUrls{
 interface ApiResponse<T> {
   data: T[];
 }
+interface ApiUserResponse<T> {
+  data: T;
+}
 class PostsApiAdapter<T> {
   private baseUrl = ApiEndpoints.BASE_URL;
   async getAllPosts(endpoint: string): Promise<T[]> {
@@ -39,9 +42,9 @@ class PostsApiAdapter<T> {
       throw error; 
     }
   }
-  async postData(endpoint: string, data: LoginRequestModel): Promise<T[]>{
+  async postData(endpoint: string, data: LoginRequestModel): Promise<T>{
     try {
-      const response: AxiosResponse<ApiResponse<T>>= await axios.post<ApiResponse<T>>(`${this.baseUrl}/${endpoint}`, data);
+      const response: AxiosResponse<ApiUserResponse<T>>= await axios.post<ApiUserResponse<T>>(`${this.baseUrl}/${endpoint}`, data);
       console.log("res log data!!");
       console.log(response.data);
       return response.data.data;
