@@ -9,7 +9,7 @@ const NotFound: React.FC = () => {
   return (
     <div className="NotFound">
       <h1>The page you are trying to access is not allowed!</h1>
-      <CustomButton title={"Retry"} handlePress={() => { navigate('/chatbot') }}></CustomButton>
+      <CustomButton title={"Login"} handlePress={() => { navigate('/login') }}></CustomButton>
     </div>
   );
 }

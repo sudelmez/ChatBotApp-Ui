@@ -7,46 +7,47 @@ import CustomButton from "../../../components/form/button/CustomButton";
 import QuestionService from "../services/QuestionService";
 import { Question } from "../model/question_model";
 import { AnswerLog } from "../model/answer_log_model";
+import { useUserContext } from "../../../context/user_context";
 // import {CircularProgress} from "@nextui-org/progress"; TODO!!!!
 function ChatBotPage() {
   const [questionList, setQuestionList] = useState<Question[]>([]);
-  const [fetchedQuestionList, setFetchedQuestionList] = useState<Question[]>([]);
   const [end, setEnd] = useState<string>("");
-  const [ind, setInd] = useState<number>(0);
   const [inputVal, setInputVal] = useState<string>("");
   const [selectedAnswerId, setSelectedAnswerId] = useState<string | null>("");
   const [buttonVis, setButtonVis] = useState<boolean>(false);
   const [loading,setLoading]=useState<boolean>(false);
+
   const service = new QuestionService();
-  const fetchQuestions = async () => {
+  const {token, user} = useUserContext();
+
+  const fetchQuestion = async (nextQuestionId?: string | "") =>{
     try {
-      const questions = await service.getQuestions();
-      setFetchedQuestionList(questions);
-      if (questions.length > 0) {
-        setQuestionList([questions[0]]);
+      setLoading(true);
+      const nextQuestion = await service.getQuestion(nextQuestionId ?? "", token ?? "");
+      setLoading(false);
+      setQuestionList([...questionList, nextQuestion]);
+      if (!nextQuestion) {
+        setEnd("Sohbet sona erdi.");
+        console.error(`Soru bulunamadı id: ${nextQuestionId}`);
+        return;
       }
-      console.log("fetched questions");
-      console.log(questions);
     } catch (error) {
-      console.error('Error fetching questions:', error);
+      console.error('Error fetching question:', error);
     }
-  };
+  }
   useEffect(() => {
-    setLoading(true);
-    fetchQuestions();
-    setLoading(false);
+    fetchQuestion();
   }, []);
 
-  const sendLog = async (questionId: string, answerId:string, categoryId: string, infoPersonId: string) => {
+  const sendLog = async (questionId: string, answerId:string, infoPersonId: string) => {
     const log: AnswerLog = {
       questionId: questionId,
       answerId: answerId || "",
       answerInput: inputVal || "",
-      categoryId: categoryId,
-      infoPersonId: infoPersonId
+      username: infoPersonId
     };
     console.log(log);
-    await service.postLog(log);
+    await service.postLog(log, token ?? "");
   }
 
   const callBackInput = (val: string) => {
@@ -54,8 +55,9 @@ function ChatBotPage() {
     setInputVal(val);
   }
 
-  const callbackSelected = (nextId: number | null, index: number, questionId: string, answerId: string, categoryId: string, infoPersonId: string) => {
-    sendLog(questionId, answerId, categoryId, infoPersonId);
+  const callbackSelected = (nextId: number | null, questionId: string, answerId: string, infoPersonId: string) => {
+    setSelectedAnswerId(answerId);
+    sendLog(questionId, answerId, infoPersonId);
     if (nextId === -1) {
       return;
     } else if (nextId === null) {
@@ -63,19 +65,8 @@ function ChatBotPage() {
       console.log("Sohbet sona erdi.");
       return;
     }
-    const nextQuestion = fetchedQuestionList.find((question: Question) => parseInt(question.questionId) === nextId);
-    if (!nextQuestion) {
-      setEnd("Sohbet sona erdi.");
-      console.error(`Soru bulunamadı id: ${nextId}`);
-      return;
-    }
-    if (ind !== 0 && index < ind) {
-      console.log("last indexed question alert");
-      questionList.splice(ind, 1);
-    }
+    fetchQuestion(nextId.toString());
     setButtonVis(false);
-    setQuestionList([...questionList, nextQuestion]);
-    setInd(questionList.length);
     setEnd("");
     setInputVal("");
   };
@@ -95,8 +86,7 @@ function ChatBotPage() {
                   selectedValue={selectedAnswerId}
                   callback={callbackSelected}
                   questionId={value.questionId}
-                  categoryId={value.category.categoryId}
-                  infoPersonId={"347652"}
+                  infoPersonId={user ?? ""}
                 ></CustomSelect>
               ) : (
                 <div>
@@ -104,7 +94,7 @@ function ChatBotPage() {
                   {buttonVis === true && <div className="rowButtons">
                     {value.answers.map((val) => {
                       return (
-                        <CustomButton key={val.title} handlePress={() => callbackSelected(parseInt(val.nextQuestionId ?? '-1'), index, value.questionId, val.answerId, value.category.categoryId, "347652")} title={val.title}></CustomButton>
+                        <CustomButton key={val.title} handlePress={() => callbackSelected(parseInt(val.nextQuestionId ?? '-1'), value.questionId, val.answerId, user ?? "")} title={val.title}></CustomButton>
                       );
                     })}
                     </div>}

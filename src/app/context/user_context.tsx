@@ -1,8 +1,10 @@
 import { createContext, useContext, ReactNode } from 'react';
 
 interface UserContextType {
-  token: string;
-  setToken: (token: string) => void;
+  token: string | null;
+  user: string | null;
+  setToken: (token: string | null) => void;
+  setUser: (token: string | null) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);

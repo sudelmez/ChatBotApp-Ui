@@ -6,7 +6,7 @@ interface CustomInputProps {
   index: number;
 }
 
-const CustomInput: React.FC<CustomInputProps> = ({ title, callback, index }) => {
+const CustomInput: React.FC<CustomInputProps> = ({ title, callback, index  }) => {
   const [inputVal, setInputVal] = useState<string>("");
 
   const inputStyle: React.CSSProperties = {

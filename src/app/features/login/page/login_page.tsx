@@ -8,7 +8,7 @@ import { useUserContext } from "../../../context/user_context";
 import { useNavigate } from 'react-router-dom';
 
 function LoginPage(){
-    const { setToken } = useUserContext();
+    const { setToken, setUser } = useUserContext();
     const navigate = useNavigate();
     const [username, setUsername]=useState<string>("");
     const [password, setPassword]=useState<string>("");
@@ -28,8 +28,10 @@ function LoginPage(){
         console.log(data);
         var response=await service.Login(data);
         const token = response.token; 
+        const user = response.username;
         if (token) {
             setToken(token);
+            setUser(user);
             navigate('/chatbot');
         }
         console.log("login response");
