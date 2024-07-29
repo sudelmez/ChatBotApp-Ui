@@ -15,12 +15,13 @@ interface CustomSelectProps {
   }[];
   index: number;
   selectedValue: string | null;
-  callback: (nextId: number | null, questionId: string, answerId: string, infoPersonId: string) => void;
+  callback: (nextId: number | null, questionId: string, answerId: string, infoPersonId: string, businessTypeId:string | null) => void;
   questionId: string;
   infoPersonId: string;
+  businessTypeId: string | null;
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, callback, questionId, infoPersonId }) => {
+const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, callback, questionId, infoPersonId, businessTypeId }) => {
   const customStyles: StylesConfig<Option, false> = {
     control: (provided) => ({
       ...provided,
@@ -40,7 +41,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, call
   const handleChange = (selectedOption: SingleValue<Option>) => {
     const selectedAnswerId = selectedOption?.answerId?.toString()?? "";
     const nextQuestionId = parseInt(selectedOption?.nextQuestionId ?? '');
-    callback(nextQuestionId, questionId, selectedAnswerId, infoPersonId);
+    callback(nextQuestionId, questionId, selectedAnswerId, infoPersonId, businessTypeId);
   };
 
   const formattedValues = values.map((value) => ({

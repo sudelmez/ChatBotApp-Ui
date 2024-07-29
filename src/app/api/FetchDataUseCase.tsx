@@ -1,8 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
-import { AnswerLog } from '../features/chatbot/model/answer_log_model';
 import { LoginRequestModel } from '../features/login/model/login_request_model';
 import { GetQuestion } from '../features/chatbot/model/question_model';
-import { LoginResponse } from '../features/login/model/user_model';
 
 export enum ApiEndpoints {
   BASE_URL = "https://localhost:7047/api",
@@ -12,10 +10,13 @@ export enum ApiEndpoints {
 }
 export enum ApiEndUrls{
   LOG = "log",
-  GET = "get"
+  GET = "get",
+  SAVEANSWER = "saveAnswer"
 }
 interface ApiResponse<T> {
   data: T;
+  message: string;
+  success: boolean;
 }
 class PostsApiAdapter<T> {
   private baseUrl = ApiEndpoints.BASE_URL;
@@ -32,6 +33,15 @@ class PostsApiAdapter<T> {
     try {
       const response: AxiosResponse<ApiResponse<T>>= await axios.post<ApiResponse<T>>(`${this.baseUrl}/${endpoint}/${endUrl}`,log,{ headers: {"Authorization" : `Bearer ${token}`} });
       return response.data.data;
+    } catch (error) {
+      console.error('Error sending log:', error);
+      throw error; 
+    }
+  }
+  async postAnswer(endpoint:string, endUrl: string, data: T, token: string){
+    try {
+      const response: AxiosResponse<ApiResponse<T>>= await axios.post<ApiResponse<T>>(`${this.baseUrl}/${endpoint}/${endUrl}`,data ,{ headers: {"Authorization" : `Bearer ${token}`} });
+      return response.data;
     } catch (error) {
       console.error('Error sending log:', error);
       throw error; 

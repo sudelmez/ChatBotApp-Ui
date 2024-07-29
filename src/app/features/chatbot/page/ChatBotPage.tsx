@@ -7,6 +7,7 @@ import CustomButton from "../../../components/form/button/CustomButton";
 import QuestionService from "../services/QuestionService";
 import { Question } from "../model/question_model";
 import { AnswerLog } from "../model/answer_log_model";
+import { SaveAnswerModel } from "../model/save_answer_model";
 import { useUserContext } from "../../../context/user_context";
 // import {CircularProgress} from "@nextui-org/progress"; TODO!!!!
 function ChatBotPage() {
@@ -20,7 +21,7 @@ function ChatBotPage() {
   const service = new QuestionService();
   const {token, user} = useUserContext();
 
-  const fetchQuestion = async (nextQuestionId?: string | "") =>{
+  const fetchQuestion = async (nextQuestionId?: string | "") => {
     try {
       setLoading(true);
       const nextQuestion = await service.getQuestion(nextQuestionId ?? "", token ?? "");
@@ -35,10 +36,19 @@ function ChatBotPage() {
       console.error('Error fetching question:', error);
     }
   }
+
   useEffect(() => {
     fetchQuestion();
   }, []);
 
+  const saveAnswer = async (businessTypeId: string | null) => {
+    const answerData : SaveAnswerModel={
+      answerInput: inputVal,
+      businessTypeId: businessTypeId
+    }
+    const responseSaved= await service.saveAnswer(answerData, token ?? "");
+    return responseSaved;
+  }
   const sendLog = async (questionId: string, answerId:string, infoPersonId: string) => {
     const log: AnswerLog = {
       questionId: questionId,
@@ -55,7 +65,7 @@ function ChatBotPage() {
     setInputVal(val);
   }
 
-  const callbackSelected = (nextId: number | null | "", questionId: string, answerId: string, infoPersonId: string) => {
+  const callbackSelected = async(nextId: number | null | "", questionId: string, answerId: string, infoPersonId: string, businessTypeId: string | null) => {
     setSelectedAnswerId(answerId);
     sendLog(questionId, answerId, infoPersonId);
     if (nextId === null || nextId=== "") {
@@ -63,11 +73,25 @@ function ChatBotPage() {
       console.log("Sohbet sona erdi.");
       return;
     }
-    else if(nextId !== null) {
-      fetchQuestion(nextId.toString());
-      setButtonVis(false);
-      setEnd("");
-      setInputVal("");
+    if(businessTypeId === null || businessTypeId === ""){
+      if(nextId !== null ) {
+        fetchQuestion(nextId.toString());
+        setButtonVis(false);
+        setEnd("");
+        setInputVal("");
+      }
+      return;
+    }
+      const res = await saveAnswer(businessTypeId);
+      console.log("saved answer res");
+      console.log(res);
+      if(res?.success){
+        if(nextId !== null ) {
+          fetchQuestion(nextId.toString());
+          setButtonVis(false);
+          setEnd("");
+          setInputVal("");
+        }
     }
   };
 
@@ -90,6 +114,7 @@ function ChatBotPage() {
                   callback={callbackSelected}
                   questionId={value.questionId}
                   infoPersonId={user ?? ""}
+                  businessTypeId={value.businessTypeId}
                 ></CustomSelect>
               ) : (
                 <div>
@@ -97,7 +122,7 @@ function ChatBotPage() {
                   {buttonVis === true && <div className="rowButtons">
                     {value.answers.map((val) => {
                       return (
-                        <CustomButton key={val.title} handlePress={() => callbackSelected(parseInt(val.nextQuestionId ?? '-1'), value.questionId, val.answerId, user ?? "")} title={val.title}></CustomButton>
+                        <CustomButton key={val.title} handlePress={() => callbackSelected(parseInt(val.nextQuestionId ?? '-1'), value.questionId, val.answerId, user ?? "", value.businessTypeId)} title={val.title}></CustomButton>
                       );
                     })}
                     </div>}
