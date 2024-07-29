@@ -17,7 +17,7 @@ function ChatBotPage() {
   const [selectedAnswerId, setSelectedAnswerId] = useState<string | null>("");
   const [buttonVis, setButtonVis] = useState<boolean>(false);
   const [loading,setLoading]=useState<boolean>(false);
-
+  const [problem, setProblem] = useState<string>("");
   const service = new QuestionService();
   const {token, user} = useUserContext();
 
@@ -85,6 +85,7 @@ function ChatBotPage() {
       const res = await saveAnswer(businessTypeId);
       console.log("saved answer res");
       console.log(res);
+      setProblem("");
       if(res?.success){
         if(nextId !== null ) {
           fetchQuestion(nextId.toString());
@@ -92,6 +93,8 @@ function ChatBotPage() {
           setEnd("");
           setInputVal("");
         }
+    }else if(res?.success===false){
+      setProblem(res.message);
     }
   };
 
@@ -130,11 +133,13 @@ function ChatBotPage() {
               )}
             </div>
           );
-        })):( <div>
+        }
+        )):( <div>
           {/* <CircularProgress/> */}
           <h3>Loading</h3> 
           {/* TODO circle progres bar eklenecek */}
         </div>) }  
+        <h3>{problem}</h3>
         <h2 className="endheader">{end}</h2>
       </div>
       <div className="background-image"></div>
