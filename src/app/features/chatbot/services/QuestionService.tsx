@@ -3,21 +3,19 @@ import { GetQuestion, Question } from "../model/question_model";
 import { AnswerLog } from "../model/answer_log_model";
 
 class QuestionService {
-    private postsApi: PostsApiAdapter<Question>;
-  
+    private questionsApi: PostsApiAdapter<Question>;
+    private logsApi: PostsApiAdapter<AnswerLog>;
     constructor() {
-      this.postsApi = new PostsApiAdapter<Question>();
+      this.questionsApi = new PostsApiAdapter<Question>();
+      this.logsApi = new PostsApiAdapter<AnswerLog>();
     }
-  
     async getQuestion(nextQuestionId: string | "",token: string): Promise<Question> {
       try {
-        const data : GetQuestion={
+        const data : GetQuestion = {
           nextQuestionId: nextQuestionId ?? "",
           platformId:"1"
         }
-        const question = await this.postsApi.get(ApiEndpoints.QUESTION,data,token);
-        console.log("question");
-        console.log(question);
+        const question = await this.questionsApi.get(ApiEndpoints.QUESTION, data, token);
         return question; 
       } catch (error) {
         console.error('Error fetching questions:', error);
@@ -26,8 +24,9 @@ class QuestionService {
     }
     async postLog(log: AnswerLog, token:string){
       try {
-        await this.postsApi.postAllPosts(ApiEndpoints.QUESTION, ApiEndUrls.LOG, log,token)
+        await this.logsApi.postLog(ApiEndpoints.QUESTION, ApiEndUrls.LOG,  log, token)
       } catch (error) {
+        console.error('Error logging questions:', error);
       }
     }
   }

@@ -38,7 +38,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, call
   };
 
   const handleChange = (selectedOption: SingleValue<Option>) => {
-    const selectedAnswerId = selectedOption?.answerId?.toString() ?? '';
+    const selectedAnswerId = selectedOption?.answerId?.toString()?? "";
     const nextQuestionId = parseInt(selectedOption?.nextQuestionId ?? '');
     callback(nextQuestionId, questionId, selectedAnswerId, infoPersonId);
   };

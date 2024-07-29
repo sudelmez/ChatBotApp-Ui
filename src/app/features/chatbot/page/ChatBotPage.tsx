@@ -44,7 +44,7 @@ function ChatBotPage() {
       questionId: questionId,
       answerId: answerId || "",
       answerInput: inputVal || "",
-      username: infoPersonId
+      username: infoPersonId,
     };
     console.log(log);
     await service.postLog(log, token ?? "");
@@ -55,27 +55,30 @@ function ChatBotPage() {
     setInputVal(val);
   }
 
-  const callbackSelected = (nextId: number | null, questionId: string, answerId: string, infoPersonId: string) => {
+  const callbackSelected = (nextId: number | null | "", questionId: string, answerId: string, infoPersonId: string) => {
     setSelectedAnswerId(answerId);
     sendLog(questionId, answerId, infoPersonId);
-    if (nextId === -1) {
-      return;
-    } else if (nextId === null) {
+    if (nextId === null || nextId=== "") {
       setEnd("Sohbet sona erdi.");
       console.log("Sohbet sona erdi.");
       return;
     }
-    fetchQuestion(nextId.toString());
-    setButtonVis(false);
-    setEnd("");
-    setInputVal("");
+    else if(nextId !== null) {
+      fetchQuestion(nextId.toString());
+      setButtonVis(false);
+      setEnd("");
+      setInputVal("");
+    }
   };
 
   return (
     <div className="Page">
       <NavBar title={"Chat Bot"}></NavBar>
       <div className="chatbot">
-      {loading == false ?(questionList.map((value, index) => {
+        {loading == false ?(questionList.map((value, index) => {
+         if (!value || !value.title || !value.answerType) {
+          return null;
+        }
         return (
             <div key={index} className="items">
               <h2 className="header">{value.title}</h2>

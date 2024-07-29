@@ -4,3 +4,7 @@ export interface UserModel{
     surname: string;
     username: string;
 }
+export interface LoginResponse{
+    token: string;
+    userId: string;
+}

@@ -6,6 +6,7 @@ import './login_page.css';
 import { useState } from 'react';
 import { useUserContext } from "../../../context/user_context";
 import { useNavigate } from 'react-router-dom';
+import { UserModel } from '../model/user_model';
 
 function LoginPage(){
     const { setToken, setUser } = useUserContext();
@@ -24,18 +25,20 @@ function LoginPage(){
             username: username,
             password:password
           };
-          
-        console.log(data);
         var response=await service.Login(data);
         const token = response.token; 
-        const user = response.username;
         if (token) {
             setToken(token);
-            setUser(user);
+            var userResponse = await service.GetUserInfo(response.userId, token);
+            const user : UserModel = {
+                name: userResponse.name,
+                surname:userResponse.surname,
+                token: userResponse.token,
+                username:userResponse.username
+            };
+            setUser(user.username);
             navigate('/chatbot');
         }
-        console.log("login response");
-        console.log(response);
     }
 return(
     <div className='Page'>

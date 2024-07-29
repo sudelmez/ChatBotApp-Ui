@@ -12,7 +12,7 @@ function App() {
   },[token])
   return (
     <Routes>
-      {token !== null ? (<>
+      {token !== null || token !== "" ? (<>
         {AppRoutes.AuthorizedAppRoutes.map((route, index) => {
         const { element, ...rest } = route;
         return <Route key={index} {...rest} element={element} />;
