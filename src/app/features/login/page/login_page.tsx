@@ -47,7 +47,10 @@ export default function SignInSide() {
       username: username,
       password: password,
     };
-      var response=await service.Login(req);
+    var response=await service.Login(req);
+    if(response === null){
+      return;
+    }
     const token = response.token; 
     if (token) {
         setToken(token);

@@ -1,6 +1,5 @@
 import React from "react";
 import "./NavBar.css";
-import { useNavigate } from 'react-router-dom';
 
 interface NavBarProps {
   title: string;
