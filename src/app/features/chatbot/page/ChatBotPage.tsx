@@ -112,6 +112,8 @@ function ChatBotPage() {
         </div>) }  
         <h2 className="endheader">{end}</h2>
       </div>
+      <div className="background-image"></div>
+      <div className="background-image-left"></div>
     </div>
   );
 }

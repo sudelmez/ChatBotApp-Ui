@@ -9,7 +9,7 @@ interface CustomButtonProps {
 
 const CustomButton: React.FC<CustomButtonProps> = ({ title, handlePress, color = true }) => {
   const buttonStyle: React.CSSProperties = {
-    backgroundColor: color ? '#977EF9' : '#FC4847',
+    backgroundColor: color ? '#a895f5' : '#FC4847',
     margin: '20px',
     padding: '10px 20px',
     border: 'none',

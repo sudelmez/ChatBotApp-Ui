@@ -6,7 +6,38 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: white;
+    position: relative;
+    overflow: hidden; 
+    z-index: 1;
 }
+
+.background-image {
+    position: absolute; 
+    bottom: 0; 
+    padding-top: 50px;
+    padding-right: 30px;
+    right: 0; 
+    width: 300px; 
+    height: 300px; 
+    background-image: url('https://hepiyi.com.tr/assets/images/illustrations/daha-fazla-bilgi.svg'); 
+    background-size: cover; 
+    background-repeat: no-repeat;
+    z-index: -1; 
+}
+
+/* .background-image-left {
+    position: absolute; 
+    bottom: 0; 
+    padding-top: 50px;
+    padding-right: 10px;
+    width: 500px; 
+    height: 170px; 
+    background-image: url('https://hepiyi.com.tr/assets/images/illustrations/asistans-hizmetleri-banner.svg'); 
+    background-size: cover; 
+    background-repeat: no-repeat;
+    z-index: -1; 
+} */
 
 .chatbot{
     width: 50%;

@@ -1,7 +1,6 @@
 import PostsApiAdapter, {ApiEndpoints, ApiEndUrls} from "../../../api/FetchDataUseCase";
 import { LoginRequestModel } from "../model/login_request_model";
 import { LoginResponse, UserModel } from "../model/user_model";
-
 class LoginService{
     private loginApi: PostsApiAdapter<LoginResponse>;
     private userApi: PostsApiAdapter<UserModel>;
