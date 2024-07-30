@@ -1,16 +1,19 @@
-import PostsApiAdapter, {ApiEndpoints, ApiEndUrls} from "../../../api/service/FetchDataUseCase";
+import PostsApiAdapter from "../../../api/service/FetchDataUseCase";
 import { GetQuestion, Question } from "../model/question_model";
+import { ApiEndUrls,ApiEndpoints } from "../../../api/endUrls/api_urls";
 import { AnswerLog } from "../model/answer_log_model";
 import { SaveAnswerModel } from "../model/save_answer_model";
+import ApiService from "../../../api/service/api_service";
+import { ApiResponse } from "../../../api/response/api_response";
 
 class QuestionService {
-    private questionsApi: PostsApiAdapter<Question>;
-    private logsApi: PostsApiAdapter<AnswerLog>;
-    private answerApi: PostsApiAdapter<SaveAnswerModel>;
+    private questionsApi: ApiService<Question, GetQuestion>;
+    private logsApi: ApiService<ApiResponse<AnswerLog>, AnswerLog>;
+    private answerApi: ApiService<ApiResponse<SaveAnswerModel>, SaveAnswerModel>;
     constructor() {
-      this.questionsApi = new PostsApiAdapter<Question>();
-      this.logsApi = new PostsApiAdapter<AnswerLog>();
-      this.answerApi = new PostsApiAdapter<SaveAnswerModel>();
+      this.questionsApi = new  ApiService<Question, GetQuestion>;
+      this.logsApi = new ApiService<ApiResponse<AnswerLog>, AnswerLog>();
+      this.answerApi = new ApiService<ApiResponse<SaveAnswerModel>, SaveAnswerModel>();
     }
     async getQuestion(nextQuestionId: string | "",token: string): Promise<Question> {
       try {
@@ -18,8 +21,8 @@ class QuestionService {
           nextQuestionId: nextQuestionId ?? "",
           platformId:"1"
         }
-        const question = await this.questionsApi.get(ApiEndpoints.QUESTION, data, token);
-        return question; 
+        const question = await this.questionsApi.post(ApiEndpoints.QUESTION, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
+        return question.data!; 
       } catch (error) {
         console.error('Error fetching questions:', error);
         throw error; 
@@ -27,7 +30,7 @@ class QuestionService {
     }
     async postLog(log: AnswerLog, token:string){
       try {
-        const res= await this.logsApi.postLog(ApiEndpoints.QUESTION, ApiEndUrls.LOG,  log, token);
+        const res= await this.logsApi.post(ApiEndpoints.QUESTION, ApiEndUrls.LOG,  log, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
         return res;
       } catch (error) {
         console.error('Error logging questions:', error);
@@ -35,7 +38,7 @@ class QuestionService {
     }
     async saveAnswer(data: SaveAnswerModel, token:string){
       try {
-        const res= await this.answerApi.postAnswer(ApiEndpoints.QUESTION, ApiEndUrls.SAVEANSWER, data, token);
+        const res= await this.answerApi.post(ApiEndpoints.QUESTION, ApiEndUrls.SAVEANSWER, data, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
         return res;
       } catch (error) {
         console.error('Error logging questions:', error);

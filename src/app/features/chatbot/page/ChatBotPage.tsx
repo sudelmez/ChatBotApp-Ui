@@ -93,7 +93,7 @@ function ChatBotPage() {
           setInputVal("");
         }
     }else if(res?.success===false){
-      setProblem(res.message);
+      setProblem(res.message ?? "");
     }
   };
 
