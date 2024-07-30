@@ -1,4 +1,4 @@
-import PostsApiAdapter, {ApiEndpoints, ApiEndUrls} from "../../../api/FetchDataUseCase";
+import PostsApiAdapter, {ApiEndpoints, ApiEndUrls} from "../../../api/service/FetchDataUseCase";
 import { GetQuestion, Question } from "../model/question_model";
 import { AnswerLog } from "../model/answer_log_model";
 import { SaveAnswerModel } from "../model/save_answer_model";

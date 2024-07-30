@@ -1,10 +1,10 @@
 export interface UserModel{
-    token: string;
-    name: string;
-    surname: string;
-    username: string;
+    token: string | null;
+    name: string | null;
+    surname: string | null;
+    username: string | null;
 }
 export interface LoginResponse{
-    token: string;
-    userId: string;
+    token: string | null;
+    userId: string | null;
 }

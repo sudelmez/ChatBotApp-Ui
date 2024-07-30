@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
-import { LoginRequestModel } from '../features/login/model/login_request_model';
-import { GetQuestion } from '../features/chatbot/model/question_model';
+import { LoginRequestModel } from '../../features/login/model/login_request_model';
+import { GetQuestion } from '../../features/chatbot/model/question_model';
 
 export enum ApiEndpoints {
   BASE_URL = "https://localhost:7047/api",

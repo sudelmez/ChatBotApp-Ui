@@ -9,7 +9,6 @@ import { Question } from "../model/question_model";
 import { AnswerLog } from "../model/answer_log_model";
 import { SaveAnswerModel } from "../model/save_answer_model";
 import { useUserContext } from "../../../context/user_context";
-// import {CircularProgress} from "@nextui-org/progress"; TODO!!!!
 function ChatBotPage() {
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [end, setEnd] = useState<string>("");
@@ -135,9 +134,7 @@ function ChatBotPage() {
           );
         }
         )):( <div>
-          {/* <CircularProgress/> */}
           <h3>Loading</h3> 
-          {/* TODO circle progres bar eklenecek */}
         </div>) }  
         <h3>{problem}</h3>
         <h2 className="endheader">{end}</h2>

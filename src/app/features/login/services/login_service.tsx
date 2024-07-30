@@ -1,26 +1,27 @@
-import PostsApiAdapter, {ApiEndpoints, ApiEndUrls} from "../../../api/FetchDataUseCase";
+import ApiService from "../../../api/service/api_service";
 import { LoginRequestModel } from "../model/login_request_model";
 import { LoginResponse, UserModel } from "../model/user_model";
+import { ApiEndUrls,ApiEndpoints } from "../../../api/endUrls/api_urls";
 class LoginService{
-    private loginApi: PostsApiAdapter<LoginResponse>;
-    private userApi: PostsApiAdapter<UserModel>;
+    private loginService: ApiService<LoginResponse, LoginRequestModel>;
+    private userService: ApiService<UserModel, LoginResponse>;
     constructor() {
-      this.loginApi = new PostsApiAdapter<LoginResponse>();
-      this.userApi = new PostsApiAdapter<UserModel>();
+      this.loginService = new ApiService<LoginResponse, LoginRequestModel>();
+      this.userService = new ApiService<UserModel, LoginResponse>();
     }
-    async Login(request:LoginRequestModel): Promise<LoginResponse> {
+    async Login(request:LoginRequestModel): Promise<LoginResponse | null> {
         try {
-        const response = await this.loginApi.postLogin(ApiEndpoints.LOGIN, request);
-        return response; 
+        const response = await this.loginService.post(ApiEndpoints.LOGIN, ApiEndUrls.ANY, request, {'accept': 'text/plain', 'Content-Type': 'application/json'});
+        return response.data; 
         } catch (error) {
         console.error('Error logging in:', error);
         throw error; 
         }
     }
-    async GetUserInfo(request: string, token: string) : Promise<UserModel>{
+    async GetUserInfo(request: LoginResponse) : Promise<UserModel | null>{
       try {
-        const response = await this.userApi.getUserInfo(ApiEndpoints.USER, ApiEndUrls.GET, request, token);
-        return response; 
+        const response = await this.userService.post(ApiEndpoints.USER, ApiEndUrls.GET, request, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${request.token}`});
+        return response.data; 
       } catch (error) {
         throw error; 
       }

@@ -9,8 +9,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -51,15 +49,15 @@ export default function SignInSide() {
     if(response === null){
       return;
     }
-    const token = response.token; 
+    const token = response?.token; 
     if (token) {
         setToken(token);
-        var userResponse = await service.GetUserInfo(response.userId, token);
+        var userResponse = await service.GetUserInfo(response!);
         const user : UserModel = {
-            name: userResponse.name,
-            surname:userResponse.surname,
-            token: userResponse.token,
-            username:userResponse.username
+            name: userResponse?.name ?? "",
+            surname:userResponse?.surname ?? "",
+            token: userResponse?.token ?? "",
+            username:userResponse?.username ?? ""
         };
         setUser(user.username);
         navigate('/chatbot');
@@ -77,7 +75,6 @@ export default function SignInSide() {
           sx={{
             backgroundImage:
               'url("https://hepiyi.com.tr/assets/images/illustrations/yardim-konulari.svg")',
-
             backgroundColor: (t) =>
               t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
             backgroundSize: 'cover',
@@ -121,10 +118,6 @@ export default function SignInSide() {
                 id="password"
                 autoComplete="current-password"
               />
-              {/* <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              /> */}
               <Button
                 type="submit"
                 fullWidth
@@ -134,16 +127,6 @@ export default function SignInSide() {
                 Sign In
               </Button>
               <Grid container>
-                {/* <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid> */}
-                {/* <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid> */}
               </Grid>
               <Copyright sx={{ mt: 5 }} />
             </Box>
