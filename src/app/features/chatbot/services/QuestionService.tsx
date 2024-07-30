@@ -1,4 +1,3 @@
-import PostsApiAdapter from "../../../api/service/FetchDataUseCase";
 import { GetQuestion, Question } from "../model/question_model";
 import { ApiEndUrls,ApiEndpoints } from "../../../api/endUrls/api_urls";
 import { AnswerLog } from "../model/answer_log_model";
