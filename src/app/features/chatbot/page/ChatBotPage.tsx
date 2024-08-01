@@ -7,7 +7,7 @@ import CustomButton from "../../../components/form/button/CustomButton";
 import QuestionService from "../services/QuestionService";
 import { Question } from "../model/question_model";
 import { AnswerLog } from "../model/answer_log_model";
-import { SaveAnswerModel } from "../model/save_answer_model";
+import { BusinessOperationModel } from "../model/business_operation_model";
 import { useUserContext } from "../../../context/user_context";
 function ChatBotPage() {
   const [questionList, setQuestionList] = useState<Question[]>([]);
@@ -40,8 +40,8 @@ function ChatBotPage() {
     fetchQuestion();
   }, []);
 
-  const saveAnswer = async (businessTypeId: string | null) => {
-    const answerData : SaveAnswerModel={
+  const saveAnswer = async (businessTypeId: number | null) => {
+    const answerData : BusinessOperationModel={
       answerInput: inputVal,
       businessTypeId: businessTypeId
     }
@@ -64,7 +64,7 @@ function ChatBotPage() {
     setInputVal(val);
   }
 
-  const callbackSelected = async(nextId: number | null | "", questionId: string, answerId: string, infoPersonId: string, businessTypeId: string | null) => {
+  const callbackSelected = async(nextId: number | null | "", questionId: string, answerId: string, infoPersonId: string, businessTypeId: number | null) => {
     setSelectedAnswerId(answerId);
     sendLog(questionId, answerId, infoPersonId);
     if (nextId === null || nextId=== "") {
@@ -72,15 +72,14 @@ function ChatBotPage() {
       console.log("Sohbet sona erdi.");
       return;
     }
-    if(businessTypeId === null || businessTypeId === ""){
+    if(businessTypeId === null){
       if(nextId !== null ) {
         fetchQuestion(nextId.toString());
         setButtonVis(false);
         setEnd("");
         setInputVal("");
       }
-      return;
-    }
+      return;}
       const res = await saveAnswer(businessTypeId);
       console.log("saved answer res");
       console.log(res);
@@ -93,7 +92,7 @@ function ChatBotPage() {
           setInputVal("");
         }
     }else if(res?.success===false){
-      setProblem(res.message ?? "");
+      setProblem(res.message ?? res.validationErrors[0] ?? "");
     }
   };
 

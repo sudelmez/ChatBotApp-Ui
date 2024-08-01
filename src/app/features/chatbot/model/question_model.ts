@@ -1,7 +1,7 @@
 export interface Question {
     questionId: string;
     title: string;
-    businessTypeId : string;
+    businessTypeId : number | null;
     answerType: {
       title: string;
       answerTypeId: string;

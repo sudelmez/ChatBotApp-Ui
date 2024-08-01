@@ -15,10 +15,10 @@ interface CustomSelectProps {
   }[];
   index: number;
   selectedValue: string | null;
-  callback: (nextId: number | null, questionId: string, answerId: string, infoPersonId: string, businessTypeId:string | null) => void;
+  callback: (nextId: number | null, questionId: string, answerId: string, infoPersonId: string, businessTypeId:number | null) => void;
   questionId: string;
   infoPersonId: string;
-  businessTypeId: string | null;
+  businessTypeId: number | null;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, callback, questionId, infoPersonId, businessTypeId }) => {

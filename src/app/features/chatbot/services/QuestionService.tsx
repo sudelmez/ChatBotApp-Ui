@@ -1,18 +1,18 @@
 import { GetQuestion, Question } from "../model/question_model";
 import { ApiEndUrls,ApiEndpoints } from "../../../api/endUrls/api_urls";
 import { AnswerLog } from "../model/answer_log_model";
-import { SaveAnswerModel } from "../model/save_answer_model";
+import { BusinessOperationModel } from "../model/business_operation_model";
 import ApiService from "../../../api/service/api_service";
 import { ApiResponse } from "../../../api/response/api_response";
 
 class QuestionService {
     private questionsApi: ApiService<Question, GetQuestion>;
     private logsApi: ApiService<ApiResponse<AnswerLog>, AnswerLog>;
-    private answerApi: ApiService<ApiResponse<SaveAnswerModel>, SaveAnswerModel>;
+    private answerApi: ApiService<ApiResponse<BusinessOperationModel>, BusinessOperationModel>;
     constructor() {
       this.questionsApi = new  ApiService<Question, GetQuestion>;
       this.logsApi = new ApiService<ApiResponse<AnswerLog>, AnswerLog>();
-      this.answerApi = new ApiService<ApiResponse<SaveAnswerModel>, SaveAnswerModel>();
+      this.answerApi = new ApiService<ApiResponse<BusinessOperationModel>, BusinessOperationModel>();
     }
     async getQuestion(nextQuestionId: string | "",token: string): Promise<Question> {
       try {
@@ -35,9 +35,9 @@ class QuestionService {
         console.error('Error logging questions:', error);
       }
     }
-    async saveAnswer(data: SaveAnswerModel, token:string){
+    async saveAnswer(data: BusinessOperationModel, token:string){
       try {
-        const res= await this.answerApi.post(ApiEndpoints.QUESTION, ApiEndUrls.SAVEANSWER, data, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
+        const res= await this.answerApi.post(ApiEndpoints.BUSINESS_TYPE, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
         return res;
       } catch (error) {
         console.error('Error logging questions:', error);
