@@ -20,10 +20,10 @@ function ChatBotPage() {
   const service = new QuestionService();
   const {token, user} = useUserContext();
 
-  const fetchQuestion = async (nextQuestionId?: string | "") => {
+  const fetchQuestion = async (nextQuestionId?: string | "", isLastQuestion?:boolean) => {
     try {
       setLoading(true);
-      const nextQuestion = await service.getQuestion(nextQuestionId ?? "", token ?? "");
+      const nextQuestion = await service.getQuestion(nextQuestionId ?? "", token ?? "", isLastQuestion ?? false);
       setLoading(false);
       setQuestionList([...questionList, nextQuestion]);
       if (!nextQuestion) {
@@ -64,17 +64,17 @@ function ChatBotPage() {
     setInputVal(val);
   }
 
-  const callbackSelected = async(nextId: number | null | "", questionId: string, answerId: string, infoPersonId: string, businessTypeId: number | null) => {
+  const callbackSelected = async(nextId: number | null | "", questionId: string, answerId: string, infoPersonId: string, businessTypeId: number | null, isLastQuestion: boolean) => {
     setSelectedAnswerId(answerId);
     sendLog(questionId, answerId, infoPersonId);
-    if (nextId === null || nextId=== "") {
-      setEnd("Sohbet sona erdi.");
-      console.log("Sohbet sona erdi.");
-      return;
-    }
+    // if (nextId === null || nextId=== "") {
+    //   setEnd("Sohbet sona erdi.");
+    //   console.log("Sohbet sona erdi.");
+    //   return;
+    // }
     if(businessTypeId === null){
       if(nextId !== null ) {
-        fetchQuestion(nextId.toString());
+        fetchQuestion(nextId.toString(), isLastQuestion);
         setButtonVis(false);
         setEnd("");
         setInputVal("");
@@ -85,12 +85,12 @@ function ChatBotPage() {
       console.log(res);
       setProblem("");
       if(res?.success){
-        if(nextId !== null ) {
-          fetchQuestion(nextId.toString());
+        // if(nextId !== null ) {
+          fetchQuestion((nextId ?? "").toString(),isLastQuestion);
           setButtonVis(false);
           setEnd("");
           setInputVal("");
-        }
+        // }
     }else if(res?.success===false){
       setProblem(res.message ?? res.validationErrors[0] ?? "");
     }
@@ -116,16 +116,18 @@ function ChatBotPage() {
                   questionId={value.questionId}
                   infoPersonId={user ?? ""}
                   businessTypeId={value.businessTypeId}
+                  isLastQuestion= {value.isLastQuestion}
                 ></CustomSelect>
               ) : (
                 <div>
                   <CustomInput index={index} callback={(val) => callBackInput(val)} title={"Değer giriniz."}></CustomInput>
                   {buttonVis === true && <div className="rowButtons">
-                    {value.answers.map((val) => {
+                    <CustomButton handlePress={() => callbackSelected("", value.questionId, "", user ?? "", value.businessTypeId, value.getLastQuestion)} title={"Devam Et"}></CustomButton>
+                    {/* {value.answers.map((val) => {
                       return (
-                        <CustomButton key={val.title} handlePress={() => callbackSelected(parseInt(val.nextQuestionId ?? '-1'), value.questionId, val.answerId, user ?? "", value.businessTypeId)} title={val.title}></CustomButton>
+                        <CustomButton key={val.title} handlePress={() => callbackSelected(parseInt(val.nextQuestionId ?? '-1'), value.questionId, val.answerId, user ?? "", value.businessTypeId, value.isLastQuestion)} title={val.title}></CustomButton>
                       );
-                    })}
+                    })} */}
                     </div>}
                 </div>
               )}

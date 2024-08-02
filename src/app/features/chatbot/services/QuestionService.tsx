@@ -14,13 +14,19 @@ class QuestionService {
       this.logsApi = new ApiService<ApiResponse<AnswerLog>, AnswerLog>();
       this.answerApi = new ApiService<ApiResponse<BusinessOperationModel>, BusinessOperationModel>();
     }
-    async getQuestion(nextQuestionId: string | "",token: string): Promise<Question> {
+    async getQuestion(nextQuestionId: string | "",token: string, getLastQuestion: boolean): Promise<Question> {
       try {
         const data : GetQuestion = {
           nextQuestionId: nextQuestionId ?? "",
-          platformId:"1"
+          platformId:"1",
+          getLastQuestion: getLastQuestion
         }
+        console.log("last data");
+        console.log(data);
+
         const question = await this.questionsApi.post(ApiEndpoints.QUESTION, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
+        console.log(question.data);
+
         return question.data!; 
       } catch (error) {
         console.error('Error fetching questions:', error);
@@ -38,9 +44,9 @@ class QuestionService {
     async saveAnswer(data: BusinessOperationModel, token:string){
       try {
         const res= await this.answerApi.post(ApiEndpoints.BUSINESS_TYPE, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
-        return res;
+        return res.data;
       } catch (error) {
-        console.error('Error logging questions:', error);
+        console.error('Error saving answer:', error);
       }
     }
   }

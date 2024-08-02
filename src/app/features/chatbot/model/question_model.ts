@@ -11,8 +11,11 @@ export interface Question {
       nextQuestionId: string | null;
       answerId: string;
     }[];
+    isLastQuestion: boolean;
+    getLastQuestion: boolean;
 }
 export interface GetQuestion{
   nextQuestionId: string | "";
   platformId: string;
+  getLastQuestion: boolean
 }
