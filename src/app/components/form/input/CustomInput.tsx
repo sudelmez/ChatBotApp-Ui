@@ -1,36 +1,45 @@
-import React, { useState } from "react";
+import React from "react";
+import Form from 'react-bootstrap/Form';
+import * as Yup from 'yup';
+import { Formik } from 'formik';
+import Col from 'react-bootstrap/Col';
 
 interface CustomInputProps {
-  title: string;
-  callback: (value: string, index: number) => void;
-  index: number;
+  callback: (value: string) => void;
 }
 
-const CustomInput: React.FC<CustomInputProps> = ({ title, callback, index  }) => {
-  const [inputVal, setInputVal] = useState<string>("");
-
-  const inputStyle: React.CSSProperties = {
-    padding: '15px', 
-    fontSize: '16px', 
-    borderRadius: '4px', 
-    width: '95%'
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setInputVal(value);
-    callback(value, index);
-  };
+const CustomInput: React.FC<CustomInputProps> = ({ callback }) => {
+  const validationSchema = Yup.object().shape({
+    value: Yup.string().required("Kullanıcı adı zorunludur."),
+  });
 
   return (
-    <div>
-      <input 
-        style={inputStyle} 
-        title={title} 
-        value={inputVal} 
-        onChange={handleChange}
-      />
-    </div>
+    <Formik
+      initialValues={{ value: '' }}
+      validationSchema={validationSchema}
+      onSubmit={(values) => {
+        console.log("validated and pressed")
+        callback(values.value);
+      }}
+    >
+      {({ handleSubmit, handleChange, values, errors, touched }) => (
+        <Form onSubmit={handleSubmit}>
+          <Form.Group as={Col} md="6" controlId="validationFormik01">
+              <Form.Control 
+                required style={{ width: '500px' }}
+                type="text"
+                name="value"
+                value={values.value}
+                onChange={handleChange}
+                placeholder="Değer Giriniz"
+                isValid={touched.value && !errors.value}
+                isInvalid={!!errors.value}
+              />
+              <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+            </Form.Group>
+        </Form>
+      )}
+    </Formik>
   );
 }
 

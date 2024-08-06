@@ -1,11 +1,6 @@
 import React from 'react';
 import Select, { StylesConfig, SingleValue } from 'react-select';
-
-interface Option {
-  label: string;
-  answerId: string;
-  nextQuestionId:string | null;
-}
+import { Option } from '../../model/option_model';
 
 interface CustomSelectProps {
   values: {
@@ -13,7 +8,6 @@ interface CustomSelectProps {
     title: string;
     answerId: string;
   }[];
-  index: number;
   selectedValue: string | null;
   callback: (nextId: number | null, questionId: string, answerId: string, infoPersonId: string, businessTypeId:number | null, isLastQuestion: boolean) => void;
   questionId: string;
@@ -26,16 +20,18 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, call
   const customStyles: StylesConfig<Option, false> = {
     control: (provided) => ({
       ...provided,
-      padding: '10px',
-      fontSize: '16px',
+      padding: '8px',
+      fontSize: '18px',
       borderRadius: '4px',
-      width: '100%',
+      width: '500px',
+      fontFamily: '"Pragati Narrow", sans-serif',
     }),
     option: (provided) => ({
       ...provided,
-      fontSize: '14px',
+      fontSize: '16px',
       color: 'black',
       backgroundColor: 'white',
+      fontFamily: '"Pragati Narrow", sans-serif'
     }),
   };
 
