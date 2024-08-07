@@ -1,29 +1,29 @@
 .Page{
     flex-direction: row;
     display: flex;
-    background-color: #F2EAE4;
+    background-color: #ffffff;
     position: relative;
     height: 100vh;
-    overflow: auto;
-    z-index: 1;
+    overflow: hidden; 
 }
 
 .backgroundImageLeft {
     flex: 0 0 30%; 
-    background-image: url('https://picsum.photos/seed/picsum/200/300');
-    /* https://sigortamedya.com.tr/wp-content/uploads/2023/09/Seyahat-Saglik-Hepiyi.png */
-    background-size: cover; 
+    background-image: url('https://sigortamedya.com.tr/wp-content/uploads/2023/09/Seyahat-Saglik-Hepiyi.png');
+    background-size:cover; 
     background-position: center;
+    height: 100%;
 }
 .card-custom{
-    background-color: white;
     flex: 0 0 70%;
     flex-direction: column;
     display: flex;
     align-items: center;
     justify-content: stretch;
     padding: 10%;
+    padding-bottom: 10%;
     height: 100%;
+    overflow-y: auto;
 }
 
 .rowButtons{

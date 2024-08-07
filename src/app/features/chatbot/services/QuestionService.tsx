@@ -9,11 +9,11 @@ import { PolicyResponseModel } from "../model/policy_response_model";
 class QuestionService {
     private questionsApi: ApiService<Question, GetQuestion>;
     private logsApi: ApiService<ApiResponse<AnswerLog>, AnswerLog>;
-    private answerApi: ApiService<ApiResponse<PolicyResponseModel>, BusinessOperationModel>;
+    private answerApi: ApiService<PolicyResponseModel, BusinessOperationModel>;
     constructor() {
       this.questionsApi = new  ApiService<Question, GetQuestion>;
       this.logsApi = new ApiService<ApiResponse<AnswerLog>, AnswerLog>();
-      this.answerApi = new ApiService<ApiResponse<PolicyResponseModel>, BusinessOperationModel>();
+      this.answerApi = new ApiService<PolicyResponseModel, BusinessOperationModel>();
     }
     async getQuestion(nextQuestionId: string | "",token: string, getLastQuestion: boolean): Promise<Question> {
       try {
@@ -22,7 +22,6 @@ class QuestionService {
           platformId:"1",
           getLastQuestion: getLastQuestion
         }
-        console.log("last data");
         const question = await this.questionsApi.post(ApiEndpoints.QUESTION, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
         return question.data!; 
       } catch (error) {
@@ -41,10 +40,7 @@ class QuestionService {
     async sendBusinessOperationAnswer(data: BusinessOperationModel, token:string){
       try {
         const res= await this.answerApi.post(ApiEndpoints.BUSINESS_TYPE, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
-        console.log("saved data");
-        console.log(data);
-        console.log(res);
-        return res.data;
+        return res;
       } catch (error) {
         console.error('Error saving answer:', error);
       }

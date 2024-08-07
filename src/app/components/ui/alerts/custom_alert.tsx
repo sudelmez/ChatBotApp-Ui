@@ -18,9 +18,11 @@ const CustomAlert: React.FC<CustomAlertProps> = ({ title }) => {
         // 'light',
         // 'dark',
       ].map((variant) => (
-        <Alert style={{width: '500px'}} key={variant} variant={variant}>
+        <div className="col-md-12">
+        <Alert  style={{marginTop:'10px'}} key={variant} variant={variant} >
           {title}
         </Alert>
+        </div>
       ))}
     </>
   );

@@ -9,7 +9,7 @@ interface CustomSelectProps {
     answerId: string;
   }[];
   selectedValue: string | null;
-  callback: (nextId: number | null, questionId: string, answerId: string, infoPersonId: string, businessTypeId:number | null, isLastQuestion: boolean) => void;
+  callback: (answerInputValue:string, nextId: number | null, questionId: string, answerId: string, infoPersonId: string, businessTypeId:number | null, isLastQuestion: boolean) => void;
   questionId: string;
   infoPersonId: string;
   businessTypeId: number | null;
@@ -20,10 +20,10 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, call
   const customStyles: StylesConfig<Option, false> = {
     control: (provided) => ({
       ...provided,
-      padding: '8px',
+      // padding: '8px',
       fontSize: '18px',
       borderRadius: '4px',
-      width: '500px',
+      // width: '500px',
       fontFamily: '"Pragati Narrow", sans-serif',
     }),
     option: (provided) => ({
@@ -37,8 +37,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, call
 
   const handleChange = (selectedOption: SingleValue<Option>) => {
     const selectedAnswerId = selectedOption?.answerId?.toString()?? "";
-    const nextQuestionId = parseInt(selectedOption?.nextQuestionId ?? '');
-    callback(nextQuestionId, questionId, selectedAnswerId, infoPersonId, businessTypeId,isLastQuestion);
+    const nextQuestionId = selectedOption?.nextQuestionId!==null ? parseInt(selectedOption?.nextQuestionId ?? '') : null;
+    callback("", nextQuestionId, questionId, selectedAnswerId, infoPersonId, businessTypeId,isLastQuestion);
   };
 
   const formattedValues = values.map((value) => ({
@@ -48,7 +48,8 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, call
   }));
 
   return (
-    <Select
+    <Select 
+      className='col-md-12'
       styles={customStyles}
       onChange={handleChange}
       options={formattedValues}

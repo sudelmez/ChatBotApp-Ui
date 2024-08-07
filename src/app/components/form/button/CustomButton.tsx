@@ -1,5 +1,5 @@
 import React from 'react';
-import './CustomButton.css';
+import Button from 'react-bootstrap/Button';
 
 interface CustomButtonProps {
   title: string;
@@ -10,26 +10,17 @@ interface CustomButtonProps {
 const CustomButton: React.FC<CustomButtonProps> = ({ title, handlePress, color = true }) => {
   const buttonStyle: React.CSSProperties = {
     backgroundColor: color ? '#a895f5' : '#FC4847',
-    margin: '20px',
-    padding: '10px 20px',
-    border: 'none',
-    borderRadius: 50,
+    marginTop: '20px',
     cursor: 'pointer',
-    height: '50px',
-    width: '280px',
-  };
-
-  const titleStyle: React.CSSProperties = {
     color: 'white',
-    fontSize: '16px',
+    fontSize: '18px',
+    fontFamily: '"Pragati Narrow", sans-serif',
   };
 
   return (
-    <div>
-      <button style={buttonStyle} onClick={handlePress}>
-        <span className='title' style={titleStyle}>{title}</span>
-      </button>
-    </div>
+      <Button onClick={handlePress} style={buttonStyle} className='col-md-12' variant="primary" size="lg">
+      {title}
+      </Button>
   );
 };
 

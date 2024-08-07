@@ -9,11 +9,10 @@ import { BusinessOperationModel } from "../model/business_operation_model";
 import { useUserContext } from "../../../context/user_context";
 import { PolicyResponseModel } from "../model/policy_response_model";
 import CustomAlert from "../../../components/ui/alerts/custom_alert";
-
+import Spinner from 'react-bootstrap/Spinner';
 function ChatBotPage() {
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [end, setEnd] = useState<string>("");
-  const [inputVal, setInputVal] = useState<string>("");
   const [selectedAnswerId, setSelectedAnswerId] = useState<string | null>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [problem, setProblem] = useState<string>("");
@@ -22,10 +21,10 @@ function ChatBotPage() {
   const service = new QuestionService();
   const { token, user } = useUserContext();
 
-  const fetchQuestion = async (nextQuestionId?: string, isLastQuestion?: boolean) => {
+  const fetchQuestion = async (nextQuestionId?: string, getLastQuestion?: boolean) => {
     try {
       setLoading(true);
-      const nextQuestion = await service.getQuestion(nextQuestionId ?? "", token ?? "", isLastQuestion ?? false);
+      const nextQuestion = await service.getQuestion(nextQuestionId ?? "", token ?? "", getLastQuestion ?? false);
       setLoading(false);
       if (!nextQuestion) {
         setEnd("Sohbet sona erdi.");
@@ -64,40 +63,36 @@ function ChatBotPage() {
     return responseSaved;
   };
 
-  const sendLog = async (questionId: string, answerId: string, infoPersonId: string) => {
+  const sendLog = async (answerInput: string, questionId: string, answerId: string, infoPersonId: string) => {
     const log: AnswerLog = {
       questionId: questionId,
-      answerId: answerId || "",
-      answerInput: inputVal || "",
+      answerId: answerId ?? "",
+      answerInput: answerInput ?? "",
       username: infoPersonId,
     };
-    console.log(log);
     await service.postLog(log, token ?? "");
   };
 
-  const callbackSelected = async (nextId: number | null | "", questionId: string, answerId: string, infoPersonId: string, businessTypeId: number | null, isLastQuestion: boolean) => {
+  const callbackSelected = async (answerInputValue: string,nextId: number | null | "", questionId: string, answerId: string, infoPersonId: string, businessTypeId: number | null, getLastQuestion: boolean) => {
     setSelectedAnswerId(answerId);
-    await sendLog(questionId, answerId, infoPersonId);
+    await sendLog(answerInputValue, questionId, answerId, infoPersonId);
     const questionIndex = questionList.findIndex(q => q.questionId === questionId);
     if (questionIndex !== -1 && questionIndex !== null) {
       const newList = questionList.slice(0, questionIndex + 1);
       setQuestionList(newList);
     }
-    if (businessTypeId === null && nextId !== null) {
-      await fetchQuestion(nextId.toString(), isLastQuestion);
-      setEnd("");
-      setInputVal("");
-      setRequestedInfo(null);
+    if (businessTypeId === null) {
+      await fetchQuestion((nextId?? "").toString(), getLastQuestion);
       return;
     }
-    const res = await postAnswer(inputVal, businessTypeId);
+    const res = await postAnswer(answerInputValue, businessTypeId);
     setProblem("");
+    console.log(res);
+    console.log(res?.data);
     setRequestedInfo(null);
-    if (res?.success && nextId !== null) {
-      await fetchQuestion((nextId).toString(), isLastQuestion);
+    if (res?.success) {
+      await fetchQuestion((nextId ?? "").toString(), getLastQuestion);
       setRequestedInfo(res?.data);
-      setEnd("");
-      setInputVal("");
       return;
     } else if (res?.success === false) {
       setProblem(res.message ?? res.validationErrors[0] ?? "");
@@ -109,16 +104,15 @@ function ChatBotPage() {
       <div className="backgroundImageLeft"></div>
       <div className="card-custom">
         <div className="row">
-          <div className="col"></div>
           <div className="col">
             {loading ? (
-              <div>
-                <h3>Loading</h3>
+              <div className="col-md-12">
+                <Spinner animation="grow" />
               </div>
             ) : (
-              questionList.map((value, index) => {
+              <div> {questionList.map((value, index) => {
                 const isCurrent = value.questionId === currentQuestionId;
-                return (
+                return (end ===null || end ==="") ? (
                   <div key={index} className="item-padding">
                     <div className="header-padding">
                       <h2 className={isCurrent ? "header": "header-last"}>{value.title}</h2>
@@ -131,25 +125,25 @@ function ChatBotPage() {
                         questionId={value.questionId}
                         infoPersonId={user ?? ""}
                         businessTypeId={value.businessTypeId}
-                        isLastQuestion={value.isLastQuestion}
+                        isLastQuestion={value.getLastQuestion}
                       ></CustomSelect>
                     ) : (
                       <div>
-                        <CustomInput callback={(val) => {
-                          setInputVal(val);
-                          callbackSelected("", value.questionId, "", user ?? "", value.businessTypeId, value.isLastQuestion);
+                        <CustomInput callback={async(val) => {
+                          await callbackSelected(val, null, value.questionId, "", user ?? "", value.businessTypeId, value.getLastQuestion);
                         }} ></CustomInput>
-                      </div>
+                        {!isCurrent && requestedInfo !== null && (
+                          <CustomAlert title={requestedInfo?.policyHolderName ?? ""}></CustomAlert>
+                        )}                      </div>
                     )}
                   </div>
-                );
-              })
+                ): <div></div> ;
+              })}
+              {(end !== null && end !=="") && (<CustomAlert title={end}></CustomAlert>)}
+              </div>
             )}
-            {requestedInfo !== null && (<CustomAlert title={requestedInfo?.policyNumber ?? ""}></CustomAlert>)}
-            <h3>{problem}</h3>
-            <h2 className="endheader">{end}</h2>
+            {/* <h3>{problem}</h3> */}
           </div>
-          <div className="col"></div>
         </div>
       </div>
     </div>
@@ -158,3 +152,17 @@ function ChatBotPage() {
 
 export default ChatBotPage;
 
+
+{/* <div className="container-fluid">
+  <div className="row">
+    <div className="col-md-3">
+
+    </div>
+    <div className="col-md-9">
+       <div className="row">
+         
+         col-md-12
+       </div>
+      </div>
+  </div>
+</div> */}
