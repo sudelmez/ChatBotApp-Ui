@@ -21,7 +21,6 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, inputValu
       initialValues={{ value: inputValue }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        console.log("validated and pressed");
         callback(values.value);
       }}
     >

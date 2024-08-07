@@ -59,7 +59,6 @@ function ChatBotPage() {
       businessTypeId: businessTypeId
     };
     const responseSaved = await service.sendBusinessOperationAnswer(answerData, token ?? "");
-    console.log(responseSaved);
     return responseSaved;
   };
 
@@ -87,8 +86,6 @@ function ChatBotPage() {
     }
     const res = await postAnswer(answerInputValue, businessTypeId);
     setProblem("");
-    console.log(res);
-    console.log(res?.data);
     setRequestedInfo(null);
     if (res?.success) {
       await fetchQuestion((nextId ?? "").toString(), getLastQuestion);
@@ -142,8 +139,7 @@ function ChatBotPage() {
                   </div>
                 ): <div></div> ;
               })}
-              {(end !== null && end !=="") && (<CustomAlert title={end}></CustomAlert>)}
-              </div>
+              {(end !== null && end !=="") && (<CustomAlert title={end}></CustomAlert>)}</div>
             )}
             {(problem!==null && problem!=="") && (<CustomAlert isError= {true} title={problem}></CustomAlert>)}
             </div>
@@ -156,18 +152,3 @@ function ChatBotPage() {
 }
 
 export default ChatBotPage;
-
-
-{/* <div className="container-fluid">
-  <div className="row">
-    <div className="col-md-3">
-
-    </div>
-    <div className="col-md-9">
-       <div className="row">
-         
-         col-md-12
-       </div>
-      </div>
-  </div>
-</div> */}
