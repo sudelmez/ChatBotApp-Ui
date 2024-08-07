@@ -19,20 +19,26 @@ interface CustomSelectProps {
 
 const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, callback, questionId, infoPersonId, businessTypeId ,isLastQuestion, isLasted}) => {
   const customStyles: StylesConfig<Option, false> = {
+    placeholder:(provided) => ({
+      ...provided,
+      color: !isLasted ? '#4a0a9a' : '#a895f5',
+    }),
+    singleValue:(provided) =>({
+      ...provided,
+      color: !isLasted ? '#4a0a9a' : '#a895f5',
+    }),
     control: (provided) => ({
       ...provided,
-      // padding: '8px',
       fontSize: '18px',
       borderRadius: '4px',
       color: !isLasted ? '#4a0a9a' : '#a895f5',
-      // width: '500px',
       fontFamily: '"Pragati Narrow", sans-serif',
       borderColor: !isLasted ? '#4a0a9a' : '#a895f5',
     }),
     option: (provided) => ({
       ...provided,
+      color: !isLasted ? '#4a0a9a' : '#a895f5',
       fontSize: '16px',
-      color: 'black',
       backgroundColor: 'white',
       fontFamily: '"Pragati Narrow", sans-serif'
     }),

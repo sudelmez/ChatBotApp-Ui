@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import Col from 'react-bootstrap/Col';
 import CustomButton from "../button/CustomButton";
 
 interface CustomInputProps {
   callback: (value: string) => void;
-  isLasted: boolean
+  isLasted: boolean;
+  inputValue?: string
 }
 
-const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted}) => {
+const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, inputValue = ''}) => {
   const [inputVal, setInputVal] = useState("Değer Giriniz");
   const validationSchema = Yup.object().shape({
     value: Yup.string().required("Değer zorunludur."),
@@ -18,7 +18,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted}) => {
 
   return (
     <Formik
-      initialValues={{ value: '' }}
+      initialValues={{ value: inputValue }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
         console.log("validated and pressed");
@@ -30,7 +30,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted}) => {
         <Form onSubmit={handleSubmit} >
           <Form.Group  controlId="validationFormik01" className="mb-3" >
             <Form.Control 
-            style={{fontFamily:'"Pragati Narrow", sans-serif', fontSize: '18px',borderColor: !isLasted ? '#4a0a9a' : '#a895f5', borderWidth: 0.5, borderRadius:'3px', borderStyle: 'solid'}}
+            style={{fontFamily:'"Pragati Narrow", sans-serif', color:!isLasted ? '#4a0a9a' : '#a895f5', fontSize: '18px',borderColor: !isLasted ? '#4a0a9a' : '#a895f5', borderWidth: 0.5, borderRadius:'3px', borderStyle: 'solid'}}
               required 
               type="text"
               name="value"

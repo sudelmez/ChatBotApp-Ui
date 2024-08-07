@@ -9,11 +9,11 @@ const CustomAlert: React.FC<CustomAlertProps> = ({ title }) => {
   return (
     <>
       {[
-        'primary',
+        // 'primary',
         // 'secondary',
         // 'success',
         // 'danger',
-        // 'warning',
+        'warning',
         // 'info',
         // 'light',
         // 'dark',
