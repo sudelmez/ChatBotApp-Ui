@@ -28,7 +28,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted}) => {
       {({ handleSubmit, handleChange, values, errors, touched }) => (
         <div className="col-md-12" >
         <Form onSubmit={handleSubmit} >
-          <Form.Group as={Col} md="6" controlId="validationFormik01" className="col-md-12" >
+          <Form.Group  controlId="validationFormik01" className="mb-3" >
             <Form.Control 
             style={{fontFamily:'"Pragati Narrow", sans-serif', fontSize: '18px',borderColor: !isLasted ? '#4a0a9a' : '#a895f5', borderWidth: 0.5, borderRadius:'3px', borderStyle: 'solid'}}
               required 
