@@ -100,12 +100,15 @@ function ChatBotPage() {
   };
 
   return (
-    <div className="Page">
-      <div className="backgroundImageLeft"></div>
-      <div className="card-custom">
+      <div className="container-fluid">
         <div className="row">
+          <div className="col-md-4">
+          <div className="backgroundImageLeft"></div>
+          </div>
+          <div className="col-md-8">
+          <div className="row">
           <div className="col">
-            {loading ? (
+            <div className="paddingArrange">{loading ? (
               <div className="col-md-12">
                 <Spinner animation="grow" />
               </div>
@@ -142,11 +145,12 @@ function ChatBotPage() {
               {(end !== null && end !=="") && (<CustomAlert title={end}></CustomAlert>)}
               </div>
             )}
-            {/* <h3>{problem}</h3> */}
+            {/* <h3>{problem}</h3> */}</div>
+          </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

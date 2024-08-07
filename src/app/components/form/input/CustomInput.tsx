@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -10,6 +10,7 @@ interface CustomInputProps {
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({ callback }) => {
+  const [inputVal, setInputVal] = useState("Değer Giriniz");
   const validationSchema = Yup.object().shape({
     value: Yup.string().required("Değer zorunludur."),
   });

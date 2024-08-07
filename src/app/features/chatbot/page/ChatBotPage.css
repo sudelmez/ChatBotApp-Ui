@@ -8,11 +8,18 @@
 }
 
 .backgroundImageLeft {
-    flex: 0 0 30%; 
     background-image: url('https://sigortamedya.com.tr/wp-content/uploads/2023/09/Seyahat-Saglik-Hepiyi.png');
     background-size:cover; 
     background-position: center;
-    height: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+.paddingArrange{
+    padding: 10%;
+    padding-bottom: 10%;
+    overflow-y: auto;
+    justify-content: stretch;
+    height: 100vh;
 }
 .card-custom{
     flex: 0 0 70%;
