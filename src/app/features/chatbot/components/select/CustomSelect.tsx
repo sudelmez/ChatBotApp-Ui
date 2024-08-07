@@ -13,18 +13,21 @@ interface CustomSelectProps {
   questionId: string;
   infoPersonId: string;
   businessTypeId: number | null;
-  isLastQuestion: boolean
+  isLastQuestion: boolean;
+  isLasted: boolean;
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, callback, questionId, infoPersonId, businessTypeId ,isLastQuestion}) => {
+const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, callback, questionId, infoPersonId, businessTypeId ,isLastQuestion, isLasted}) => {
   const customStyles: StylesConfig<Option, false> = {
     control: (provided) => ({
       ...provided,
       // padding: '8px',
       fontSize: '18px',
       borderRadius: '4px',
+      color: !isLasted ? '#4a0a9a' : '#a895f5',
       // width: '500px',
       fontFamily: '"Pragati Narrow", sans-serif',
+      borderColor: !isLasted ? '#4a0a9a' : '#a895f5',
     }),
     option: (provided) => ({
       ...provided,

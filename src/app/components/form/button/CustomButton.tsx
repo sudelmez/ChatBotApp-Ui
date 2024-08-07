@@ -4,12 +4,12 @@ import Button from 'react-bootstrap/Button';
 interface CustomButtonProps {
   title: string;
   handlePress: () => void;
-  color?: boolean;
+  pressed: boolean;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({ title, handlePress, color = true }) => {
+const CustomButton: React.FC<CustomButtonProps> = ({ title, handlePress, pressed = false }) => {
   const buttonStyle: React.CSSProperties = {
-    backgroundColor: color ? '#a895f5' : '#FC4847',
+    backgroundColor: !pressed ? '#4a0a9a' : '#a895f5',
     marginTop: '20px',
     cursor: 'pointer',
     color: 'white',
@@ -18,7 +18,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({ title, handlePress, color =
   };
 
   return (
-      <Button onClick={handlePress} style={buttonStyle} className='col-md-12' variant="primary" size="lg">
+      <Button disabled={pressed} onClick={handlePress} style={buttonStyle} className='col-md-12' variant="primary" size="lg">
       {title}
       </Button>
   );

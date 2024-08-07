@@ -122,6 +122,7 @@ function ChatBotPage() {
                     </div>
                     {value.answerType.title === "select" ? (
                       <CustomSelect
+                        isLasted={!isCurrent}
                         values={value.answers}
                         selectedValue={selectedAnswerId}
                         callback={callbackSelected}
@@ -132,13 +133,12 @@ function ChatBotPage() {
                       ></CustomSelect>
                     ) : (
                       <div>
-                        <CustomInput callback={async(val) => {
+                        <CustomInput isLasted={!isCurrent} callback={async(val) => {
                           await callbackSelected(val, null, value.questionId, "", user ?? "", value.businessTypeId, value.getLastQuestion);
                         }} ></CustomInput>
                         {!isCurrent && requestedInfo !== null && (
                           <CustomAlert title={requestedInfo?.policyHolderName ?? ""}></CustomAlert>
-                        )}                      </div>
-                    )}
+                        )}</div>)}
                   </div>
                 ): <div></div> ;
               })}

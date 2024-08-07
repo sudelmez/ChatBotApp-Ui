@@ -7,9 +7,10 @@ import CustomButton from "../button/CustomButton";
 
 interface CustomInputProps {
   callback: (value: string) => void;
+  isLasted: boolean
 }
 
-const CustomInput: React.FC<CustomInputProps> = ({ callback }) => {
+const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted}) => {
   const [inputVal, setInputVal] = useState("Değer Giriniz");
   const validationSchema = Yup.object().shape({
     value: Yup.string().required("Değer zorunludur."),
@@ -29,7 +30,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback }) => {
         <Form onSubmit={handleSubmit} >
           <Form.Group as={Col} md="6" controlId="validationFormik01" className="col-md-12" >
             <Form.Control 
-            style={{fontFamily:'"Pragati Narrow", sans-serif', fontSize: '18px'}}
+            style={{fontFamily:'"Pragati Narrow", sans-serif', fontSize: '18px',borderColor: !isLasted ? '#4a0a9a' : '#a895f5', borderWidth: 0.5, borderRadius:'3px', borderStyle: 'solid'}}
               required 
               type="text"
               name="value"
@@ -44,7 +45,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback }) => {
               {errors.value}
             </Form.Control.Feedback>
           </Form.Group>
-          <CustomButton title="Kaydet" handlePress={handleSubmit} />
+          <CustomButton pressed={false} title="Kaydet" handlePress={handleSubmit} />
         </Form>
         </div>
         
