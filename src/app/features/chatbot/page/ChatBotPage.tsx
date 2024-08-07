@@ -145,7 +145,8 @@ function ChatBotPage() {
               {(end !== null && end !=="") && (<CustomAlert title={end}></CustomAlert>)}
               </div>
             )}
-            {/* <h3>{problem}</h3> */}</div>
+            {(problem!==null && problem!=="") && (<CustomAlert isError= {true} title={problem}></CustomAlert>)}
+            </div>
           </div>
             </div>
           </div>
