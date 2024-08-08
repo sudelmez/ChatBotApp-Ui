@@ -14,7 +14,7 @@ interface CustomInputProps {
 
 const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, inputValue = '', validationRule}) => {
   const [inputVal, setInputVal] = useState("Değer Giriniz");
-  const [activeButton, setActiveButton]= useState(true);
+  const [activeButton, setActiveButton]= useState(false);
   const schema = Yup.string().required("Değer zorunludur.");
 
   const validationSchema = Yup.object().shape({
@@ -26,11 +26,10 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, inputValu
       initialValues={{ value: inputValue }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        setActiveButton(true);
         callback(values.value);
       }}
     >
-      {({ handleSubmit, handleChange, values, errors, touched }) => (
+      {({ handleSubmit, handleChange, values, errors, touched, validateForm }) => (
         <div className="col-md-12" >
         <Form onSubmit={handleSubmit} >
           <Form.Group  controlId="validationFormik01" className="mb-3" >
@@ -40,12 +39,16 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, inputValu
               type="text"
               name="value"
               value={values.value}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleChange(e);
+                setActiveButton(true);
+                validateForm();
+              }}
               placeholder="Değer Giriniz"
               isValid={touched.value && !errors.value}
               isInvalid={!!errors.value}
             />
-            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+            <Form.Control.Feedback type="valid">Looks good!</Form.Control.Feedback>
             <Form.Control.Feedback type="invalid">
               {errors.value}
             </Form.Control.Feedback>
