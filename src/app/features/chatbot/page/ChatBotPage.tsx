@@ -19,7 +19,7 @@ function ChatBotPage() {
   const [currentQuestionId, setCurrentQuestionId] = useState<string>("");
   const [requestedInfo, setRequestedInfo] = useState<PolicyResponseModel | null>(null);
   const service = new QuestionService();
-  const { token, user } = useUserContext();
+  const { token, user, transactionId } = useUserContext();
 
   const fetchQuestion = async (nextQuestionId?: string, getLastQuestion?: boolean) => {
     try {
@@ -39,6 +39,7 @@ function ChatBotPage() {
       });
     } catch (error) {
       setLoading(false);
+      setEnd("Bir sorun oluştu.");
       console.error('Error fetching question:', error);
     }
   };
@@ -68,6 +69,7 @@ function ChatBotPage() {
       answerId: answerId ?? "",
       answerInput: answerInput ?? "",
       username: infoPersonId,
+      transactionId: transactionId
     };
     await service.postLog(log, token ?? "");
   };
@@ -111,6 +113,7 @@ function ChatBotPage() {
               </div>
             ) : (
               <div> {questionList.map((value, index) => {
+                console.log(value);
                 const isCurrent = value.questionId === currentQuestionId;
                 return (end ===null || end ==="") ? (
                   <div key={index} className="item-padding">
@@ -130,7 +133,7 @@ function ChatBotPage() {
                       ></CustomSelect>
                     ) : (
                       <div>
-                        <CustomInput isLasted={!isCurrent} callback={async(val) => {
+                        <CustomInput validationRule={value.validationRule} isLasted={!isCurrent} callback={async(val) => {
                           await callbackSelected(val, null, value.questionId, "", user ?? "", value.businessTypeId, value.getLastQuestion);
                         }} ></CustomInput>
                         {!isCurrent && requestedInfo !== null && (

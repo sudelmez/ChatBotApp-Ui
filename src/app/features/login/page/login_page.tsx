@@ -33,7 +33,7 @@ function Copyright(props: any) {
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
-    const { setToken, setUser } = useUserContext();
+    const { setToken, setUser, setTransactionId } = useUserContext();
     const navigate = useNavigate();
     const service = new LoginService();
   const handleSubmit = async(event: React.FormEvent<HTMLFormElement>) =>  {
@@ -50,6 +50,7 @@ export default function SignInSide() {
       return;
     }
     const token = response?.token; 
+    setTransactionId(response?.transactionId);
     if (token) {
         setToken(token);
         var userResponse = await service.GetUserInfo(response!);

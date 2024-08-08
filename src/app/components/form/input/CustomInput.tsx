@@ -3,17 +3,22 @@ import Form from 'react-bootstrap/Form';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
 import CustomButton from "../button/CustomButton";
+import { ValidationRuleModel } from "../../../features/chatbot/model/validation_rule_model";
 
 interface CustomInputProps {
   callback: (value: string) => void;
   isLasted: boolean;
-  inputValue?: string
+  inputValue?: string;
+  validationRule: ValidationRuleModel | null;
 }
 
-const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, inputValue = ''}) => {
+const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, inputValue = '', validationRule}) => {
   const [inputVal, setInputVal] = useState("Değer Giriniz");
+  const [activeButton, setActiveButton]= useState(true);
+  const schema = Yup.string().required("Değer zorunludur.");
+
   const validationSchema = Yup.object().shape({
-    value: Yup.string().required("Değer zorunludur."),
+    value: validationRule!==null ? schema.matches(new RegExp(validationRule.pattern), validationRule.message) : schema
   });
 
   return (
@@ -21,6 +26,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, inputValu
       initialValues={{ value: inputValue }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
+        setActiveButton(true);
         callback(values.value);
       }}
     >
@@ -44,7 +50,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, inputValu
               {errors.value}
             </Form.Control.Feedback>
           </Form.Group>
-          <CustomButton pressed={false} title="Kaydet" handlePress={handleSubmit} />
+         {activeButton && (<CustomButton pressed={false} title="Kaydet" handlePress={handleSubmit} />)}
         </Form>
         </div>
         

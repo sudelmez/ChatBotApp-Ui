@@ -8,8 +8,9 @@ interface UserProviderProps {
 const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<string | null>(null);
+  const [transactionId, setTransactionId] = useState<string>("");
   return (
-    <UserContext.Provider value={{ token, setToken, user,setUser }}>
+    <UserContext.Provider value={{ token, setToken, user,setUser, transactionId, setTransactionId }}>
       {children}
     </UserContext.Provider>
   );

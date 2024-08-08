@@ -3,4 +3,5 @@ export interface AnswerLog{
     answerId: string | null;
     answerInput: string | null;
     username: string;
+    transactionId: string
 }

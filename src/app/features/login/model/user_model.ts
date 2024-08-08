@@ -7,4 +7,5 @@ export interface UserModel{
 export interface LoginResponse{
     token: string | null;
     userId: string | null;
+    transactionId: string;
 }

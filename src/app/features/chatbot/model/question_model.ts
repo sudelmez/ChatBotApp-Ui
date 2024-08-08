@@ -1,3 +1,5 @@
+import { ValidationRuleModel } from "./validation_rule_model";
+
 export interface Question {
     questionId: string;
     title: string;
@@ -12,6 +14,7 @@ export interface Question {
       answerId: string;
     }[];
     getLastQuestion: boolean;
+    validationRule: ValidationRuleModel
 }
 export interface GetQuestion{
   nextQuestionId: string | "";
