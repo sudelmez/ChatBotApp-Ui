@@ -10,6 +10,7 @@ import { useUserContext } from "../../../context/user_context";
 import { PolicyResponseModel } from "../model/policy_response_model";
 import CustomAlert from "../../../components/ui/alerts/custom_alert";
 import Spinner from 'react-bootstrap/Spinner';
+import CustomFileInput from "../../../components/form/file_input/file_input";
 function ChatBotPage() {
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [end, setEnd] = useState<string>("");
@@ -133,6 +134,7 @@ function ChatBotPage() {
                       ></CustomSelect>
                     ) : (
                       <div>
+                        {/* <CustomFileInput title="dosya yükleyiniz" isLasted={true}></CustomFileInput> */}
                         <CustomInput validationRule={value.validationRule} isLasted={!isCurrent} callback={async(val) => {
                           await callbackSelected(val, null, value.questionId, "", user ?? "", value.businessTypeId, value.getLastQuestion);
                         }} ></CustomInput>
