@@ -9,15 +9,16 @@ interface CustomSelectProps {
     answerId: string;
   }[];
   selectedValue: string | null;
-  callback: (answerInputValue:string, nextId: number | null, questionId: string, answerId: string, infoPersonId: string, businessTypeId:number | null, isLastQuestion: boolean) => void;
+  callback: ( autoResponseId: string, answerInputValue:string, nextId: number | null, questionId: string, answerId: string, infoPersonId: string, businessTypeId:number | null, isLastQuestion: boolean) => void;
   questionId: string;
   infoPersonId: string;
   businessTypeId: number | null;
   isLastQuestion: boolean;
+  autoResponseId: string;
   isLasted: boolean;
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, callback, questionId, infoPersonId, businessTypeId ,isLastQuestion, isLasted}) => {
+const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, callback, questionId, infoPersonId, businessTypeId ,isLastQuestion, isLasted, autoResponseId}) => {
   const customStyles: StylesConfig<Option, false> = {
     placeholder:(provided) => ({
       ...provided,
@@ -47,7 +48,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, call
   const handleChange = (selectedOption: SingleValue<Option>) => {
     const selectedAnswerId = selectedOption?.answerId?.toString()?? "";
     const nextQuestionId = selectedOption?.nextQuestionId!==null ? parseInt(selectedOption?.nextQuestionId ?? '') : null;
-    callback("", nextQuestionId, questionId, selectedAnswerId, infoPersonId, businessTypeId,isLastQuestion);
+    callback(autoResponseId,"", nextQuestionId, questionId, selectedAnswerId, infoPersonId, businessTypeId,isLastQuestion);
   };
 
   const formattedValues = values.map((value) => ({

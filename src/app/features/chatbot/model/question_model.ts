@@ -4,6 +4,7 @@ export interface Question {
     questionId: string;
     title: string;
     businessTypeId : number | null;
+    autoResponseId: string;
     answerType: {
       title: string;
       answerTypeId: string;

@@ -9,6 +9,7 @@ interface CustomInputProps {
   callback: (value: string) => void;
   isLasted: boolean;
   inputValue?: string;
+  typeInput: number;
   validationRule: ValidationRuleModel | null;
 }
 
@@ -27,8 +28,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, inputValu
       validationSchema={validationSchema}
       onSubmit={(values) => {
         callback(values.value);
-      }}
-    >
+      }}>
       {({ handleSubmit, handleChange, values, errors, touched, validateForm }) => (
         <div className="col-md-12" >
         <Form onSubmit={handleSubmit} >

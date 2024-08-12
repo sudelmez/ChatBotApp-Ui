@@ -24,6 +24,9 @@ export default class ApiService<T, F>{
             body: body,
             headers: headers
         });
+        console.log("api response:");
+        console.log(url);
+        console.log(response);
         return response;
     }
     async delete(endpoint: ApiEndpoints, endurl: ApiEndUrls, body:F, headers: any): Promise<ApiResponse<T>> {

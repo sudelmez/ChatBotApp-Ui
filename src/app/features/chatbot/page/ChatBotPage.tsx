@@ -7,10 +7,11 @@ import { Question } from "../model/question_model";
 import { AnswerLog } from "../model/answer_log_model";
 import { BusinessOperationModel } from "../model/business_operation_model";
 import { useUserContext } from "../../../context/user_context";
-import { PolicyResponseModel } from "../model/policy_response_model";
 import CustomAlert from "../../../components/ui/alerts/custom_alert";
 import Spinner from 'react-bootstrap/Spinner';
 import CustomFileInput from "../../../components/form/file_input/file_input";
+import { AutoResponseModel } from "../model/auto_response_model";
+import CustomDateInput from "../../../components/form/date_input/date_input";
 function ChatBotPage() {
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [end, setEnd] = useState<string>("");
@@ -18,8 +19,8 @@ function ChatBotPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [problem, setProblem] = useState<string>("");
   const [currentQuestionId, setCurrentQuestionId] = useState<string>("");
-  const [requestedInfo, setRequestedInfo] = useState<PolicyResponseModel | null>(null);
   const service = new QuestionService();
+  const [autoResponse, setAutoResponse] = useState<AutoResponseModel | null>(null);
   const { token, user, transactionId } = useUserContext();
 
   const fetchQuestion = async (nextQuestionId?: string, getLastQuestion?: boolean) => {
@@ -55,11 +56,19 @@ function ChatBotPage() {
     }
   }, [questionList]);
 
-  const postAnswer = async (answerInput: string, businessTypeId: number | null) => {
+  const postBusinessModel = async (autoResponseId: string, businessTypeId: number | null, date?: Date | null, document?: File | null, input?: string | null) => {
     const answerData: BusinessOperationModel = {
-      answerInput: answerInput,
-      businessTypeId: businessTypeId
+      autoResponseId: autoResponseId,
+      businessTypeId: businessTypeId,
+      userId: user ?? "",
+      transactionId: transactionId,
+      uploadData: {
+        dateInfo: {caseDate: date ?? null},
+        uploadDocument: {docFileLink:"" ?? null, docFileName: document?.name ?? null, docFilePath:"" ?? null,fileExtension:"" ?? null},
+        inputText: {answerInput: input ?? null}
+      }
     };
+    console.log(answerData);
     const responseSaved = await service.sendBusinessOperationAnswer(answerData, token ?? "");
     return responseSaved;
   };
@@ -74,8 +83,24 @@ function ChatBotPage() {
     };
     await service.postLog(log, token ?? "");
   };
+  const callbackHandlePress = async(autoResponseId: string, businessTypeId: number | null, date?: Date | null, document?: File | null, input?: string | null, nextId?: string | null, getLastQuestion?: boolean)=>{
+  try {
+  const res = await postBusinessModel(autoResponseId, businessTypeId, date, document, input);
+    setProblem("");
+    console.log(res);
+    if (res?.success) {
+      await fetchQuestion((nextId ?? "").toString(), getLastQuestion);
+      setAutoResponse(res?.data);
+      return;
+    } else if (res?.success === false) {
+      setProblem(res.message ?? res.validationErrors[0] ?? "");
+    }
+    } catch (error) {
+      setProblem("Bir sorun oluştu.");
+    }
+  }
 
-  const callbackSelected = async (answerInputValue: string,nextId: number | null | "", questionId: string, answerId: string, infoPersonId: string, businessTypeId: number | null, getLastQuestion: boolean) => {
+  const callbackSelected = async (autoResponseId: string | null, answerInputValue: string, nextId: number | null | "", questionId: string, answerId: string, infoPersonId: string, businessTypeId: number | null, getLastQuestion: boolean) => {
     setSelectedAnswerId(answerId);
     await sendLog(answerInputValue, questionId, answerId, infoPersonId);
     const questionIndex = questionList.findIndex(q => q.questionId === questionId);
@@ -87,15 +112,77 @@ function ChatBotPage() {
       await fetchQuestion((nextId?? "").toString(), getLastQuestion);
       return;
     }
-    const res = await postAnswer(answerInputValue, businessTypeId);
-    setProblem("");
-    setRequestedInfo(null);
-    if (res?.success) {
-      await fetchQuestion((nextId ?? "").toString(), getLastQuestion);
-      setRequestedInfo(res?.data);
-      return;
-    } else if (res?.success === false) {
-      setProblem(res.message ?? res.validationErrors[0] ?? "");
+  };
+
+  const getQuestionWithType = (value: Question, isCurrent: boolean) => {
+    switch (value.answerType.title) {
+      case "select":
+        return (
+          <div>
+          <CustomSelect
+            autoResponseId={value.autoResponseId}
+            isLasted={!isCurrent}
+            values={value.answers}
+            selectedValue={selectedAnswerId}
+            callback={callbackSelected}
+            questionId={value.questionId}
+            infoPersonId={user ?? ""}
+            businessTypeId={value.businessTypeId}
+            isLastQuestion={value.getLastQuestion}
+          />
+          {!isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
+            <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
+          )}
+          </div>
+        );
+      case "input":
+        return (
+          <div>
+            <CustomInput
+              typeInput={value.businessTypeId ?? 0}
+              validationRule={value.validationRule}
+              isLasted={!isCurrent}
+              callback={async (val) => {
+                callbackHandlePress(value.autoResponseId, value.businessTypeId, null, null, val);
+              }}
+            />
+            {!isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
+              <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
+            )}
+          </div>
+        );
+        case "fileInput":
+        return (
+          <div>
+            <CustomFileInput typeFile={value.businessTypeId ?? 0} callback={async (val) => {
+              callbackHandlePress(value.autoResponseId, value.businessTypeId, null, val, null);
+              }} isLasted={!isCurrent} title={value.title}></CustomFileInput>
+            {!isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
+              <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
+            )}
+          </div>
+        );
+        case "fileDownload":
+        return (
+          <div>
+            {!isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
+            <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
+          )}
+          </div>
+        );
+        case "dateInput":
+        return (
+          <div>
+            <CustomDateInput autoResponseId={value.autoResponseId} typeDate={value.businessTypeId ?? 0} callback={async (val) => {
+              callbackHandlePress(value.autoResponseId, value.businessTypeId, val, null, null);
+              }} isLasted={!isCurrent} title={value.title}></CustomDateInput>
+            {!isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
+              <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
+            )}
+          </div>
+        );
+      default:
+        return null;
     }
   };
 
@@ -121,26 +208,7 @@ function ChatBotPage() {
                     <div className="header-padding">
                       <h2 className={isCurrent ? "header": "header-last"}>{value.title}</h2>
                     </div>
-                    {value.answerType.title === "select" ? (
-                      <CustomSelect
-                        isLasted={!isCurrent}
-                        values={value.answers}
-                        selectedValue={selectedAnswerId}
-                        callback={callbackSelected}
-                        questionId={value.questionId}
-                        infoPersonId={user ?? ""}
-                        businessTypeId={value.businessTypeId}
-                        isLastQuestion={value.getLastQuestion}
-                      ></CustomSelect>
-                    ) : (
-                      <div>
-                        {/* <CustomFileInput title="dosya yükleyiniz" isLasted={true}></CustomFileInput> */}
-                        <CustomInput validationRule={value.validationRule} isLasted={!isCurrent} callback={async(val) => {
-                          await callbackSelected(val, null, value.questionId, "", user ?? "", value.businessTypeId, value.getLastQuestion);
-                        }} ></CustomInput>
-                        {!isCurrent && requestedInfo !== null && (
-                          <CustomAlert title={requestedInfo?.policyHolderName ?? ""}></CustomAlert>
-                        )}</div>)}
+                    {getQuestionWithType(value, isCurrent)}
                   </div>
                 ): <div></div> ;
               })}

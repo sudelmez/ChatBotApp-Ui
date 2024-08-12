@@ -4,16 +4,16 @@ import { AnswerLog } from "../model/answer_log_model";
 import { BusinessOperationModel } from "../model/business_operation_model";
 import ApiService from "../../../api/service/api_service";
 import { ApiResponse } from "../../../api/response/api_response";
-import { PolicyResponseModel } from "../model/policy_response_model";
+import { AutoResponseModel } from "../model/auto_response_model";
 
 class QuestionService {
     private questionsApi: ApiService<Question, GetQuestion>;
     private logsApi: ApiService<ApiResponse<AnswerLog>, AnswerLog>;
-    private answerApi: ApiService<PolicyResponseModel, BusinessOperationModel>;
+    private answerApi: ApiService<AutoResponseModel, BusinessOperationModel>;
     constructor() {
       this.questionsApi = new  ApiService<Question, GetQuestion>;
       this.logsApi = new ApiService<ApiResponse<AnswerLog>, AnswerLog>();
-      this.answerApi = new ApiService<PolicyResponseModel, BusinessOperationModel>();
+      this.answerApi = new ApiService<AutoResponseModel, BusinessOperationModel>();
     }
     async getQuestion(nextQuestionId: string | "",token: string, getLastQuestion: boolean): Promise<Question> {
       try {
@@ -40,6 +40,9 @@ class QuestionService {
     async sendBusinessOperationAnswer(data: BusinessOperationModel, token:string){
       try {
         const res= await this.answerApi.post(ApiEndpoints.BUSINESS_TYPE, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
+        console.log(res);
+        console.log(data);
+        console.log(res);
         return res;
       } catch (error) {
         console.error('Error saving answer:', error);
