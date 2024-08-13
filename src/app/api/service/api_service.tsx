@@ -5,7 +5,7 @@ export default class ApiService<T, F>{
     private apiClient : ApiClient;
     constructor() {
         this.apiClient = new ApiClient();
-      }
+    }
     async get(endpoint: ApiEndpoints, endurl: ApiEndUrls, body:F, headers: any): Promise<ApiResponse<T>> {
         const url = ApiEndpoints.BASE_URL + endpoint + "/" + endurl;
         const response = this.apiClient.request({
@@ -18,15 +18,13 @@ export default class ApiService<T, F>{
     }
     async post(endpoint: ApiEndpoints, endurl: ApiEndUrls, body:F, headers: any): Promise<ApiResponse<T>> {
         const url = ApiEndpoints.BASE_URL + endpoint + "/" + endurl;
+        console.log("url:", url);
         const response = this.apiClient.request({
             url: url,
             method: 'post',
             body: body,
             headers: headers
         });
-        console.log("api response:");
-        console.log(url);
-        console.log(response);
         return response;
     }
     async delete(endpoint: ApiEndpoints, endurl: ApiEndUrls, body:F, headers: any): Promise<ApiResponse<T>> {

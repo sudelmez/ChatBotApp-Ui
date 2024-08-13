@@ -5,39 +5,46 @@ import CustomButton from "../button/CustomButton";
 interface CustomFileInputProps {
   isLasted: boolean;
   title: string;
-  callback: (file: File | null) => void;
-  typeFile: number
+  callback: (file: File[]) => void;
+  typeFile: number;
 }
 
-const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, title, callback}) => {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [activeButton, setActiveButton]= useState(false);
+const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, title, callback }) => {
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [activeButton, setActiveButton] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    setSelectedFile(file);
-    setActiveButton(true);
+    const files = e.target.files;
+    if (files) {
+      const fileArray = Array.from(files);
+      setSelectedFiles(prevList => [...prevList, ...fileArray]);
+      setActiveButton(true);
+    }
   };
-  const handleSubmit=()=>{
-    if(selectedFile){
-      callback(selectedFile);
-    }}
+
+  const handleSubmit = () => {
+    if (selectedFiles.length > 0) {
+      callback(selectedFiles);
+    }
+  };
+
   return (
     <div className="col-md-12">
       <Form.Group controlId="formFile" className="mb-3">
         <Form.Label>{title}</Form.Label>
-        <Form.Control 
-          type="file" 
-          onChange={handleFileChange} 
+        <Form.Control
+          type="file"
+          onChange={handleFileChange}
+          multiple
           style={{
-            fontFamily: '"Pragati Narrow", sans-serif', 
-            color: !isLasted ? '#4a0a9a' : '#a895f5', 
+            fontFamily: '"Pragati Narrow", sans-serif',
+            color: !isLasted ? '#4a0a9a' : '#a895f5',
             fontSize: '18px',
-            borderColor: !isLasted ? '#4a0a9a' : '#a895f5', 
-            borderWidth: 0.5, 
-            borderRadius: '3px', 
+            borderColor: !isLasted ? '#4a0a9a' : '#a895f5',
+            borderWidth: 0.5,
+            borderRadius: '3px',
             borderStyle: 'solid'
-          }} 
+          }}
         />
       </Form.Group>
       {activeButton && (<CustomButton pressed={false} title="Kaydet" handlePress={handleSubmit} />)}

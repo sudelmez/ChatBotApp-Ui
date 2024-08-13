@@ -5,7 +5,7 @@ export interface BusinessOperationModel {
   transactionId: string |null;
   uploadData: {
       dateInfo: DateInfoModel | null;
-      uploadDocument: UploadDocModel | null;
+      // uploadDocument: UploadDocModel | null;
       inputText: InputTextModel | null;
   };
 }

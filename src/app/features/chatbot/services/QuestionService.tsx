@@ -10,10 +10,12 @@ class QuestionService {
     private questionsApi: ApiService<Question, GetQuestion>;
     private logsApi: ApiService<ApiResponse<AnswerLog>, AnswerLog>;
     private answerApi: ApiService<AutoResponseModel, BusinessOperationModel>;
+    private fileApi: ApiService<AutoResponseModel, FormData>;
     constructor() {
       this.questionsApi = new  ApiService<Question, GetQuestion>;
       this.logsApi = new ApiService<ApiResponse<AnswerLog>, AnswerLog>();
       this.answerApi = new ApiService<AutoResponseModel, BusinessOperationModel>();
+      this.fileApi = new ApiService<AutoResponseModel, FormData>();
     }
     async getQuestion(nextQuestionId: string | "",token: string, getLastQuestion: boolean): Promise<Question> {
       try {
@@ -23,6 +25,7 @@ class QuestionService {
           getLastQuestion: getLastQuestion
         }
         const question = await this.questionsApi.post(ApiEndpoints.QUESTION, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
+        console.log(question);
         return question.data!; 
       } catch (error) {
         console.error('Error fetching questions:', error);
@@ -39,9 +42,15 @@ class QuestionService {
     }
     async sendBusinessOperationAnswer(data: BusinessOperationModel, token:string){
       try {
-        const res= await this.answerApi.post(ApiEndpoints.BUSINESS_TYPE, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
-        console.log(res);
-        console.log(data);
+        const res= await this.answerApi.post(ApiEndpoints.BUSINESS_TYPE, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'application/json'});
+        return res;
+      } catch (error) {
+        console.error('Error saving answer:', error);
+      }
+    }
+    async sendBusinessFile(data: FormData){
+      try {
+        const res= await this.fileApi.post(ApiEndpoints.FILE, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'multipart/form-data'});
         console.log(res);
         return res;
       } catch (error) {

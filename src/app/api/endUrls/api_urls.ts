@@ -3,11 +3,13 @@ export enum ApiEndpoints {
     QUESTION = "Question",
     LOGIN = "Login",
     USER = "User",
-    BUSINESS_TYPE= "BusinessType"
+    BUSINESS_TYPE= "BusinessType",
+    FILE = "File"
   }
 export enum ApiEndUrls{
     LOG = "log",
     GET = "get",
-    ANY = ""
+    ANY = "",
+    FILE = "file"
   }
   

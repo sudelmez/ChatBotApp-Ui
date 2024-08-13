@@ -33,6 +33,7 @@ function ChatBotPage() {
         console.error(`Soru bulunamadı id: ${nextQuestionId}`);
         return;
       }
+      setProblem("");
       setQuestionList(prevQuestionList => {
         if (prevQuestionList.some(q => q.questionId === nextQuestion.questionId)) {
           return prevQuestionList;
@@ -41,7 +42,7 @@ function ChatBotPage() {
       });
     } catch (error) {
       setLoading(false);
-      setEnd("Bir sorun oluştu.");
+      setProblem("Bir sorun oluştu.");
       console.error('Error fetching question:', error);
     }
   };
@@ -56,22 +57,45 @@ function ChatBotPage() {
     }
   }, [questionList]);
 
-  const postBusinessModel = async (autoResponseId: string, businessTypeId: number | null, date?: Date | null, document?: File | null, input?: string | null) => {
+  const postBusinessModel = async (autoResponseId: string, businessTypeId: number | null, date?: Date | null, input?: string | null) => {
+  try {
     const answerData: BusinessOperationModel = {
-      autoResponseId: autoResponseId,
+      autoResponseId: autoResponseId ?? "",
       businessTypeId: businessTypeId,
       userId: user ?? "",
       transactionId: transactionId,
       uploadData: {
         dateInfo: {caseDate: date ?? null},
-        uploadDocument: {docFileLink:"" ?? null, docFileName: document?.name ?? null, docFilePath:"" ?? null,fileExtension:"" ?? null},
-        inputText: {answerInput: input ?? null}
+        inputText: {answerInput: input ?? ""}
       }
     };
-    console.log(answerData);
     const responseSaved = await service.sendBusinessOperationAnswer(answerData, token ?? "");
     return responseSaved;
+  } catch (error) {
+    console.log(error);
+  }
   };
+
+  const postBusinessFileModel = async (document: File[], nextId?: string | null, getLastQuestion?: boolean) => {
+  try {
+    const formData = new FormData();
+    document.forEach(element => {
+      formData.append('formFiles', element);
+    });
+    const responseSaved = await service.sendBusinessFile(formData);
+      if (responseSaved?.success) {
+        if(responseSaved?.autoResponse?.autoResponseMessage!==null){setAutoResponse(responseSaved?.autoResponse);}
+        await fetchQuestion((nextId?? "").toString(), getLastQuestion);
+        return;
+      } else if (responseSaved?.success === false) {
+        setProblem(responseSaved.message ?? responseSaved.validationErrors[0] ?? "");
+        return;
+      }
+      return responseSaved;
+  } catch (error) {
+    console.log(error);
+  }
+  }
 
   const sendLog = async (answerInput: string, questionId: string, answerId: string, infoPersonId: string) => {
     const log: AnswerLog = {
@@ -83,14 +107,12 @@ function ChatBotPage() {
     };
     await service.postLog(log, token ?? "");
   };
-  const callbackHandlePress = async(autoResponseId: string, businessTypeId: number | null, date?: Date | null, document?: File | null, input?: string | null, nextId?: string | null, getLastQuestion?: boolean)=>{
+  const callbackHandlePress = async(autoResponseId: string, businessTypeId: number | null, date?: Date | null, input?: string | null, nextId?: string | null, getLastQuestion?: boolean)=>{
   try {
-  const res = await postBusinessModel(autoResponseId, businessTypeId, date, document, input);
-    setProblem("");
-    console.log(res);
+    const res = await postBusinessModel(autoResponseId, businessTypeId, date, input);
     if (res?.success) {
-      await fetchQuestion((nextId ?? "").toString(), getLastQuestion);
-      setAutoResponse(res?.data);
+      if(res?.autoResponse?.autoResponseMessage!==null){setAutoResponse(res?.autoResponse);}
+      await fetchQuestion((nextId?? "").toString(), getLastQuestion);
       return;
     } else if (res?.success === false) {
       setProblem(res.message ?? res.validationErrors[0] ?? "");
@@ -105,13 +127,12 @@ function ChatBotPage() {
     await sendLog(answerInputValue, questionId, answerId, infoPersonId);
     const questionIndex = questionList.findIndex(q => q.questionId === questionId);
     if (questionIndex !== -1 && questionIndex !== null) {
+      setAutoResponse(null);
       const newList = questionList.slice(0, questionIndex + 1);
       setQuestionList(newList);
     }
-    if (businessTypeId === null) {
-      await fetchQuestion((nextId?? "").toString(), getLastQuestion);
-      return;
-    }
+    await fetchQuestion((nextId?? "").toString(), getLastQuestion);
+    return;
   };
 
   const getQuestionWithType = (value: Question, isCurrent: boolean) => {
@@ -130,9 +151,6 @@ function ChatBotPage() {
             businessTypeId={value.businessTypeId}
             isLastQuestion={value.getLastQuestion}
           />
-          {!isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
-            <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
-          )}
           </div>
         );
       case "input":
@@ -143,10 +161,10 @@ function ChatBotPage() {
               validationRule={value.validationRule}
               isLasted={!isCurrent}
               callback={async (val) => {
-                callbackHandlePress(value.autoResponseId, value.businessTypeId, null, null, val);
+                callbackHandlePress(value.autoResponseId, value.businessTypeId, null, val, value.answers[0].nextQuestionId, value.getLastQuestion);
               }}
             />
-            {!isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
+            {isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
               <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
             )}
           </div>
@@ -154,18 +172,19 @@ function ChatBotPage() {
         case "fileInput":
         return (
           <div>
-            <CustomFileInput typeFile={value.businessTypeId ?? 0} callback={async (val) => {
-              callbackHandlePress(value.autoResponseId, value.businessTypeId, null, val, null);
+            <CustomFileInput typeFile={value.businessTypeId ?? 0} callback={(val) => {
+              // callbackHandlePress(value.autoResponseId, value.businessTypeId, null, val, null,value.answers[0].nextQuestionId, value.getLastQuestion);
+              postBusinessFileModel(val, value.answers[0].nextQuestionId, value.getLastQuestion);
               }} isLasted={!isCurrent} title={value.title}></CustomFileInput>
-            {!isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
-              <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
-            )}
+              {isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
+                <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
+              )}
           </div>
         );
         case "fileDownload":
         return (
           <div>
-            {!isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
+            {isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
             <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
           )}
           </div>
@@ -174,11 +193,11 @@ function ChatBotPage() {
         return (
           <div>
             <CustomDateInput autoResponseId={value.autoResponseId} typeDate={value.businessTypeId ?? 0} callback={async (val) => {
-              callbackHandlePress(value.autoResponseId, value.businessTypeId, val, null, null);
+              callbackHandlePress(value.autoResponseId, value.businessTypeId, val, null, value.answers[0].nextQuestionId, value.getLastQuestion);
               }} isLasted={!isCurrent} title={value.title}></CustomDateInput>
-            {!isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
-              <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
-            )}
+              {isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
+                <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
+              )}
           </div>
         );
       default:
@@ -201,14 +220,12 @@ function ChatBotPage() {
               </div>
             ) : (
               <div> {questionList.map((value, index) => {
-                console.log(value);
                 const isCurrent = value.questionId === currentQuestionId;
                 return (end ===null || end ==="") ? (
                   <div key={index} className="item-padding">
                     <div className="header-padding">
                       <h2 className={isCurrent ? "header": "header-last"}>{value.title}</h2>
-                    </div>
-                    {getQuestionWithType(value, isCurrent)}
+                    </div>{getQuestionWithType(value, isCurrent)}
                   </div>
                 ): <div></div> ;
               })}

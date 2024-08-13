@@ -19,7 +19,8 @@ export default class ApiClient {
             message: response.data.message,
             success: response.data.success,
             data: response.data.data,
-            validationErrors: response.data.validationErrors
+            validationErrors: response.data.validationErrors,
+            autoResponse: response.data.autoResponse ?? null,
           };
         } catch (err) {
           const error: AxiosError<ApiResponse<any>> = err as any;
@@ -27,7 +28,8 @@ export default class ApiClient {
             message: error.response?.data.message as any,
             validationErrors: error.response?.data.validationErrors as any,
             success: error.response?.data.success as any,
-            data: error.response?.data.data
+            data: error.response?.data.data,
+            autoResponse: null
           };
         }
     }
