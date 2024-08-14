@@ -36,7 +36,7 @@ const CustomDateInput: React.FC<CustomDateInputProps> = ({ isLasted, title, type
   return (
     <div className="col-md-12">
       <Form.Group controlId="formDateTime" className="mb-3">
-        <Form.Label>{title}</Form.Label>
+        {/* <Form.Label>{title}</Form.Label> */}
         <div style={{ display: 'flex', gap: '10px' }}>
           <Form.Control 
             type="date" 

@@ -31,20 +31,30 @@ class QuestionService {
         throw error; 
       }
     }
-    async postLog(log: AnswerLog, token:string){
-      try {
-        const res= await this.logsApi.post(ApiEndpoints.QUESTION, ApiEndUrls.LOG,  log, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
-        return res;
-      } catch (error) {
-        console.error('Error logging questions:', error);
-      }
-    }
+    // async postLog(log: AnswerLog, token:string){
+    //   try {
+    //     const res= await this.logsApi.post(ApiEndpoints.QUESTION, ApiEndUrls.LOG,  log, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
+    //     return res;
+    //   } catch (error) {
+    //     console.error('Error logging questions:', error);
+    //   }
+    // }
     async sendBusinessOperationAnswer(data: BusinessOperationModel, token:string){
       try {
         const res= await this.answerApi.post(ApiEndpoints.BUSINESS_TYPE, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'application/json'});
         return res;
       } catch (error) {
         console.error('Error saving answer:', error);
+      }
+    }
+    async sendBusinessOperation(data: FormData){
+      try {
+        console.log(data);
+        const res= await this.fileApi.post(ApiEndpoints.BUSINESS, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'multipart/form-data'});
+        console.log(res);
+        return res;
+      } catch (error) {
+        console.error('Error sending business:', error);
       }
     }
     async sendBusinessFile(data: FormData){

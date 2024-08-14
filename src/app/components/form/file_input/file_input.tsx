@@ -31,7 +31,7 @@ const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, title, call
   return (
     <div className="col-md-12">
       <Form.Group controlId="formFile" className="mb-3">
-        <Form.Label>{title}</Form.Label>
+        {/* <Form.Label>{title}</Form.Label> */}
         <Form.Control
           type="file"
           onChange={handleFileChange}

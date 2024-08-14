@@ -5,7 +5,6 @@ import CustomInput from "../../../components/form/input/CustomInput";
 import QuestionService from "../services/QuestionService";
 import { Question } from "../model/question_model";
 import { AnswerLog } from "../model/answer_log_model";
-import { BusinessOperationModel } from "../model/business_operation_model";
 import { useUserContext } from "../../../context/user_context";
 import CustomAlert from "../../../components/ui/alerts/custom_alert";
 import Spinner from 'react-bootstrap/Spinner';
@@ -56,57 +55,34 @@ function ChatBotPage() {
     }
   }, [questionList]);
 
-  const postBusinessModel = async (businessTypeId: number | null, date?: Date | null, input?: string | null) => {
-  try {
-    const answerData: BusinessOperationModel = {
-      businessTypeId: businessTypeId,
-      userId: user ?? "",
-      transactionId: transactionId,
-      uploadData: {
-        dateInfo: {caseDate: date ?? null},
-        inputText: {answerInput: input ?? ""}
-      }
-    };
-    const responseSaved = await service.sendBusinessOperationAnswer(answerData, token ?? "");
-    return responseSaved;
-  } catch (error) {
-    console.log(error);
-  }
-  };
-
-  const postBusinessFileModel = async (document: File[], nextId?: number | null) => {
-  try {
-    const formData = new FormData();
-    document.forEach(element => {
-      formData.append('formFiles', element);
-    });
-    const responseSaved = await service.sendBusinessFile(formData);
-      if (responseSaved?.success) {
-        await fetchQuestion(nextId ?? null);
-        return;
-      } else if (responseSaved?.success === false) {
-        setProblem(responseSaved.message ?? responseSaved.validationErrors[0] ?? "");
-        return;
-      }
-      return responseSaved;
-  } catch (error) {
-    console.log(error);
-  }
+  const postBusinessOperationModel = async (document: File[] | null, data: AnswerLog, nextId?: number | null)=>{
+    console.log("nextid,", nextId);
+    try {
+      const formData = new FormData();
+      if(document !==null){document.forEach(element => {
+        formData.append('formFiles', element);
+      });}
+      console.log("doc:", document);
+      console.log("data:", data);
+    formData.append('jsonDatas', JSON.stringify(data));
+    const response = await service.sendBusinessOperation(formData);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
-  const sendLog = async (answerInput: string, questionId: number, answerId: string, infoPersonId: string) => {
+  const callbackHandlePress = async(document: File[] | null, questionId: number, optionId: string | null, optionInfo: string, businessTypeId: number | null, input?: string | null, nextId?: number | null)=>{
+    try {
     const log: AnswerLog = {
       questionId: questionId,
-      answerId: answerId ?? "",
-      answerInput: answerInput ?? "",
-      username: infoPersonId,
+      optionId: optionId?.toString() ?? "",
+      answerInput: input ?? "",
+      username: user ?? "",
+      businessTypeId: businessTypeId,
       transactionId: transactionId
     };
-    await service.postLog(log, token ?? "");
-  };
-  const callbackHandlePress = async(optionInfo: string, businessTypeId: number | null, date?: Date | null, input?: string | null, nextId?: number | null)=>{
-  try {
-    const res = await postBusinessModel(businessTypeId, date, input);
+    const res= await postBusinessOperationModel(document, log );
     if (res?.success) {
       await fetchQuestion(nextId ?? null);
       setSelectedInfo(optionInfo);
@@ -124,27 +100,24 @@ function ChatBotPage() {
     nextId: number | null,
     questionId: number,
     answerId: string,
-    infoPersonId: string,
+    businessType: number |null, 
   ) => {
     setSelectedOptionId(answerId);
     const selectedOption = questionList
       .find(q => q.questionId === questionId)
       ?.options.find(option => option.optionId === answerId);
-    setSelectedInfo(selectedOption?.info ?? null);
-    await sendLog(answerInputValue, questionId, answerId, infoPersonId);
     const questionIndex = questionList.findIndex(q => q.questionId === questionId);
     if (questionIndex !== -1 && questionIndex !== null) {
       const newList = questionList.slice(0, questionIndex + 1);
       setQuestionList(newList);
     }
-    await fetchQuestion(nextId ?? null);
+    await callbackHandlePress(null,questionId, answerId, selectedOption?.info ?? "", businessType, answerInputValue, nextId);
     return;
   };
   const getQuestionWithType = (value: Question, isCurrent: boolean) => {
     const alertComponent = (isCurrent && selectedInfo !== null && selectedInfo !== "" && (
       <CustomAlert title={selectedInfo} />
     ));
-  
     switch (value.optionType.title) {
       case "select":
         return (
@@ -156,9 +129,7 @@ function ChatBotPage() {
               selectedValue={selectedOptionId}
               callback={callbackSelected}
               questionId={value.questionId}
-              infoPersonId={user ?? ""}
               businessTypeId={value.businessTypeId}
-              isLastQuestion={value.isLastQuestion}
             />
             {value.isLastQuestion && alertComponent}
           </div>
@@ -172,7 +143,7 @@ function ChatBotPage() {
               validationRule={value.validationRule}
               isLasted={!isCurrent}
               callback={async (val) => {
-                callbackHandlePress(value.options[0].info ?? "", value.businessTypeId, null, val, value.options[0].nextQuestionId);
+                callbackHandlePress(null,value.questionId,value.options[0].optionId ,value.options[0].info ?? "", value.businessTypeId, val, value.options[0].nextQuestionId);
               }}
             />
             {value.isLastQuestion && alertComponent}
@@ -184,7 +155,9 @@ function ChatBotPage() {
             {!value.isLastQuestion && alertComponent}
             <CustomFileInput
               typeFile={value.businessTypeId ?? 0}
-              callback={(val) => postBusinessFileModel(val, value.options[0].nextQuestionId)}
+              callback={(val) => 
+                callbackHandlePress(val, value.questionId, value.options[0].optionId, value.options[0].info ?? "", value.businessTypeId, null, value.options[0].nextQuestionId)
+              }
               isLasted={!isCurrent}
               title={value.title}
             />
@@ -204,7 +177,7 @@ function ChatBotPage() {
             <CustomDateInput
               typeDate={value.businessTypeId ?? 0}
               callback={async (val) => {
-                callbackHandlePress(value.options[0].info ?? "", value.businessTypeId, val, null, value.options[0].nextQuestionId);
+                callbackHandlePress(null, value.questionId, value.options[0].optionId, value.options[0].info ?? "", value.businessTypeId, "14/02/2024", value.options[0].nextQuestionId);
               }}
               isLasted={!isCurrent}
               title={value.title}

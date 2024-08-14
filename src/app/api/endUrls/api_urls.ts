@@ -4,6 +4,7 @@ export enum ApiEndpoints {
     LOGIN = "Login",
     USER = "User",
     BUSINESS_TYPE= "BusinessType",
+    BUSINESS= "Business",
     FILE = "File"
   }
 export enum ApiEndUrls{

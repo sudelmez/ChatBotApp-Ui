@@ -15,18 +15,14 @@ interface CustomSelectProps {
     nextId: number | null, 
     questionId: number, 
     answerId: string, 
-    infoPersonId: string, 
     businessTypeId: number | null, 
-    isLastQuestion: boolean
   ) => void;
   questionId: number;
-  infoPersonId: string;
   businessTypeId: number | null;
-  isLastQuestion: boolean;
   isLasted: boolean;
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, callback, questionId, infoPersonId, businessTypeId ,isLastQuestion, isLasted}) => {
+const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, callback, questionId, businessTypeId, isLasted}) => {
   const customStyles: StylesConfig<Option, false> = {
     placeholder: (provided) => ({
       ...provided,
@@ -58,7 +54,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, call
     const nextQuestionId = selectedOption?.nextQuestionId ?? null;
     console.log(selectedAnswerId);
     console.log(nextQuestionId);
-    callback("", nextQuestionId, questionId, selectedAnswerId, infoPersonId, businessTypeId, isLastQuestion);
+    callback("", nextQuestionId, questionId, selectedAnswerId,  businessTypeId);
   };
 
   const formattedValues = values.map((value) => ({
