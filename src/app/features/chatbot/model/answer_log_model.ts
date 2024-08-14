@@ -1,5 +1,5 @@
 export interface AnswerLog{
-    questionId: string;
+    questionId: number;
     answerId: string | null;
     answerInput: string | null;
     username: string;

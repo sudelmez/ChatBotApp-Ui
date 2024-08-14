@@ -4,27 +4,35 @@ import { Option } from '../../model/option_model';
 
 interface CustomSelectProps {
   values: {
-    nextQuestionId: string | null;
+    nextQuestionId: number | null;
     title: string;
-    answerId: string;
+    optionId: string;
+    info: string | null;
   }[];
   selectedValue: string | null;
-  callback: ( autoResponseId: string, answerInputValue:string, nextId: number | null, questionId: string, answerId: string, infoPersonId: string, businessTypeId:number | null, isLastQuestion: boolean) => void;
-  questionId: string;
+  callback: (
+    answerInputValue: string, 
+    nextId: number | null, 
+    questionId: number, 
+    answerId: string, 
+    infoPersonId: string, 
+    businessTypeId: number | null, 
+    isLastQuestion: boolean
+  ) => void;
+  questionId: number;
   infoPersonId: string;
   businessTypeId: number | null;
   isLastQuestion: boolean;
-  autoResponseId: string;
   isLasted: boolean;
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, callback, questionId, infoPersonId, businessTypeId ,isLastQuestion, isLasted, autoResponseId}) => {
+const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, callback, questionId, infoPersonId, businessTypeId ,isLastQuestion, isLasted}) => {
   const customStyles: StylesConfig<Option, false> = {
-    placeholder:(provided) => ({
+    placeholder: (provided) => ({
       ...provided,
       color: !isLasted ? '#4a0a9a' : '#a895f5',
     }),
-    singleValue:(provided) =>({
+    singleValue: (provided) => ({
       ...provided,
       color: !isLasted ? '#4a0a9a' : '#a895f5',
     }),
@@ -41,20 +49,22 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, call
       color: !isLasted ? '#4a0a9a' : '#a895f5',
       fontSize: '16px',
       backgroundColor: 'white',
-      fontFamily: '"Pragati Narrow", sans-serif'
+      fontFamily: '"Pragati Narrow", sans-serif',
     }),
   };
 
   const handleChange = (selectedOption: SingleValue<Option>) => {
-    const selectedAnswerId = selectedOption?.answerId?.toString()?? "";
-    const nextQuestionId = selectedOption?.nextQuestionId!==null ? parseInt(selectedOption?.nextQuestionId ?? '') : null;
-    callback(autoResponseId,"", nextQuestionId, questionId, selectedAnswerId, infoPersonId, businessTypeId,isLastQuestion);
+    const selectedAnswerId = selectedOption?.optionId ?? "";
+    const nextQuestionId = selectedOption?.nextQuestionId ?? null;
+    console.log(selectedAnswerId);
+    console.log(nextQuestionId);
+    callback("", nextQuestionId, questionId, selectedAnswerId, infoPersonId, businessTypeId, isLastQuestion);
   };
 
   const formattedValues = values.map((value) => ({
     label: value.title,
-    answerId: value.answerId,
-    nextQuestionId: value.nextQuestionId
+    optionId: value.optionId,
+    nextQuestionId: value.nextQuestionId,
   }));
 
   return (
@@ -64,7 +74,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, call
       onChange={handleChange}
       options={formattedValues}
       placeholder="Lütfen bir cevap seçin."
-      value={formattedValues.find(option => option.answerId === selectedValue)}
+      value={formattedValues.find(option => option.optionId === selectedValue)}
     />
   );
 }

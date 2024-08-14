@@ -1,24 +1,24 @@
 import { ValidationRuleModel } from "./validation_rule_model";
 
 export interface Question {
-    questionId: string;
+    questionId: number;
     title: string;
     businessTypeId : number | null;
-    autoResponseId: string;
-    answerType: {
+    info: string | null;
+    optionType: {
       title: string;
-      answerTypeId: string;
+      optionTypeId: string;
     };
-    answers: {
+    isLastQuestion: boolean
+    options: {
       title: string;
-      nextQuestionId: string | null;
-      answerId: string;
+      nextQuestionId: number | null;
+      optionId: string;
+      info: string | null;
     }[];
-    getLastQuestion: boolean;
     validationRule: ValidationRuleModel
 }
 export interface GetQuestion{
-  nextQuestionId: string | "";
+  nextQuestionId: number | null;
   platformId: string;
-  getLastQuestion: boolean
 }

@@ -7,10 +7,9 @@ interface CustomDateInputProps {
   title: string;
   typeDate: number;
   callback: (date: Date | null, typeDate: number) => void;
-  autoResponseId: string;
 }
 
-const CustomDateInput: React.FC<CustomDateInputProps> = ({ isLasted, title, typeDate, callback, autoResponseId}) => {
+const CustomDateInput: React.FC<CustomDateInputProps> = ({ isLasted, title, typeDate, callback}) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [activeButton, setActiveButton] = useState(false);

@@ -10,23 +10,22 @@ import { useUserContext } from "../../../context/user_context";
 import CustomAlert from "../../../components/ui/alerts/custom_alert";
 import Spinner from 'react-bootstrap/Spinner';
 import CustomFileInput from "../../../components/form/file_input/file_input";
-import { AutoResponseModel } from "../model/auto_response_model";
 import CustomDateInput from "../../../components/form/date_input/date_input";
 function ChatBotPage() {
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [end, setEnd] = useState<string>("");
-  const [selectedAnswerId, setSelectedAnswerId] = useState<string | null>("");
+  const [selectedOptionId, setSelectedOptionId] = useState<string | null>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [problem, setProblem] = useState<string>("");
-  const [currentQuestionId, setCurrentQuestionId] = useState<string>("");
+  const [currentQuestionId, setCurrentQuestionId] = useState<number | null>();
   const service = new QuestionService();
-  const [autoResponse, setAutoResponse] = useState<AutoResponseModel | null>(null);
   const { token, user, transactionId } = useUserContext();
+  const [selectedInfo, setSelectedInfo] = useState<string | null>(null);
 
-  const fetchQuestion = async (nextQuestionId?: string, getLastQuestion?: boolean) => {
+  const fetchQuestion = async (nextQuestionId?: number | null) => {
     try {
       setLoading(true);
-      const nextQuestion = await service.getQuestion(nextQuestionId ?? "", token ?? "", getLastQuestion ?? false);
+      const nextQuestion = await service.getQuestion(nextQuestionId ?? null, token ?? "");
       setLoading(false);
       if (!nextQuestion) {
         setEnd("Sohbet sona erdi.");
@@ -57,10 +56,9 @@ function ChatBotPage() {
     }
   }, [questionList]);
 
-  const postBusinessModel = async (autoResponseId: string, businessTypeId: number | null, date?: Date | null, input?: string | null) => {
+  const postBusinessModel = async (businessTypeId: number | null, date?: Date | null, input?: string | null) => {
   try {
     const answerData: BusinessOperationModel = {
-      autoResponseId: autoResponseId ?? "",
       businessTypeId: businessTypeId,
       userId: user ?? "",
       transactionId: transactionId,
@@ -76,7 +74,7 @@ function ChatBotPage() {
   }
   };
 
-  const postBusinessFileModel = async (document: File[], nextId?: string | null, getLastQuestion?: boolean) => {
+  const postBusinessFileModel = async (document: File[], nextId?: number | null) => {
   try {
     const formData = new FormData();
     document.forEach(element => {
@@ -84,8 +82,7 @@ function ChatBotPage() {
     });
     const responseSaved = await service.sendBusinessFile(formData);
       if (responseSaved?.success) {
-        if(responseSaved?.autoResponse?.autoResponseMessage!==null){setAutoResponse(responseSaved?.autoResponse);}
-        await fetchQuestion((nextId?? "").toString(), getLastQuestion);
+        await fetchQuestion(nextId ?? null);
         return;
       } else if (responseSaved?.success === false) {
         setProblem(responseSaved.message ?? responseSaved.validationErrors[0] ?? "");
@@ -97,7 +94,7 @@ function ChatBotPage() {
   }
   }
 
-  const sendLog = async (answerInput: string, questionId: string, answerId: string, infoPersonId: string) => {
+  const sendLog = async (answerInput: string, questionId: number, answerId: string, infoPersonId: string) => {
     const log: AnswerLog = {
       questionId: questionId,
       answerId: answerId ?? "",
@@ -107,12 +104,12 @@ function ChatBotPage() {
     };
     await service.postLog(log, token ?? "");
   };
-  const callbackHandlePress = async(autoResponseId: string, businessTypeId: number | null, date?: Date | null, input?: string | null, nextId?: string | null, getLastQuestion?: boolean)=>{
+  const callbackHandlePress = async(optionInfo: string, businessTypeId: number | null, date?: Date | null, input?: string | null, nextId?: number | null)=>{
   try {
-    const res = await postBusinessModel(autoResponseId, businessTypeId, date, input);
+    const res = await postBusinessModel(businessTypeId, date, input);
     if (res?.success) {
-      if(res?.autoResponse?.autoResponseMessage!==null){setAutoResponse(res?.autoResponse);}
-      await fetchQuestion((nextId?? "").toString(), getLastQuestion);
+      await fetchQuestion(nextId ?? null);
+      setSelectedInfo(optionInfo);
       return;
     } else if (res?.success === false) {
       setProblem(res.message ?? res.validationErrors[0] ?? "");
@@ -122,89 +119,103 @@ function ChatBotPage() {
     }
   }
 
-  const callbackSelected = async (autoResponseId: string | null, answerInputValue: string, nextId: number | null | "", questionId: string, answerId: string, infoPersonId: string, businessTypeId: number | null, getLastQuestion: boolean) => {
-    setSelectedAnswerId(answerId);
+  const callbackSelected = async (
+    answerInputValue: string,
+    nextId: number | null,
+    questionId: number,
+    answerId: string,
+    infoPersonId: string,
+  ) => {
+    setSelectedOptionId(answerId);
+    const selectedOption = questionList
+      .find(q => q.questionId === questionId)
+      ?.options.find(option => option.optionId === answerId);
+    setSelectedInfo(selectedOption?.info ?? null);
     await sendLog(answerInputValue, questionId, answerId, infoPersonId);
     const questionIndex = questionList.findIndex(q => q.questionId === questionId);
     if (questionIndex !== -1 && questionIndex !== null) {
-      setAutoResponse(null);
       const newList = questionList.slice(0, questionIndex + 1);
       setQuestionList(newList);
     }
-    await fetchQuestion((nextId?? "").toString(), getLastQuestion);
+    await fetchQuestion(nextId ?? null);
     return;
   };
-
   const getQuestionWithType = (value: Question, isCurrent: boolean) => {
-    switch (value.answerType.title) {
+    const alertComponent = (isCurrent && selectedInfo !== null && selectedInfo !== "" && (
+      <CustomAlert title={selectedInfo} />
+    ));
+  
+    switch (value.optionType.title) {
       case "select":
         return (
           <div>
-          <CustomSelect
-            autoResponseId={value.autoResponseId}
-            isLasted={!isCurrent}
-            values={value.answers}
-            selectedValue={selectedAnswerId}
-            callback={callbackSelected}
-            questionId={value.questionId}
-            infoPersonId={user ?? ""}
-            businessTypeId={value.businessTypeId}
-            isLastQuestion={value.getLastQuestion}
-          />
+            {!value.isLastQuestion && alertComponent}
+            <CustomSelect
+              isLasted={!isCurrent}
+              values={value.options}
+              selectedValue={selectedOptionId}
+              callback={callbackSelected}
+              questionId={value.questionId}
+              infoPersonId={user ?? ""}
+              businessTypeId={value.businessTypeId}
+              isLastQuestion={value.isLastQuestion}
+            />
+            {value.isLastQuestion && alertComponent}
           </div>
         );
       case "input":
         return (
           <div>
+            {!value.isLastQuestion && alertComponent}
             <CustomInput
               typeInput={value.businessTypeId ?? 0}
               validationRule={value.validationRule}
               isLasted={!isCurrent}
               callback={async (val) => {
-                callbackHandlePress(value.autoResponseId, value.businessTypeId, null, val, value.answers[0].nextQuestionId, value.getLastQuestion);
+                callbackHandlePress(value.options[0].info ?? "", value.businessTypeId, null, val, value.options[0].nextQuestionId);
               }}
             />
-            {isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
-              <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
-            )}
+            {value.isLastQuestion && alertComponent}
           </div>
         );
-        case "fileInput":
+      case "fileInput":
         return (
           <div>
-            <CustomFileInput typeFile={value.businessTypeId ?? 0} callback={(val) => {
-              // callbackHandlePress(value.autoResponseId, value.businessTypeId, null, val, null,value.answers[0].nextQuestionId, value.getLastQuestion);
-              postBusinessFileModel(val, value.answers[0].nextQuestionId, value.getLastQuestion);
-              }} isLasted={!isCurrent} title={value.title}></CustomFileInput>
-              {isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
-                <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
-              )}
+            {!value.isLastQuestion && alertComponent}
+            <CustomFileInput
+              typeFile={value.businessTypeId ?? 0}
+              callback={(val) => postBusinessFileModel(val, value.options[0].nextQuestionId)}
+              isLasted={!isCurrent}
+              title={value.title}
+            />
+            {value.isLastQuestion && alertComponent}
           </div>
         );
-        case "fileDownload":
+      case "fileDownload":
         return (
           <div>
-            {isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
-            <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
-          )}
+            {value.isLastQuestion && alertComponent}
           </div>
         );
-        case "dateInput":
+      case "dateInput":
         return (
           <div>
-            <CustomDateInput autoResponseId={value.autoResponseId} typeDate={value.businessTypeId ?? 0} callback={async (val) => {
-              callbackHandlePress(value.autoResponseId, value.businessTypeId, val, null, value.answers[0].nextQuestionId, value.getLastQuestion);
-              }} isLasted={!isCurrent} title={value.title}></CustomDateInput>
-              {isCurrent && autoResponse !== null && autoResponse.autoResponseMessage !== "" && (
-                <CustomAlert title={autoResponse?.autoResponseMessage ?? ""} />
-              )}
+            {!value.isLastQuestion && alertComponent}
+            <CustomDateInput
+              typeDate={value.businessTypeId ?? 0}
+              callback={async (val) => {
+                callbackHandlePress(value.options[0].info ?? "", value.businessTypeId, val, null, value.options[0].nextQuestionId);
+              }}
+              isLasted={!isCurrent}
+              title={value.title}
+            />
           </div>
         );
       default:
         return null;
     }
   };
-
+  
   return (
       <div className="container-fluid">
         <div className="row">

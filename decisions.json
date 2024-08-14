@@ -1,211 +1,295 @@
 [
-  {
-    "id": 1,
-    "question": "Merhaba, nasıl yardımcı olabilirim?",
-    "type": "select",
-    "isDisabled": false,
-    "answers": [
-      {
-        "text": "Lütfen seçim yapınız.",
-        "nextId": -1
-      },
-      {
-        "text": "Hizmetleriniz neler?",
-        "nextId": 2
-      },
-      {
-        "text": "İletişim bilgilerinizi öğrenebilir miyim?",
-        "nextId": 3
-      },
-      {
-        "text": "Projelerinizden bahsedebilir misiniz?",
-        "nextId": 4
-      }
-    ]
-  },
-  {
-    "id": 2,
-    "isDisabled": false,
-    "type": "select",
-    "question": "Hizmetlerimiz arasında web geliştirme, mobil uygulama geliştirme, veritabanı yönetimi ve danışmanlık hizmetleri bulunmaktadır. Hangi konuda daha fazla bilgi almak istersiniz?",
-    "answers": [
-      {
-        "text": "Lütfen seçim yapınız.",
-        "nextId": -1
-      },
-      {
-        "text": "Mobil geliştirme hakkında daha fazla bilgi",
-        "nextId": 5
-      },
-      {
-        "text": "Teşekkürler, başka bir sorum yok.",
-        "nextId": null
-      },{
-        "text": "Bu konu hakkında mail almak istiyorum.",
-        "nextId": 7
-      }
-    ]
-  },
-  {
-    "id": 3,
-    "isDisabled": false,
-    "type": "select",
-    "question": "İletişim bilgilerimiz şu şekildedir: email@example.com. Size nasıl yardımcı olabilirim?",
-    "answers": [
-      {
-        "text": "Lütfen seçim yapınız.",
-        "nextId": -1
-      },
-      {
-        "text":"Genel bilgi için beni arayın.",
-        "nextId": 6
-      },
-      {
-        "text": "Teşekkürler, başka bir sorum yok.",
-        "nextId": null
-      },
-      {
-        "text": "Hizmetleriniz neler?",
-        "nextId": 2
-      },
-      {
-        "text": "Projelerinizden bahsedebilir misiniz?",
-        "nextId": 4
-      }
-    ]
-  },
-  {
-    "id": 4,
-    "isDisabled": false,
-    "type": "select",
-    "question": "Son projelerimiz arasında bir e-ticaret platformu, bir sosyal medya uygulaması ve bir kurumsal web sitesi bulunmaktadır. Bu projelerden biri hakkında detaylı bilgi almak ister misiniz?",
-    "answers": [
-      {
-        "text": "Lütfen seçim yapınız.",
-        "nextId": -1
-      },
-      {
-        "text": "Sosyal medya uygulaması hakkında daha fazla bilgi",
-        "nextId": null
-      },
-      {
-        "text": "Kurumsal web sitesi hakkında daha fazla bilgi",
-        "nextId": null
-      },
-      {
-        "text": "Bu konu hakkında bilgi için beni arayın.",
-        "nextId": 6
-      },
-      {
-        "text": "Teşekkürler, başka bir sorum yok.",
-        "nextId": null
-      }
-    ]
-  },
-  {
-    "id": 5,
-    "isDisabled": false,
-    "type": "select",
-    "question": "Mobil uygulamalarımızı Flutter ile her platforma uygun bir şekilde geliştirmekteyiz.",
-    "answers": [
-      {
-        "text": "Lütfen seçim yapınız.",
-        "nextId": -1
-      },
-      {
-        "text": "Teşekkürler, başka bir sorum yok.",
-        "nextId": null
-      }
-    ]
-  },
-  {
-    "id": 6,
-    "isDisabled": false,
-    "type": "input",
-    "question": "Telefon numaranızı giriniz.",
-    "answers": [
-      {
-        "text": "Kaydet",
-        "nextId": 8,
-        "color": true
-      },
-      {
-        "text": "Vazgeç",
-        "nextId": 9,
-        "color": false
-      }
-    ]
-  },
-  {
-    "id": 7,
-    "isDisabled": false,
-    "type": "input",
-    "question": "Mail adresinizi giriniz.",
-    "answers": [
-      {
-        "text": "Kaydet",
-        "nextId": 8
-      },
-      {
-        "text": "Vazgeç",
-        "nextId": 9
-      }
-    ]
-  },
-  {
-    "id": 8,
-    "isDisabled": false,
-    "type": "select",
-    "question": "Bilginiz kaydedilmiştir. Yardımcı olabileceğim başka bir konu var mı?",
-    "answers": [
-      {
-        "text": "Lütfen seçim yapınız.",
-        "nextId": -1
-      },
-      {
-        "text": "Sosyal medya uygulaması hakkında daha fazla bilgi",
-        "nextId": null
-      },
-      {
-        "text": "Kurumsal web sitesi hakkında daha fazla bilgi",
-        "nextId": null
-      },
-      {
-        "text": "Bu konu hakkında bilgi için beni arayın.",
-        "nextId": 6
-      },
-      {
-        "text": "Teşekkürler, başka bir sorum yok.",
-        "nextId": null
-      }
-    ]
-  },
-  {
-    "id": 9,
-    "isDisabled": false,
-    "type": "select",
-    "question": "İşlem iptal edilmiştir. Yardımcı olabileceğim başka bir konu var mı?",
-    "answers": [
-      {
-        "text": "Lütfen seçim yapınız.",
-        "nextId": -1
-      },
-      {
-        "text": "Sosyal medya uygulaması hakkında daha fazla bilgi",
-        "nextId": null
-      },
-      {
-        "text": "Kurumsal web sitesi hakkında daha fazla bilgi",
-        "nextId": null
-      },
-      {
-        "text": "Bu konu hakkında bilgi için beni arayın.",
-        "nextId": 6
-      },
-      {
-        "text": "Teşekkürler, başka bir sorum yok.",
-        "nextId": null
-      }
-    ]
-  }
+  db.Question.insertMany([
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116cf"),
+      "QuestionId" : "1",
+      "Title" : "Merhaba, hangi konuda destek almak istersiniz?",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "2",
+      "BusinessTypeId" : null,
+      "ParentQuestion" : 0,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : null,
+      "AutoResponseId" : null
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116d0"),
+      "QuestionId" : "2",
+      "Title" : "Hangi işlem ile devam etmek istersiniz?",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "2",
+      "BusinessTypeId" : null,
+      "ParentQuestion" : 1,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : null,
+      "AutoResponseId" : null
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116d1"),
+      "QuestionId" : "3",
+      "Title" : "Beyan görüntüsünü yükleyiniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "3",
+      "BusinessTypeId" : 9,
+      "ParentQuestion" : 2,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : 1,
+      "AutoResponseId" : "3"
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116d2"),
+      "QuestionId" : "4",
+      "Title" : "Iban ekran görüntüsünü yükleyiniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "3",
+      "BusinessTypeId" : 9,
+      "ParentQuestion" : 3,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : 1,
+      "AutoResponseId" : null
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116d3"),
+      "QuestionId" : "5",
+      "Title" : "Hasar fotoğraflarını yükleyiniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "3",
+      "BusinessTypeId" : 9,
+      "ParentQuestion" : 6,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : true,
+      "ValidationRuleId" : 1,
+      "AutoResponseId" : "1"
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116d4"),
+      "QuestionId" : "6",
+      "Title" : "Mağdur ruhsat ekran görüntüsünü yükleyiniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "3",
+      "BusinessTypeId" : 9,
+      "ParentQuestion" : 7,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : 1,
+      "AutoResponseId" : null
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116d5"),
+      "QuestionId" : "7",
+      "Title" : "KTT ekran görüntüsünü yükleyiniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "3",
+      "BusinessTypeId" : 9,
+      "ParentQuestion" : 4,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : 1,
+      "AutoResponseId" : null
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116d6"),
+      "QuestionId" : "8",
+      "Title" : "Dosya numarasını giriniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "1",
+      "BusinessTypeId" : 7,
+      "ParentQuestion" : 1,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : 1,
+      "AutoResponseId" : "5"
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116d7"),
+      "QuestionId" : "9",
+      "Title" : "TCKN giriniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "1",
+      "BusinessTypeId" : 5,
+      "ParentQuestion" : 8,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : 5,
+      "AutoResponseId" : null
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116d8"),
+      "QuestionId" : "10",
+      "Title" : "Plaka giriniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "1",
+      "BusinessTypeId" : 6,
+      "ParentQuestion" : 9,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : 1,
+      "AutoResponseId" : null
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116d9"),
+      "QuestionId" : "11",
+      "Title" : "Poliçe numarasını giriniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "1",
+      "BusinessTypeId" : 1,
+      "ParentQuestion" : 10,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : 2,
+      "AutoResponseId" : "4"
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116da"),
+      "QuestionId" : "12",
+      "Title" : "Islak İmzalı Temlik İbra ve Teslim Onay Formunu yükleyiniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "3",
+      "BusinessTypeId" : 9,
+      "ParentQuestion" : 11,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : true,
+      "ValidationRuleId" : 1,
+      "AutoResponseId" : null
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116db"),
+      "QuestionId" : "13",
+      "Title" : "Dosya numarasını giriniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "1",
+      "BusinessTypeId" : 7,
+      "ParentQuestion" : 1,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : 1,
+      "AutoResponseId" : null
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116dc"),
+      "QuestionId" : "14",
+      "Title" : "TCKN giriniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "1",
+      "BusinessTypeId" : 5,
+      "ParentQuestion" : 13,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : 5,
+      "AutoResponseId" : null
+    },
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116dd"),
+      "QuestionId" : "15",
+      "Title" : "Plaka giriniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "1",
+      "BusinessTypeId" : 6,
+      "ParentQuestion" : 14,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : 1,
+      "AutoResponseId" : null
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116de"),
+      "QuestionId" : "16",
+      "Title" : "Poliçe numarasını giriniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "1",
+      "BusinessTypeId" : 1,
+      "ParentQuestion" : 15,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : 2,
+      "AutoResponseId" : null
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116df"),
+      "QuestionId" : "17",
+      "Title" : "Kaza tarihini seçiniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "4",
+      "BusinessTypeId" : 8,
+      "ParentQuestion" : 16,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : true,
+      "ValidationRuleId" : 1,
+      "AutoResponseId" : null
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116e0"),
+      "QuestionId" : "18",
+      "Title" : "İlgili belgeyi buradan indirebilirsiniz.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "5",
+      "BusinessTypeId" : 10,
+      "ParentQuestion" : 16,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : true,
+      "ValidationRuleId" : null,
+      "AutoResponseId" : "2"
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116e1"),
+      "QuestionId" : "1054812",
+      "Title" : "Bu bilgi sizin için yeterli oldu mu?",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "2",
+      "BusinessTypeId" : null,
+      "ParentQuestion" : 1,
+      "IsLastQuestion" : true,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : null,
+      "AutoResponseId" : null
+    },
+    
+    {
+      "_id" : ObjectId("66b9ecdbd7490de2fd6116e2"),
+      "QuestionId" : "1054813",
+      "Title" : "Size daha iyi hizmet verebilmemiz için lütfen açıklayınız.",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "1",
+      "BusinessTypeId" : 4,
+      "ParentQuestion" : 10,
+      "IsLastQuestion" : false,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : 4,
+      "AutoResponseId" : null
+    },
+    
+    {
+      "_id" : ObjectId("66bb5f0d537449c73c759682"),
+      "QuestionId" : "1054812",
+      "Title" : "Bu bilgi sizin için yeterli oldu mu?",
+      "PlatformId" : "1",
+      "AnswerTypeId" : "2",
+      "BusinessTypeId" : null,
+      "ParentQuestion" : 10,
+      "IsLastQuestion" : true,
+      "GetLastQuestion" : false,
+      "ValidationRuleId" : null,
+      "AutoResponseId" : null
+    }])
 ]

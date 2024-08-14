@@ -1,11 +1,9 @@
 export interface BusinessOperationModel {
-  autoResponseId: string;
   businessTypeId: number | null;
   userId: string;
   transactionId: string |null;
   uploadData: {
       dateInfo: DateInfoModel | null;
-      // uploadDocument: UploadDocModel | null;
       inputText: InputTextModel | null;
   };
 }

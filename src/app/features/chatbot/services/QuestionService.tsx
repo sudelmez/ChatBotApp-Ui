@@ -17,12 +17,11 @@ class QuestionService {
       this.answerApi = new ApiService<AutoResponseModel, BusinessOperationModel>();
       this.fileApi = new ApiService<AutoResponseModel, FormData>();
     }
-    async getQuestion(nextQuestionId: string | "",token: string, getLastQuestion: boolean): Promise<Question> {
+    async getQuestion(nextQuestionId: number | null,token: string): Promise<Question> {
       try {
         const data : GetQuestion = {
-          nextQuestionId: nextQuestionId ?? "",
+          nextQuestionId: nextQuestionId ?? null,
           platformId:"1",
-          getLastQuestion: getLastQuestion
         }
         const question = await this.questionsApi.post(ApiEndpoints.QUESTION, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
         console.log(question);
