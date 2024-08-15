@@ -31,6 +31,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, validatio
       onSubmit={(values) => {
         callback(values.value);
         setInputVal(values.value);
+        setActiveButton(false);
         localStorage.setItem(`input-value-${optionId}`, values.value);
       }}
     >
