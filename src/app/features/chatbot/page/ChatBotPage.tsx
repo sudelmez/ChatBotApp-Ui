@@ -121,12 +121,12 @@ function ChatBotPage() {
     const questionComponent = ( <div className="header-padding">
       <h2 className={isCurrent ? "header": "header-last"}>{value.title}</h2>
     </div>);
-    if(loading && isCurrent){return(
-      <div className="loadingCenter">
-      <div className="col-md-12">
-        <Spinner animation="grow" />
-      </div></div>
-    ) }
+    // if(loading && isCurrent){return(
+    //   <div className="loadingCenter">
+    //   <div className="col-md-12">
+    //     <Spinner animation="grow" />
+    //   </div></div>
+    // ) }
     switch (value.optionType.title) {
       case "select":
         return (
