@@ -1,6 +1,6 @@
 import "./ChatBotPage.css";
 import CustomSelect from '../components/select/CustomSelect';
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import CustomInput from "../../../components/form/input/CustomInput";
 import QuestionService from "../services/QuestionService";
 import { Question } from "../model/question_model";
@@ -19,6 +19,7 @@ function ChatBotPage() {
   const service = new QuestionService();
   const { token, user, transactionId } = useUserContext();
   const [selectedInfo, setSelectedInfo] = useState<string | null>(null);
+  const lastQuestionRef = useRef<HTMLDivElement>(null);
 
   const fetchQuestion = async (nextQuestionId?: number | null) => {
     try {
@@ -52,6 +53,8 @@ function ChatBotPage() {
   useEffect(() => {
     if (questionList.length > 0) {
       setCurrentQuestionId(questionList[questionList.length - 1].questionId);
+    }if (lastQuestionRef.current) {
+      lastQuestionRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [questionList]);
 
@@ -118,6 +121,12 @@ function ChatBotPage() {
     const questionComponent = ( <div className="header-padding">
       <h2 className={isCurrent ? "header": "header-last"}>{value.title}</h2>
     </div>);
+    if(loading && isCurrent){return(
+      <div className="loadingCenter">
+      <div className="col-md-12">
+        <Spinner animation="grow" />
+      </div></div>
+    ) }
     switch (value.optionType.title) {
       case "select":
         return (
@@ -202,22 +211,17 @@ function ChatBotPage() {
           <div className="col-md-8">
           <div className="row">
           <div className="col">
-            <div className="paddingArrange">{loading ? (
-              <div className="loadingCenter">
-              <div className="col-md-12">
-                <Spinner animation="grow" />
-              </div></div>
-            ) : (
+            <div className="paddingArrange">{
               <div> {questionList.map((value, index) => {
                 const isCurrent = value.questionId === currentQuestionId;
                 return (
-                  <div key={index} className="item-padding">
+                  <div key={index} className="item-padding" ref={isCurrent ? lastQuestionRef : null}>
                    {getQuestionWithType(value, isCurrent, index)}
                   </div>
                 );
               })}
               {(end !== null && end !=="") && (<CustomAlert title={end}></CustomAlert>)}</div>
-            )}
+            }
             {(problem!==null && problem!=="") && (<CustomAlert isError= {true} title={problem}></CustomAlert>)}
             </div>
             </div>

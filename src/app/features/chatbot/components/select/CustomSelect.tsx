@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Select, { StylesConfig, SingleValue } from 'react-select';
 import { Option } from '../../model/option_model';
 
