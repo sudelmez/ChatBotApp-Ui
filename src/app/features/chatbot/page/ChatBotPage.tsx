@@ -46,6 +46,7 @@ function ChatBotPage() {
   };
 
   useEffect(() => {
+    localStorage.clear();
     fetchQuestion();
   }, []);
 
@@ -97,7 +98,7 @@ function ChatBotPage() {
     nextId: number | null,
     questionId: number,
     answerId: string,
-    businessType: number |null, 
+    businessType: number |null
   ) => {
     setSelectedOptionId(answerId);
     const selectedOption = questionList
@@ -111,7 +112,7 @@ function ChatBotPage() {
     await callbackHandlePress(null,questionId, answerId, selectedOption?.info ?? "", businessType, answerInputValue, nextId);
     return;
   }, [selectedOptionId]);
-  const getQuestionWithType = (value: Question, isCurrent: boolean) => {
+  const getQuestionWithType = (value: Question, isCurrent: boolean, index: number) => {
     const alertComponent = (isCurrent && selectedInfo !== null && selectedInfo !== "" && (
       <CustomAlert title={selectedInfo} />
     ));
@@ -126,6 +127,7 @@ function ChatBotPage() {
               callback={callbackSelected}
               questionId={value.questionId}
               businessTypeId={value.businessTypeId}
+              index = {index}
             />
             {value.isLastQuestion && alertComponent}
           </div>
@@ -150,12 +152,11 @@ function ChatBotPage() {
           <div>
             {!value.isLastQuestion && alertComponent}
             <CustomFileInput
-              typeFile={value.businessTypeId ?? 0}
+              optionId={value.options[0].optionId}
               callback={(val) => 
                 callbackHandlePress(val, value.questionId, value.options[0].optionId, value.options[0].info ?? "", value.businessTypeId, null, value.options[0].nextQuestionId)
               }
               isLasted={!isCurrent}
-              title={value.title}
             />
             {value.isLastQuestion && alertComponent}
           </div>
@@ -206,7 +207,7 @@ function ChatBotPage() {
                   <div key={index} className="item-padding">
                     <div className="header-padding">
                       <h2 className={isCurrent ? "header": "header-last"}>{value.title}</h2>
-                    </div>{getQuestionWithType(value, isCurrent)}
+                    </div>{getQuestionWithType(value, isCurrent, index)}
                   </div>
                 ): <div></div> ;
               })}

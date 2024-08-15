@@ -19,19 +19,14 @@ interface CustomSelectProps {
   questionId: number;
   businessTypeId: number | null;
   isLasted: boolean;
+  index : number
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({ values, callback, questionId, businessTypeId, isLasted}) => {
+const CustomSelect: React.FC<CustomSelectProps> = ({ values, callback, questionId, businessTypeId, isLasted, index}) => {
   const [svalue, setsValue] = useState<SingleValue<Option>>(() => {
-    const savedValue = localStorage.getItem(`selected-option-${questionId}`);
+    const savedValue = localStorage.getItem(`selected-option-${index}`);
     return savedValue ? JSON.parse(savedValue) : null;
   });
-
-  useEffect(() => {
-    if (svalue) {
-      localStorage.setItem(`selected-option-${questionId}`, JSON.stringify(svalue));
-    }
-  }, [svalue, questionId]);
 
   const customStyles: StylesConfig<Option, false> = {
     placeholder: (provided) => ({
@@ -61,6 +56,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, callback, questionI
 
   const handleChange = (selectedOption: SingleValue<Option>) => {
     setsValue(selectedOption);
+    localStorage.setItem(`selected-option-${index}`, JSON.stringify(selectedOption));
     const selectedAnswerId = selectedOption?.optionId ?? "";
     const nextQuestionId = selectedOption?.nextQuestionId ?? null;
     callback("", nextQuestionId, questionId, selectedAnswerId, businessTypeId);

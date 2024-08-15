@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Form from 'react-bootstrap/Form';
 import CustomButton from "../button/CustomButton";
 
 interface CustomFileInputProps {
   isLasted: boolean;
-  title: string;
   callback: (file: File[]) => void;
-  typeFile: number;
+  optionId:  string
 }
 
-const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, title, callback }) => {
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback, optionId }) => {
+  const [selectedFiles, setSelectedFiles] = useState<File[]>(() => {
+    const savedValue = localStorage.getItem(`selected-file-${optionId}`);
+    return savedValue ? [] : [];  
+  });
   const [activeButton, setActiveButton] = useState(false);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,6 +23,12 @@ const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, title, call
       setActiveButton(true);
     }
   };
+
+  useEffect(() => {
+    if (selectedFiles.length>0) {
+      localStorage.setItem(`selected-file-${optionId}`, selectedFiles[0].name);
+    }
+  }, [selectedFiles, optionId]);
 
   const handleSubmit = () => {
     if (selectedFiles.length > 0) {

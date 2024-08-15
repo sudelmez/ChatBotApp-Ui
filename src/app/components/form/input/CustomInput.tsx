@@ -23,11 +23,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, validatio
   const validationSchema = Yup.object().shape({
     value: validationRule !== null ? schema.matches(new RegExp(validationRule.pattern), validationRule.message) : schema
   });
-
-  useEffect(() => {
-    localStorage.setItem(`input-value-${optionId}`, inputVal);
-  }, [inputVal, optionId]);
-
+  
   return (
     <Formik
       initialValues={{ value: inputVal }}
@@ -35,6 +31,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, validatio
       onSubmit={(values) => {
         callback(values.value);
         setInputVal(values.value);
+        localStorage.setItem(`input-value-${optionId}`, values.value);
       }}
     >
       {({ handleSubmit, handleChange, values, errors, touched, validateForm }) => (
