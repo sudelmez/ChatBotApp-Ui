@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Select, { StylesConfig, SingleValue } from 'react-select';
 import { Option } from '../../model/option_model';
+import Form from 'react-bootstrap/Form';
 
 interface CustomSelectProps {
   values: {
@@ -48,7 +49,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, call
       fontFamily: '"Pragati Narrow", sans-serif',
     }),
   };
-
+  const [value, setValue] = useState('');
   const handleChange = (selectedOption: SingleValue<Option>) => {
     const selectedAnswerId = selectedOption?.optionId ?? "";
     const nextQuestionId = selectedOption?.nextQuestionId ?? null;
@@ -64,14 +65,23 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, call
   }));
 
   return (
-    <Select 
-      className='col-md-12'
-      styles={customStyles}
-      onChange={handleChange}
-      options={formattedValues}
-      placeholder="Lütfen bir cevap seçin."
-      value={formattedValues.find(option => option.optionId === selectedValue)}
-    />
+    <div>
+       <Form.Control
+          autoFocus
+          className="mx-3 my-2 w-auto"
+          placeholder="Type to filter..."
+          onChange={(e) => setValue(e.target.value)}
+          value={value}
+        /><Select 
+        className='col-md-12'
+        styles={customStyles}
+        onChange={handleChange}
+        options={formattedValues}
+        placeholder="Lütfen bir cevap seçin."
+        value={formattedValues.find(option => option.optionId === selectedValue)}
+      />
+    </div>
+    
   );
 }
 

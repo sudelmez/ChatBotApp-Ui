@@ -199,9 +199,10 @@ function ChatBotPage() {
           <div className="row">
           <div className="col">
             <div className="paddingArrange">{loading ? (
+              <div className="loadingCenter">
               <div className="col-md-12">
                 <Spinner animation="grow" />
-              </div>
+              </div></div>
             ) : (
               <div> {questionList.map((value, index) => {
                 const isCurrent = value.questionId === currentQuestionId;
