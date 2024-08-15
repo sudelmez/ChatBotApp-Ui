@@ -13,7 +13,6 @@ import CustomDateInput from "../../../components/form/date_input/date_input";
 function ChatBotPage() {
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [end, setEnd] = useState<string>("");
-  const [selectedOptionId, setSelectedOptionId] = useState<string | null>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [problem, setProblem] = useState<string>("");
   const [currentQuestionId, setCurrentQuestionId] = useState<number | null>();
@@ -100,7 +99,6 @@ function ChatBotPage() {
     answerId: string,
     businessType: number |null
   ) => {
-    setSelectedOptionId(answerId);
     const selectedOption = questionList
       .find(q => q.questionId === questionId)
       ?.options.find(option => option.optionId === answerId);
