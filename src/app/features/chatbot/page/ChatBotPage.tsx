@@ -1,6 +1,6 @@
 import "./ChatBotPage.css";
 import CustomSelect from '../components/select/CustomSelect';
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CustomInput from "../../../components/form/input/CustomInput";
 import QuestionService from "../services/QuestionService";
 import { Question } from "../model/question_model";
@@ -56,14 +56,11 @@ function ChatBotPage() {
   }, [questionList]);
 
   const postBusinessOperationModel = async (document: File[] | null, data: AnswerLog, nextId?: number | null)=>{
-    console.log("nextid,", nextId);
     try {
       const formData = new FormData();
       if(document !==null){document.forEach(element => {
         formData.append('formFiles', element);
       });}
-      console.log("doc:", document);
-      console.log("data:", data);
     formData.append('jsonDatas', JSON.stringify(data));
     const response = await service.sendBusinessOperation(formData);
       return response;
@@ -95,7 +92,7 @@ function ChatBotPage() {
     }
   }
 
-  const callbackSelected = async (
+  const callbackSelected = useCallback(async (
     answerInputValue: string,
     nextId: number | null,
     questionId: number,
@@ -113,7 +110,7 @@ function ChatBotPage() {
     }
     await callbackHandlePress(null,questionId, answerId, selectedOption?.info ?? "", businessType, answerInputValue, nextId);
     return;
-  };
+  }, [selectedOptionId]);
   const getQuestionWithType = (value: Question, isCurrent: boolean) => {
     const alertComponent = (isCurrent && selectedInfo !== null && selectedInfo !== "" && (
       <CustomAlert title={selectedInfo} />
@@ -126,7 +123,6 @@ function ChatBotPage() {
             <CustomSelect
               isLasted={!isCurrent}
               values={value.options}
-              selectedValue={selectedOptionId}
               callback={callbackSelected}
               questionId={value.questionId}
               businessTypeId={value.businessTypeId}
@@ -139,7 +135,7 @@ function ChatBotPage() {
           <div>
             {!value.isLastQuestion && alertComponent}
             <CustomInput
-              typeInput={value.businessTypeId ?? 0}
+              optionId={value.options[0].optionId}
               validationRule={value.validationRule}
               isLasted={!isCurrent}
               callback={async (val) => {

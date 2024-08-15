@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import Select, { StylesConfig, SingleValue } from 'react-select';
 import { Option } from '../../model/option_model';
-import Form from 'react-bootstrap/Form';
 
 interface CustomSelectProps {
   values: {
@@ -10,7 +9,6 @@ interface CustomSelectProps {
     optionId: string;
     info: string | null;
   }[];
-  selectedValue: string | null;
   callback: (
     answerInputValue: string, 
     nextId: number | null, 
@@ -23,7 +21,18 @@ interface CustomSelectProps {
   isLasted: boolean;
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, callback, questionId, businessTypeId, isLasted}) => {
+const CustomSelect: React.FC<CustomSelectProps> = ({ values, callback, questionId, businessTypeId, isLasted}) => {
+  const [svalue, setsValue] = useState<SingleValue<Option>>(() => {
+    const savedValue = localStorage.getItem(`selected-option-${questionId}`);
+    return savedValue ? JSON.parse(savedValue) : null;
+  });
+
+  useEffect(() => {
+    if (svalue) {
+      localStorage.setItem(`selected-option-${questionId}`, JSON.stringify(svalue));
+    }
+  }, [svalue, questionId]);
+
   const customStyles: StylesConfig<Option, false> = {
     placeholder: (provided) => ({
       ...provided,
@@ -49,13 +58,12 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, call
       fontFamily: '"Pragati Narrow", sans-serif',
     }),
   };
-  const [value, setValue] = useState('');
+
   const handleChange = (selectedOption: SingleValue<Option>) => {
+    setsValue(selectedOption);
     const selectedAnswerId = selectedOption?.optionId ?? "";
     const nextQuestionId = selectedOption?.nextQuestionId ?? null;
-    console.log(selectedAnswerId);
-    console.log(nextQuestionId);
-    callback("", nextQuestionId, questionId, selectedAnswerId,  businessTypeId);
+    callback("", nextQuestionId, questionId, selectedAnswerId, businessTypeId);
   };
 
   const formattedValues = values.map((value) => ({
@@ -66,22 +74,15 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ values, selectedValue, call
 
   return (
     <div>
-       <Form.Control
-          autoFocus
-          className="mx-3 my-2 w-auto"
-          placeholder="Type to filter..."
-          onChange={(e) => setValue(e.target.value)}
-          value={value}
-        /><Select 
+      <Select
         className='col-md-12'
         styles={customStyles}
         onChange={handleChange}
         options={formattedValues}
         placeholder="Lütfen bir cevap seçin."
-        value={formattedValues.find(option => option.optionId === selectedValue)}
+        value={svalue}
       />
     </div>
-    
   );
 }
 
