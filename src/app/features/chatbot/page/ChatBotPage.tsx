@@ -220,7 +220,7 @@ function ChatBotPage() {
             )}
             {(problem!==null && problem!=="") && (<CustomAlert isError= {true} title={problem}></CustomAlert>)}
             </div>
-          </div>
+            </div>
           </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -23,7 +23,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, validatio
   const validationSchema = Yup.object().shape({
     value: validationRule !== null ? schema.matches(new RegExp(validationRule.pattern), validationRule.message) : schema
   });
-  
+
   return (
     <Formik
       initialValues={{ value: inputVal }}
