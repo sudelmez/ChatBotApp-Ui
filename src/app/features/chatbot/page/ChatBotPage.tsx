@@ -1,6 +1,6 @@
 import "./ChatBotPage.css";
 import CustomSelect from '../components/select/CustomSelect';
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CustomInput from "../../../components/form/input/CustomInput";
 import QuestionService from "../services/QuestionService";
 import { Question } from "../model/question_model";
@@ -56,7 +56,7 @@ function ChatBotPage() {
     }
   }, [questionList]);
 
-  const postBusinessOperationModel = async (document: File[] | null, data: AnswerLog, nextId?: number | null)=>{
+  const postBusinessOperationModel = async (document: File[] | null, data: AnswerLog)=>{
     try {
       const formData = new FormData();
       if(document !==null){document.forEach(element => {
@@ -93,7 +93,7 @@ function ChatBotPage() {
     }
   }
 
-  const callbackSelected = useCallback(async (
+  const callbackSelected = async (
     answerInputValue: string,
     nextId: number | null,
     questionId: number,
@@ -111,16 +111,21 @@ function ChatBotPage() {
     }
     await callbackHandlePress(null,questionId, answerId, selectedOption?.info ?? "", businessType, answerInputValue, nextId);
     return;
-  }, [selectedOptionId]);
+  };
+
   const getQuestionWithType = (value: Question, isCurrent: boolean, index: number) => {
     const alertComponent = (isCurrent && selectedInfo !== null && selectedInfo !== "" && (
       <CustomAlert title={selectedInfo} />
     ));
+    const questionComponent = ( <div className="header-padding">
+      <h2 className={isCurrent ? "header": "header-last"}>{value.title}</h2>
+    </div>);
     switch (value.optionType.title) {
       case "select":
         return (
           <div>
             {!value.isLastQuestion && alertComponent}
+            {questionComponent}
             <CustomSelect
               isLasted={!isCurrent}
               values={value.options}
@@ -136,6 +141,7 @@ function ChatBotPage() {
         return (
           <div>
             {!value.isLastQuestion && alertComponent}
+            {questionComponent}
             <CustomInput
               optionId={value.options[0].optionId}
               validationRule={value.validationRule}
@@ -151,6 +157,7 @@ function ChatBotPage() {
         return (
           <div>
             {!value.isLastQuestion && alertComponent}
+            {questionComponent}
             <CustomFileInput
               optionId={value.options[0].optionId}
               callback={(val) => 
@@ -165,12 +172,14 @@ function ChatBotPage() {
         return (
           <div>
             {value.isLastQuestion && alertComponent}
+            {questionComponent}
           </div>
         );
       case "dateInput":
         return (
           <div>
             {!value.isLastQuestion && alertComponent}
+            {questionComponent}
             <CustomDateInput
               typeDate={value.businessTypeId ?? 0}
               callback={async (val) => {
@@ -178,7 +187,7 @@ function ChatBotPage() {
               }}
               isLasted={!isCurrent}
               title={value.title}
-            />
+            />{value.isLastQuestion && alertComponent}
           </div>
         );
       default:
@@ -203,20 +212,18 @@ function ChatBotPage() {
             ) : (
               <div> {questionList.map((value, index) => {
                 const isCurrent = value.questionId === currentQuestionId;
-                return (end ===null || end ==="") ? (
+                return (
                   <div key={index} className="item-padding">
-                    <div className="header-padding">
-                      <h2 className={isCurrent ? "header": "header-last"}>{value.title}</h2>
-                    </div>{getQuestionWithType(value, isCurrent, index)}
+                   {getQuestionWithType(value, isCurrent, index)}
                   </div>
-                ): <div></div> ;
+                );
               })}
               {(end !== null && end !=="") && (<CustomAlert title={end}></CustomAlert>)}</div>
             )}
             {(problem!==null && problem!=="") && (<CustomAlert isError= {true} title={problem}></CustomAlert>)}
             </div>
           </div>
-            </div>
+          </div>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import CustomButton from "../button/CustomButton";
 
@@ -11,7 +11,7 @@ interface CustomFileInputProps {
 const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback, optionId }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>(() => {
     const savedValue = localStorage.getItem(`selected-file-${optionId}`);
-    return savedValue ? [] : [];  
+    return savedValue ? JSON.parse(savedValue) : [];  
   });
   const [activeButton, setActiveButton] = useState(false);
 
@@ -20,15 +20,10 @@ const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback, o
     if (files) {
       const fileArray = Array.from(files);
       setSelectedFiles(prevList => [...prevList, ...fileArray]);
+      localStorage.setItem(`selected-file-${optionId}`, JSON.stringify(selectedFiles));
       setActiveButton(true);
     }
   };
-
-  useEffect(() => {
-    if (selectedFiles.length>0) {
-      localStorage.setItem(`selected-file-${optionId}`, selectedFiles[0].name);
-    }
-  }, [selectedFiles, optionId]);
 
   const handleSubmit = () => {
     if (selectedFiles.length > 0) {
@@ -54,7 +49,7 @@ const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback, o
           }}
         />
       </Form.Group>
-      {activeButton && (<CustomButton pressed={false} title="Kaydet" handlePress={handleSubmit} />)}
+      {activeButton && (<CustomButton pressed={false} title="Kaydet" handlePress={handleSubmit}/>)}
     </div>
   );
 }
