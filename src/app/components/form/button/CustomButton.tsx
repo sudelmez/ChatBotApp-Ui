@@ -1,35 +1,26 @@
 import React from 'react';
-import './CustomButton.css';
+import Button from 'react-bootstrap/Button';
 
 interface CustomButtonProps {
   title: string;
   handlePress: () => void;
-  color?: boolean;
+  pressed: boolean;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({ title, handlePress, color = true }) => {
+const CustomButton: React.FC<CustomButtonProps> = ({ title, handlePress, pressed = false }) => {
   const buttonStyle: React.CSSProperties = {
-    backgroundColor: color ? '#977EF9' : '#FC4847',
-    margin: '20px',
-    padding: '10px 20px',
-    border: 'none',
-    borderRadius: 50,
+    backgroundColor: !pressed ? '#4a0a9a' : '#a895f5',
+    marginTop: '20px',
     cursor: 'pointer',
-    height: '50px',
-    width: '280px',
-  };
-
-  const titleStyle: React.CSSProperties = {
     color: 'white',
-    fontSize: '16px',
+    fontSize: '18px',
+    fontFamily: '"Pragati Narrow", sans-serif',
   };
 
   return (
-    <div>
-      <button style={buttonStyle} onClick={handlePress}>
-        <span className='title' style={titleStyle}>{title}</span>
-      </button>
-    </div>
+      <Button disabled={pressed} onClick={handlePress} style={buttonStyle} className='col-md-12' variant="primary" size="lg">
+      {title}
+      </Button>
   );
 };
 

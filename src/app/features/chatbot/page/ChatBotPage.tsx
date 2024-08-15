@@ -1,101 +1,234 @@
 import "./ChatBotPage.css";
 import CustomSelect from '../components/select/CustomSelect';
-import { useEffect, useState } from "react";
-import NavBar from "../../../components/ui/navbar/NavBar";
+import { useEffect, useState, useRef } from "react";
 import CustomInput from "../../../components/form/input/CustomInput";
-import CustomButton from "../../../components/form/button/CustomButton";
 import QuestionService from "../services/QuestionService";
-import {Question} from "../model/question_model";
+import { Question } from "../model/question_model";
+import { AnswerLog } from "../model/answer_log_model";
+import { useUserContext } from "../../../context/user_context";
+import CustomAlert from "../../../components/ui/alerts/custom_alert";
+import Spinner from 'react-bootstrap/Spinner';
+import CustomFileInput from "../../../components/form/file_input/file_input";
+import CustomDateInput from "../../../components/form/date_input/date_input";
 function ChatBotPage() {
   const [questionList, setQuestionList] = useState<Question[]>([]);
-  const [fetchedquestionList, setfetchedQuestionList] = useState<Question[]>([]);
   const [end, setEnd] = useState<string>("");
-  const [ind, setInd] = useState<number>(0);
-  const [inputVal, setInputVal] = useState<string>("");
-  const [buttonVis, setButtonVis] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [problem, setProblem] = useState<string>("");
+  const [currentQuestionId, setCurrentQuestionId] = useState<number | null>();
+  const service = new QuestionService();
+  const { token, user, transactionId } = useUserContext();
+  const [selectedInfo, setSelectedInfo] = useState<string | null>(null);
+  const lastQuestionRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const service = new QuestionService(); 
-        const questions = await service.getQuestions(); 
-        setfetchedQuestionList(questions);
-        if (questions.length > 0) {
-          setQuestionList([questions[0]]);
-        }
-        console.log("fetched questions");
-        console.log(questions);
-      } catch (error) {
-        console.error('Error fetching questions:', error);
+  const fetchQuestion = async (nextQuestionId?: number | null) => {
+    try {
+      setLoading(true);
+      const nextQuestion = await service.getQuestion(nextQuestionId ?? null, token ?? "");
+      setLoading(false);
+      if (!nextQuestion) {
+        setEnd("Sohbet sona erdi.");
+        console.error(`Soru bulunamadı id: ${nextQuestionId}`);
+        return;
       }
-    };
-    fetchQuestions(); 
-  }, []);
-
-  const callBackInput = (val: string) => {
-    setButtonVis(true);
-    setInputVal(val);
-  }
-
-  const callbackSelected = (nextId: number | null, index:number) => {
-    if (nextId === -1) {
-      return;
-    } else if (nextId === null) {
-      setEnd("Sohbet sona erdi.");
-      console.log("Sohbet sona erdi.");
-      return;
+      setProblem("");
+      setQuestionList(prevQuestionList => {
+        if (prevQuestionList.some(q => q.questionId === nextQuestion.questionId)) {
+          return prevQuestionList;
+        }
+        return [...prevQuestionList, nextQuestion];
+      });
+    } catch (error) {
+      setLoading(false);
+      setProblem("Bir sorun oluştu.");
+      console.error('Error fetching question:', error);
     }
-    const nextQuestion = fetchedquestionList.find((question: Question) => parseInt(question.questionId) === nextId);
-    if (!nextQuestion) {
-      setEnd("Sohbet sona erdi.");
-      console.error(`Soru bulunamadı id: ${nextId}`);
-      return;
-    }
-
-    if (ind !== 0 && index < ind) {
-      console.log("last indexed question alert");
-      questionList.splice(ind, 1);
-    }
-    setButtonVis(false);
-    setQuestionList([...questionList, nextQuestion]);
-    setInd(questionList.length);
-    setEnd("");
-    setInputVal("");
   };
 
+  useEffect(() => {
+    localStorage.clear();
+    fetchQuestion();
+  }, []);
+
+  useEffect(() => {
+    if (questionList.length > 0) {
+      setCurrentQuestionId(questionList[questionList.length - 1].questionId);
+    }if (lastQuestionRef.current) {
+      lastQuestionRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [questionList]);
+
+  const postBusinessOperationModel = async (document: File[] | null, data: AnswerLog)=>{
+    try {
+      const formData = new FormData();
+      if(document !==null){document.forEach(element => {
+        formData.append('formFiles', element);
+      });}
+    formData.append('jsonDatas', JSON.stringify(data));
+    const response = await service.sendBusinessOperation(formData);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const callbackHandlePress = async(document: File[] | null, questionId: number, optionId: string | null, optionInfo: string, businessTypeId: number | null, input?: string | null, nextId?: number | null)=>{
+    try {
+    const log: AnswerLog = {
+      questionId: questionId,
+      optionId: optionId?.toString() ?? "",
+      answerInput: input ?? "",
+      username: user ?? "",
+      businessTypeId: businessTypeId,
+      transactionId: transactionId
+    };
+    const res= await postBusinessOperationModel(document, log );
+    if (res?.success) {
+      await fetchQuestion(nextId ?? null);
+      setSelectedInfo(optionInfo);
+      return;
+    } else if (res?.success === false) {
+      setProblem(res.message ?? res.validationErrors[0] ?? "");
+    }
+    } catch (error) {
+      setProblem("Bir sorun oluştu.");
+    }
+  }
+
+  const callbackSelected = async (
+    answerInputValue: string,
+    nextId: number | null,
+    questionId: number,
+    answerId: string,
+    businessType: number |null
+  ) => {
+    const selectedOption = questionList
+      .find(q => q.questionId === questionId)
+      ?.options.find(option => option.optionId === answerId);
+    const questionIndex = questionList.findIndex(q => q.questionId === questionId);
+    if (questionIndex !== -1 && questionIndex !== null) {
+      const newList = questionList.slice(0, questionIndex + 1);
+      setQuestionList(newList);
+    }
+    await callbackHandlePress(null,questionId, answerId, selectedOption?.info ?? "", businessType, answerInputValue, nextId);
+    return;
+  };
+
+  const getQuestionWithType = (value: Question, isCurrent: boolean, index: number) => {
+    const alertComponent = (isCurrent && selectedInfo !== null && selectedInfo !== "" && (
+      <CustomAlert title={selectedInfo} />
+    ));
+    const questionComponent = ( <div className="header-padding">
+      <h2 className={isCurrent ? "header": "header-last"}>{value.title}</h2>
+    </div>);
+    // if(loading && isCurrent){return(
+    //   <div className="loadingCenter">
+    //   <div className="col-md-12">
+    //     <Spinner animation="grow" />
+    //   </div></div>
+    // ) }
+    switch (value.optionType.title) {
+      case "select":
+        return (
+          <div>
+            {!value.isLastQuestion && alertComponent}
+            {questionComponent}
+            <CustomSelect
+              isLasted={!isCurrent}
+              values={value.options}
+              callback={callbackSelected}
+              questionId={value.questionId}
+              businessTypeId={value.businessTypeId}
+              index = {index}
+            />
+            {value.isLastQuestion && alertComponent}
+          </div>
+        );
+      case "input":
+        return (
+          <div>
+            {!value.isLastQuestion && alertComponent}
+            {questionComponent}
+            <CustomInput
+              optionId={value.options[0].optionId}
+              validationRule={value.validationRule}
+              isLasted={!isCurrent}
+              callback={async (val) => {
+                callbackHandlePress(null,value.questionId,value.options[0].optionId ,value.options[0].info ?? "", value.businessTypeId, val, value.options[0].nextQuestionId);
+              }}
+            />
+            {value.isLastQuestion && alertComponent}
+          </div>
+        );
+      case "fileInput":
+        return (
+          <div>
+            {!value.isLastQuestion && alertComponent}
+            {questionComponent}
+            <CustomFileInput
+              optionId={value.options[0].optionId}
+              callback={(val) => 
+                callbackHandlePress(val, value.questionId, value.options[0].optionId, value.options[0].info ?? "", value.businessTypeId, null, value.options[0].nextQuestionId)
+              }
+              isLasted={!isCurrent}
+            />
+            {value.isLastQuestion && alertComponent}
+          </div>
+        );
+      case "fileDownload":
+        return (
+          <div>
+            {value.isLastQuestion && alertComponent}
+            {questionComponent}
+          </div>
+        );
+      case "dateInput":
+        return (
+          <div>
+            {!value.isLastQuestion && alertComponent}
+            {questionComponent}
+            <CustomDateInput
+              typeDate={value.businessTypeId ?? 0}
+              callback={async (val) => {
+                callbackHandlePress(null, value.questionId, value.options[0].optionId, value.options[0].info ?? "", value.businessTypeId, "14/02/2024", value.options[0].nextQuestionId);
+              }}
+              isLasted={!isCurrent}
+              title={value.title}
+            />{value.isLastQuestion && alertComponent}
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+  
   return (
-    <div className="Page">
-      <NavBar title={"Chat Bot"}></NavBar>
-      <div className="chatbot">
-        {questionList.map((value, index) => {
-          return (
-            <div key={index} className="items">
-              <h2 className="header">{value.title}</h2>
-              {value.answerType.title === "select" ? (
-                <CustomSelect
-                  index={index}
-                  isDisabled={value.isDisabled}
-                  values={value.answers}
-                  callback={callbackSelected}
-                ></CustomSelect>
-              ) : (
-                <div>
-                  <CustomInput index={index} callback={callBackInput} title={"Değer giriniz."}></CustomInput>
-                  {buttonVis === true && <div className="rowButtons">
-                    {value.answers.map((val) => {
-                      return (
-                        <CustomButton key={val.title} handlePress={() => callbackSelected(parseInt(val.nextQuestionId ?? '-1'), index)} title={val.title}></CustomButton>
-                      );
-                    })}
-                  </div>}
-                </div>
-              )}
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-md-4">
+          <div className="backgroundImageLeft"></div>
+          </div>
+          <div className="col-md-8">
+          <div className="row">
+          <div className="col">
+            <div className="paddingArrange">{
+              <div> {questionList.map((value, index) => {
+                const isCurrent = value.questionId === currentQuestionId;
+                return (
+                  <div key={index} className="item-padding" ref={isCurrent ? lastQuestionRef : null}>
+                   {getQuestionWithType(value, isCurrent, index)}
+                  </div>
+                );
+              })}
+              {(end !== null && end !=="") && (<CustomAlert title={end}></CustomAlert>)}</div>
+            }
+            {(problem!==null && problem!=="") && (<CustomAlert isError= {true} title={problem}></CustomAlert>)}
             </div>
-          );
-        })}
-        <h2 className="endheader">{end}</h2>
+            </div>
+          </div>
+          </div>
+        </div>
       </div>
-    </div>
   );
 }
 

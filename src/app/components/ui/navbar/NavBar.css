@@ -5,12 +5,12 @@
     justify-content: center;
     align-items: center;
     height: 75px;
-    border-radius: 10px;
+    border-radius: 20px;
     top: 2%;
     left: 2%;
     right: 2%;
     z-index: 1;
-    background-color: #977EF9;
+    background-color: #a895f5;
     box-shadow: 0px 0px 7px rgb(185, 193, 199);
     border: 1px;
   

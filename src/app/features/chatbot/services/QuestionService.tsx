@@ -1,21 +1,37 @@
-import PostsApiAdapter, {ApiEndpoints} from "../../../api/FetchDataUseCase";
-import { Question } from "../model/question_model";
+import { GetQuestion, Question } from "../model/question_model";
+import { ApiEndUrls,ApiEndpoints } from "../../../api/endUrls/api_urls";
+import ApiService from "../../../api/service/api_service";
+import { AutoResponseModel } from "../model/auto_response_model";
+
 class QuestionService {
-    private postsApi: PostsApiAdapter<Question>;
-  
+    private questionsApi: ApiService<Question, GetQuestion>;
+    private fileApi: ApiService<AutoResponseModel, FormData>;
     constructor() {
-      this.postsApi = new PostsApiAdapter<Question>();
+      this.questionsApi = new  ApiService<Question, GetQuestion>;
+      this.fileApi = new ApiService<AutoResponseModel, FormData>();
     }
-  
-    async getQuestions(): Promise<Question[]> {
+    async getQuestion(nextQuestionId: number | null,token: string): Promise<Question> {
       try {
-        const questions = await this.postsApi.getAllPosts(ApiEndpoints.QUESTION);
-        console.log("questions");
-        console.log(questions);
-        return questions; 
+        const data : GetQuestion = {
+          nextQuestionId: nextQuestionId ?? null,
+          platformId:"1",
+        }
+        const question = await this.questionsApi.post(ApiEndpoints.QUESTION, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
+        console.log(question);
+        return question.data!; 
       } catch (error) {
         console.error('Error fetching questions:', error);
         throw error; 
+      }
+    }
+    async sendBusinessOperation(data: FormData){
+      try {
+        console.log(data);
+        const res= await this.fileApi.post(ApiEndpoints.BUSINESS, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'multipart/form-data'});
+        console.log(res);
+        return res;
+      } catch (error) {
+        console.error('Error sending business:', error);
       }
     }
   }
