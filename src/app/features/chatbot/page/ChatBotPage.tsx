@@ -25,6 +25,7 @@ function ChatBotPage() {
 
   const fetchQuestion = async (nextQuestionId?: number | null) => {
     try {
+      setProblem("");
       setLoading(true);
       const nextQuestion = await service.getQuestion(nextQuestionId ?? null, token ?? "");
       setLoading(false);
@@ -33,7 +34,6 @@ function ChatBotPage() {
         console.error(`Soru bulunamadı id: ${nextQuestionId}`);
         return;
       }
-      setProblem("");
       setQuestionList(prevQuestionList => {
         if (prevQuestionList.some(q => q.questionId === nextQuestion.questionId)) {
           return prevQuestionList;
@@ -48,6 +48,7 @@ function ChatBotPage() {
   };
 
   useEffect(() => {
+    setProblem("");
     localStorage.clear();
     fetchQuestion();
   }, []);
@@ -70,7 +71,7 @@ function ChatBotPage() {
     const response = await service.sendBusinessOperation(formData);
       return response;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -80,6 +81,7 @@ function ChatBotPage() {
       const newList = questionList.slice(0, questionIndex + 1);
       setQuestionList(newList);
     }
+    console.log("step1")
     try {
     const log: AnswerLog = {
       questionId: questionId,
@@ -89,14 +91,18 @@ function ChatBotPage() {
       businessTypeId: businessTypeId,
       transactionId: transactionId
     };
-    console.log("document", document);
+    console.log("step2")
     const res= await postBusinessOperationModel(document, log );
+    console.log("step3")
+    console.log(res);
     if (res?.success) {
       await fetchQuestion(nextId ?? null);
       setSelectedInfo(optionInfo);
+      console.log("step4")
       return res;
     } else if (res?.success === false) {
-      setProblem(res.message ?? res.validationErrors[0] ?? "");
+      console.log("step5")
+      setProblem(res.message??"");
       return res;
     }
     } catch (error) {
@@ -175,7 +181,6 @@ function ChatBotPage() {
             {!value.isLastQuestion && alertComponent}
             {questionComponent}
             <CustomFileInput
-              optionId={value.options[0].optionId}
               callback={(val) => 
                 callbackHandlePress(val, value.questionId, value.options[0].optionId, value.options[0].info ?? "", value.businessTypeId, null, value.options[0].nextQuestionId)
               }
@@ -231,7 +236,7 @@ function ChatBotPage() {
               })}
               {(end !== null && end !=="") && (<CustomAlert title={end}></CustomAlert>)}</div>
             }
-            {/* {(problem!==null && problem!=="") && (<CustomAlert type={AlertType.Danger} title={problem}></CustomAlert>)} */}
+            {(problem!==null && problem!=="") && (<CustomAlert type={AlertType.Danger} title={problem}></CustomAlert>)}
             </div>
             </div>
           </div>

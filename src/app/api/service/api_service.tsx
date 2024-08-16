@@ -18,7 +18,6 @@ export default class ApiService<T, F>{
     }
     async post(endpoint: ApiEndpoints, endurl: ApiEndUrls, body:F, headers: any): Promise<ApiResponse<T>> {
         const url = ApiEndpoints.BASE_URL + endpoint + "/" + endurl;
-        console.log("url:", url);
         const response = this.apiClient.request({
             url: url,
             method: 'post',

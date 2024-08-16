@@ -8,10 +8,9 @@ import CustomAlert, { AlertType } from "../../ui/alerts/custom_alert";
 interface CustomFileInputProps {
   isLasted: boolean;
   callback: (file: File[]) =>  Promise<ApiResponse<AutoResponseModel> | undefined> | void; 
-  optionId:  string
 }
 
-const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback, optionId }) => {
+const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [activeButton, setActiveButton] = useState(false);
   const [resMessage, setResMessage] = useState("");
@@ -31,11 +30,13 @@ const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback, o
       setResMessage("");
       setErrorMessage("");
       const res = await callback(selectedFiles);
-      if (res && res.message) {
-        if(res.success===false){
-          setErrorMessage(res.message);
-        }else{
-          setResMessage(res.message);}
+      if (res) {
+        if(res.success===false && res.validationErrors.length > 0){
+          setErrorMessage(res.validationErrors[0]);
+        }else if(res.success===true && res.message!==null){
+          // setResMessage("Dosya başarıyla kaydedildi.");
+          setResMessage(res.message);
+        }
       }
       setActiveButton(false);
       setSelectedFiles([]);
