@@ -73,6 +73,11 @@ function ChatBotPage() {
   }
 
   const callbackHandlePress = async(document: File[] | null, questionId: number, optionId: string | null, optionInfo: string, businessTypeId: number | null, input?: string | null, nextId?: number | null)=>{
+    const questionIndex = questionList.findIndex(q => q.questionId === questionId);
+    if (questionIndex !== -1 && questionIndex !== null) {
+      const newList = questionList.slice(0, questionIndex + 1);
+      setQuestionList(newList);
+    }
     try {
     const log: AnswerLog = {
       questionId: questionId,
@@ -105,11 +110,6 @@ function ChatBotPage() {
     const selectedOption = questionList
       .find(q => q.questionId === questionId)
       ?.options.find(option => option.optionId === answerId);
-    const questionIndex = questionList.findIndex(q => q.questionId === questionId);
-    if (questionIndex !== -1 && questionIndex !== null) {
-      const newList = questionList.slice(0, questionIndex + 1);
-      setQuestionList(newList);
-    }
     await callbackHandlePress(null,questionId, answerId, selectedOption?.info ?? "", businessType, answerInputValue, nextId);
     return;
   };
