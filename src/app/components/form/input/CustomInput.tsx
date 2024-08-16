@@ -48,7 +48,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, validatio
                 placeholder="Değer Giriniz"
                 isValid={touched.value && !errors.value}
                 isInvalid={!!errors.value}/>
-              <Form.Control.Feedback type="valid">Bilginiz alındı!</Form.Control.Feedback>
+              <Form.Control.Feedback type="valid">Yanıtınız başarıyla alındı!</Form.Control.Feedback>
               <Form.Control.Feedback type="invalid">{errors.value}</Form.Control.Feedback>
             </Form.Group>
             {activeButton && (<CustomButton pressed={false} title="Kaydet" handlePress={handleSubmit} />)}
