@@ -28,6 +28,8 @@ const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback, o
 
   const handleSubmit =async () => {
     if (selectedFiles.length > 0) {
+      setResMessage("");
+      setErrorMessage("");
       const res = await callback(selectedFiles);
       if (res && res.message) {
         if(res.success===false){

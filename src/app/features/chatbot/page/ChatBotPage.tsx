@@ -74,7 +74,7 @@ function ChatBotPage() {
     }
   }
 
-  const callbackHandlePress = async(document: File[] | null, questionId: number, optionId: string | null, optionInfo: string, businessTypeId: number | null, input?: string | null, nextId?: number | null): Promise<ApiResponse<AutoResponseModel> | undefined>=>{
+  const callbackHandlePress = async(document: File[] | null, questionId: number, optionId: string | null, optionInfo: string, businessTypeId: number | null, input?: string | null, nextId?: number | null) : Promise<ApiResponse<AutoResponseModel>  | undefined>=>{
     const questionIndex = questionList.findIndex(q => q.questionId === questionId);
     if (questionIndex !== -1 && questionIndex !== null) {
       const newList = questionList.slice(0, questionIndex + 1);
@@ -94,10 +94,11 @@ function ChatBotPage() {
     if (res?.success) {
       await fetchQuestion(nextId ?? null);
       setSelectedInfo(optionInfo);
+      return res;
     } else if (res?.success === false) {
       setProblem(res.message ?? res.validationErrors[0] ?? "");
+      return res;
     }
-    return res;
     } catch (error) {
       setProblem("Bir sorun oluştu.");
     }
