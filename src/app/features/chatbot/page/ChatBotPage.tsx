@@ -91,14 +91,15 @@ function ChatBotPage() {
       transactionId: transactionId
     };
     const res= await postBusinessOperationModel(document, log );
+    console.log("res1", res)
+
     if (res?.success) {
       await fetchQuestion(nextId ?? null);
       setSelectedInfo(optionInfo);
-      return res;
     } else if (res?.success === false && res.message!== null && res.message!=="") {
       setProblem(res.message);
-      return res;
     }
+    return res;
     } catch (error) {
       setProblem("Bir sorun oluştu.");
     }
@@ -159,6 +160,7 @@ function ChatBotPage() {
             {!value.isLastQuestion && alertComponent}
             {questionComponent}
             <CustomInput
+              type={value.validationRule.inputType ?? "text"}
               optionId={value.options[0].optionId}
               validationRule={value.validationRule}
               isLasted={!isCurrent}
@@ -221,6 +223,7 @@ function ChatBotPage() {
           <div className="col">
             <div className="paddingArrange">{
               <div> {questionList.map((value, index) => {
+                console.log(value);
                 const isCurrent = value.questionId === currentQuestionId;
                 return (
                   <div key={index} className="item-padding" ref={isCurrent ? lastQuestionRef : null}>

@@ -31,6 +31,7 @@ const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback })
       setErrorMessage("");
       const res = await callback(selectedFiles);
       if (res) {
+        console.log("res", res)
         if(res.success===false && res.validationErrors.length > 0){
           setErrorMessage(res.validationErrors[0]);
         }else if(res.success===true && res.message!==null){
