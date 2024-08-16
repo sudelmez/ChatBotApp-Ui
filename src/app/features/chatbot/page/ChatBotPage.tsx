@@ -6,10 +6,12 @@ import QuestionService from "../services/QuestionService";
 import { Question } from "../model/question_model";
 import { AnswerLog } from "../model/answer_log_model";
 import { useUserContext } from "../../../context/user_context";
-import CustomAlert from "../../../components/ui/alerts/custom_alert";
+import CustomAlert, { AlertType } from "../../../components/ui/alerts/custom_alert";
 import Spinner from 'react-bootstrap/Spinner';
 import CustomFileInput from "../../../components/form/file_input/file_input";
 import CustomDateInput from "../../../components/form/date_input/date_input";
+import { ApiResponse } from "../../../api/response/api_response";
+import { AutoResponseModel } from "../model/auto_response_model";
 function ChatBotPage() {
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [end, setEnd] = useState<string>("");
@@ -72,7 +74,7 @@ function ChatBotPage() {
     }
   }
 
-  const callbackHandlePress = async(document: File[] | null, questionId: number, optionId: string | null, optionInfo: string, businessTypeId: number | null, input?: string | null, nextId?: number | null)=>{
+  const callbackHandlePress = async(document: File[] | null, questionId: number, optionId: string | null, optionInfo: string, businessTypeId: number | null, input?: string | null, nextId?: number | null): Promise<ApiResponse<AutoResponseModel> | undefined>=>{
     const questionIndex = questionList.findIndex(q => q.questionId === questionId);
     if (questionIndex !== -1 && questionIndex !== null) {
       const newList = questionList.slice(0, questionIndex + 1);
@@ -92,10 +94,10 @@ function ChatBotPage() {
     if (res?.success) {
       await fetchQuestion(nextId ?? null);
       setSelectedInfo(optionInfo);
-      return;
     } else if (res?.success === false) {
       setProblem(res.message ?? res.validationErrors[0] ?? "");
     }
+    return res;
     } catch (error) {
       setProblem("Bir sorun oluştu.");
     }
@@ -228,7 +230,7 @@ function ChatBotPage() {
               })}
               {(end !== null && end !=="") && (<CustomAlert title={end}></CustomAlert>)}</div>
             }
-            {(problem!==null && problem!=="") && (<CustomAlert isError= {true} title={problem}></CustomAlert>)}
+            {(problem!==null && problem!=="") && (<CustomAlert type={AlertType.Danger} title={problem}></CustomAlert>)}
             </div>
             </div>
           </div>

@@ -1,31 +1,21 @@
 import React from "react";
 import Alert from 'react-bootstrap/Alert';
 
+export enum AlertType {
+  Success = 'success',
+  Warning = 'warning',
+  Danger = 'danger',
+  Info = 'info',
+}
 interface CustomAlertProps {
   title: string;
-  isError?: boolean;
+  type?: AlertType;
 }
-
-const CustomAlert: React.FC<CustomAlertProps> = ({ title, isError=false }) => {
+const CustomAlert: React.FC<CustomAlertProps> = ({ title, type = AlertType.Warning }) => {
   return (
-    <>
-      {[
-        // 'primary',
-        // 'secondary',
-        // 'success',
-        // 'danger',
-        'warning',
-        // 'info',
-        // 'light',
-        // 'dark',
-      ].map((variant) => (
-        <div className="col-md-12">
-        <Alert  style={{marginTop:'10px'}} key={variant} variant={isError ? 'danger':'warning'} >
+        <Alert  style={{marginTop:'10px'}} key={type} variant={type} >
           {title}
         </Alert>
-        </div>
-      ))}
-    </>
   );
 }
 

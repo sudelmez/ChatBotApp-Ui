@@ -1,16 +1,21 @@
 import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import CustomButton from "../button/CustomButton";
+import { AutoResponseModel } from "../../../features/chatbot/model/auto_response_model";
+import { ApiResponse } from "../../../api/response/api_response";
+import CustomAlert, { AlertType } from "../../ui/alerts/custom_alert";
 
 interface CustomFileInputProps {
   isLasted: boolean;
-  callback: (file: File[]) => void;
+  callback: (file: File[]) =>  Promise<ApiResponse<AutoResponseModel> | undefined> | void; 
   optionId:  string
 }
 
 const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback, optionId }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [activeButton, setActiveButton] = useState(false);
+  const [resMessage, setResMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -21,9 +26,15 @@ const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback, o
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit =async () => {
     if (selectedFiles.length > 0) {
-      callback(selectedFiles);
+      const res = await callback(selectedFiles);
+      if (res && res.message) {
+        if(res.success===false){
+          setErrorMessage(res.message);
+        }else{
+          setResMessage(res.message);}
+      }
       setActiveButton(false);
       setSelectedFiles([]);
     }
@@ -46,8 +57,9 @@ const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback, o
             borderStyle: 'solid'
           }}
         />
-        
       </Form.Group>
+      {resMessage!=="" && resMessage!==null && (<CustomAlert type={AlertType.Success} title={resMessage}></CustomAlert>)}
+      {/* {errorMessage!=="" && errorMessage!==null && (<CustomAlert type={AlertType.Danger} title={errorMessage}></CustomAlert>)} */}
       {activeButton && (<CustomButton pressed={false} title="Kaydet" handlePress={handleSubmit}/>)}
     </div>
   );
