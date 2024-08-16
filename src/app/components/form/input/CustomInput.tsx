@@ -55,7 +55,7 @@ const CustomInput: React.FC<CustomInputProps> = ({ callback, isLasted, validatio
                 isValid={touched.value && !errors.value}
                 isInvalid={!!errors.value}
               />
-              <Form.Control.Feedback type="valid">Looks good!</Form.Control.Feedback>
+              <Form.Control.Feedback type="valid">Bilginiz alındı!</Form.Control.Feedback>
               <Form.Control.Feedback type="invalid">
                 {errors.value}
               </Form.Control.Feedback>
