@@ -61,7 +61,7 @@ const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback, o
         />
       </Form.Group>
       {resMessage!=="" && resMessage!==null && (<CustomAlert type={AlertType.Success} title={resMessage}></CustomAlert>)}
-      {/* {errorMessage!=="" && errorMessage!==null && (<CustomAlert type={AlertType.Danger} title={errorMessage}></CustomAlert>)} */}
+      {errorMessage!=="" && errorMessage!==null && (<CustomAlert type={AlertType.Danger} title={errorMessage}></CustomAlert>)}
       {activeButton && (<CustomButton pressed={false} title="Kaydet" handlePress={handleSubmit}/>)}
     </div>
   );

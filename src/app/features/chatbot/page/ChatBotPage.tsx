@@ -231,7 +231,7 @@ function ChatBotPage() {
               })}
               {(end !== null && end !=="") && (<CustomAlert title={end}></CustomAlert>)}</div>
             }
-            {(problem!==null && problem!=="") && (<CustomAlert type={AlertType.Danger} title={problem}></CustomAlert>)}
+            {/* {(problem!==null && problem!=="") && (<CustomAlert type={AlertType.Danger} title={problem}></CustomAlert>)} */}
             </div>
             </div>
           </div>
