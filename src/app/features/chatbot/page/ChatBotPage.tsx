@@ -87,6 +87,7 @@ function ChatBotPage() {
       businessTypeId: businessTypeId,
       transactionId: transactionId
     };
+    console.log("document", document);
     const res= await postBusinessOperationModel(document, log );
     if (res?.success) {
       await fetchQuestion(nextId ?? null);
@@ -110,6 +111,11 @@ function ChatBotPage() {
     const selectedOption = questionList
       .find(q => q.questionId === questionId)
       ?.options.find(option => option.optionId === answerId);
+    // const questionIndex = questionList.findIndex(q => q.questionId === questionId);
+    // if (questionIndex !== -1 && questionIndex !== null) {
+    //   const newList = questionList.slice(0, questionIndex + 1);
+    //   setQuestionList(newList);
+    // }
     await callbackHandlePress(null,questionId, answerId, selectedOption?.info ?? "", businessType, answerInputValue, nextId);
     return;
   };
@@ -118,7 +124,7 @@ function ChatBotPage() {
     const alertComponent = (isCurrent && selectedInfo !== null && selectedInfo !== "" && (
       <CustomAlert title={selectedInfo} />
     ));
-    const questionComponent = ( <div className="header-padding">
+    const questionComponent = (<div className="header-padding">
       <h2 className={isCurrent ? "header": "header-last"}>{value.title}</h2>
     </div>);
     // if(loading && isCurrent){return(
