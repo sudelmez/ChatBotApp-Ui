@@ -81,7 +81,6 @@ function ChatBotPage() {
       const newList = questionList.slice(0, questionIndex + 1);
       setQuestionList(newList);
     }
-    console.log("step1")
     try {
     const log: AnswerLog = {
       questionId: questionId,
@@ -91,18 +90,13 @@ function ChatBotPage() {
       businessTypeId: businessTypeId,
       transactionId: transactionId
     };
-    console.log("step2")
     const res= await postBusinessOperationModel(document, log );
-    console.log("step3")
-    console.log(res);
     if (res?.success) {
       await fetchQuestion(nextId ?? null);
       setSelectedInfo(optionInfo);
-      console.log("step4")
       return res;
-    } else if (res?.success === false) {
-      console.log("step5")
-      setProblem(res.message??"");
+    } else if (res?.success === false && res.message!== null && res.message!=="") {
+      setProblem(res.message);
       return res;
     }
     } catch (error) {
