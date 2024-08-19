@@ -1,295 +1,1793 @@
-[
-  db.Question.insertMany([
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116cf"),
-      "QuestionId" : "1",
-      "Title" : "Merhaba, hangi konuda destek almak istersiniz?",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "2",
-      "BusinessTypeId" : null,
-      "ParentQuestion" : 0,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : null,
-      "AutoResponseId" : null
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116d0"),
-      "QuestionId" : "2",
-      "Title" : "Hangi işlem ile devam etmek istersiniz?",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "2",
-      "BusinessTypeId" : null,
-      "ParentQuestion" : 1,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : null,
-      "AutoResponseId" : null
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116d1"),
-      "QuestionId" : "3",
-      "Title" : "Beyan görüntüsünü yükleyiniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "3",
-      "BusinessTypeId" : 9,
-      "ParentQuestion" : 2,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : 1,
-      "AutoResponseId" : "3"
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116d2"),
-      "QuestionId" : "4",
-      "Title" : "Iban ekran görüntüsünü yükleyiniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "3",
-      "BusinessTypeId" : 9,
-      "ParentQuestion" : 3,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : 1,
-      "AutoResponseId" : null
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116d3"),
-      "QuestionId" : "5",
-      "Title" : "Hasar fotoğraflarını yükleyiniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "3",
-      "BusinessTypeId" : 9,
-      "ParentQuestion" : 6,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : true,
-      "ValidationRuleId" : 1,
-      "AutoResponseId" : "1"
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116d4"),
-      "QuestionId" : "6",
-      "Title" : "Mağdur ruhsat ekran görüntüsünü yükleyiniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "3",
-      "BusinessTypeId" : 9,
-      "ParentQuestion" : 7,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : 1,
-      "AutoResponseId" : null
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116d5"),
-      "QuestionId" : "7",
-      "Title" : "KTT ekran görüntüsünü yükleyiniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "3",
-      "BusinessTypeId" : 9,
-      "ParentQuestion" : 4,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : 1,
-      "AutoResponseId" : null
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116d6"),
-      "QuestionId" : "8",
-      "Title" : "Dosya numarasını giriniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "1",
-      "BusinessTypeId" : 7,
-      "ParentQuestion" : 1,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : 1,
-      "AutoResponseId" : "5"
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116d7"),
-      "QuestionId" : "9",
-      "Title" : "TCKN giriniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "1",
-      "BusinessTypeId" : 5,
-      "ParentQuestion" : 8,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : 5,
-      "AutoResponseId" : null
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116d8"),
-      "QuestionId" : "10",
-      "Title" : "Plaka giriniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "1",
-      "BusinessTypeId" : 6,
-      "ParentQuestion" : 9,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : 1,
-      "AutoResponseId" : null
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116d9"),
-      "QuestionId" : "11",
-      "Title" : "Poliçe numarasını giriniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "1",
-      "BusinessTypeId" : 1,
-      "ParentQuestion" : 10,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : 2,
-      "AutoResponseId" : "4"
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116da"),
-      "QuestionId" : "12",
-      "Title" : "Islak İmzalı Temlik İbra ve Teslim Onay Formunu yükleyiniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "3",
-      "BusinessTypeId" : 9,
-      "ParentQuestion" : 11,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : true,
-      "ValidationRuleId" : 1,
-      "AutoResponseId" : null
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116db"),
-      "QuestionId" : "13",
-      "Title" : "Dosya numarasını giriniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "1",
-      "BusinessTypeId" : 7,
-      "ParentQuestion" : 1,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : 1,
-      "AutoResponseId" : null
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116dc"),
-      "QuestionId" : "14",
-      "Title" : "TCKN giriniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "1",
-      "BusinessTypeId" : 5,
-      "ParentQuestion" : 13,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : 5,
-      "AutoResponseId" : null
-    },
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116dd"),
-      "QuestionId" : "15",
-      "Title" : "Plaka giriniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "1",
-      "BusinessTypeId" : 6,
-      "ParentQuestion" : 14,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : 1,
-      "AutoResponseId" : null
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116de"),
-      "QuestionId" : "16",
-      "Title" : "Poliçe numarasını giriniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "1",
-      "BusinessTypeId" : 1,
-      "ParentQuestion" : 15,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : 2,
-      "AutoResponseId" : null
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116df"),
-      "QuestionId" : "17",
-      "Title" : "Kaza tarihini seçiniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "4",
-      "BusinessTypeId" : 8,
-      "ParentQuestion" : 16,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : true,
-      "ValidationRuleId" : 1,
-      "AutoResponseId" : null
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116e0"),
-      "QuestionId" : "18",
-      "Title" : "İlgili belgeyi buradan indirebilirsiniz.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "5",
-      "BusinessTypeId" : 10,
-      "ParentQuestion" : 16,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : true,
-      "ValidationRuleId" : null,
-      "AutoResponseId" : "2"
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116e1"),
-      "QuestionId" : "1054812",
-      "Title" : "Bu bilgi sizin için yeterli oldu mu?",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "2",
-      "BusinessTypeId" : null,
-      "ParentQuestion" : 1,
-      "IsLastQuestion" : true,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : null,
-      "AutoResponseId" : null
-    },
-    
-    {
-      "_id" : ObjectId("66b9ecdbd7490de2fd6116e2"),
-      "QuestionId" : "1054813",
-      "Title" : "Size daha iyi hizmet verebilmemiz için lütfen açıklayınız.",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "1",
-      "BusinessTypeId" : 4,
-      "ParentQuestion" : 10,
-      "IsLastQuestion" : false,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : 4,
-      "AutoResponseId" : null
-    },
-    
-    {
-      "_id" : ObjectId("66bb5f0d537449c73c759682"),
-      "QuestionId" : "1054812",
-      "Title" : "Bu bilgi sizin için yeterli oldu mu?",
-      "PlatformId" : "1",
-      "AnswerTypeId" : "2",
-      "BusinessTypeId" : null,
-      "ParentQuestion" : 10,
-      "IsLastQuestion" : true,
-      "GetLastQuestion" : false,
-      "ValidationRuleId" : null,
-      "AutoResponseId" : null
-    }])
-]
+/* 1 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f4138"),
+	"QuestionId" : 1,
+	"Title" : "Merhaba, hangi konuda destek almak istersiniz?",
+	"PlatformId" : "1",
+	"OptionTypeId" : "2",
+	"BusinessTypeId" : null,
+	"ParentQuestion" : 0,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : null,
+	"Info" : ""
+},
+
+/* 2 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f4139"),
+	"QuestionId" : 2,
+	"Title" : "Hangi işlem ile devam etmek istersiniz?",
+	"PlatformId" : "1",
+	"OptionTypeId" : "2",
+	"BusinessTypeId" : null,
+	"ParentQuestion" : 1,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : null,
+	"Info" : "Belgelerinizi hazırlayınız."
+},
+
+/* 3 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f413a"),
+	"QuestionId" : 3,
+	"Title" : "Beyan görüntüsünü yükleyiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "3",
+	"BusinessTypeId" : 7,
+	"ParentQuestion" : 25,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "Lütfen istenen belgeleri hazırlayınız. (Beyan, KTT, Mağdur Ruhsat, Hasar Fotoğrafları)"
+},
+
+/* 4 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f413b"),
+	"QuestionId" : 4,
+	"Title" : "Iban ekran görüntüsünü yükleyiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "3",
+	"BusinessTypeId" : 7,
+	"ParentQuestion" : 3,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : ""
+},
+
+/* 5 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f413c"),
+	"QuestionId" : 5,
+	"Title" : "Hasar fotoğraflarını yükleyiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "3",
+	"BusinessTypeId" : 7,
+	"ParentQuestion" : 6,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : ""
+},
+
+/* 6 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f413d"),
+	"QuestionId" : 6,
+	"Title" : "Mağdur ruhsat ekran görüntüsünü yükleyiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "3",
+	"BusinessTypeId" : 7,
+	"ParentQuestion" : 7,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : ""
+},
+
+/* 7 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f413e"),
+	"QuestionId" : 7,
+	"Title" : "KTT ekran görüntüsünü yükleyiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "3",
+	"BusinessTypeId" : 7,
+	"ParentQuestion" : 4,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : ""
+},
+
+/* 8 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f413f"),
+	"QuestionId" : 8,
+	"Title" : "Dosya numarasını giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 5,
+	"ParentQuestion" : 1,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : ""
+},
+
+/* 9 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f4140"),
+	"QuestionId" : 9,
+	"Title" : "TCKN giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 3,
+	"ParentQuestion" : 8,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 5,
+	"Info" : ""
+},
+
+/* 10 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f4141"),
+	"QuestionId" : 10,
+	"Title" : "Plaka giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 4,
+	"ParentQuestion" : 9,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : ""
+},
+
+/* 11 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f4142"),
+	"QuestionId" : 11,
+	"Title" : "Poliçe numarasını giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 1,
+	"ParentQuestion" : 10,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 2,
+	"Info" : ""
+},
+
+/* 12 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f4143"),
+	"QuestionId" : 12,
+	"Title" : "Islak İmzalı Temlik İbra ve Teslim Onay Formunu yükleyiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "3",
+	"BusinessTypeId" : 7,
+	"ParentQuestion" : 11,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : ""
+},
+
+/* 13 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f4144"),
+	"QuestionId" : 13,
+	"Title" : "Dosya numarasını giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 5,
+	"ParentQuestion" : 1,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : ""
+},
+
+/* 14 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f4145"),
+	"QuestionId" : 14,
+	"Title" : "TCKN giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 3,
+	"ParentQuestion" : 13,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 5,
+	"Info" : ""
+},
+
+/* 15 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f4146"),
+	"QuestionId" : 15,
+	"Title" : "Plaka giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 4,
+	"ParentQuestion" : 14,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : ""
+},
+
+/* 16 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f4147"),
+	"QuestionId" : 16,
+	"Title" : "Poliçe numarasını giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 1,
+	"ParentQuestion" : 15,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 2,
+	"Info" : ""
+},
+
+/* 17 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f4148"),
+	"QuestionId" : 17,
+	"Title" : "Kaza tarihini seçiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "4",
+	"BusinessTypeId" : 6,
+	"ParentQuestion" : 16,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : ""
+},
+
+/* 18 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f4149"),
+	"QuestionId" : 18,
+	"Title" : "İlgili belgeyi buradan indirebilirsiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "5",
+	"BusinessTypeId" : 8,
+	"ParentQuestion" : 16,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : null,
+	"Info" : "İlgili belgeyi indirmek için aşağıdaki linke tıklayınız."
+},
+
+/* 19 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f414a"),
+	"QuestionId" : 19,
+	"Title" : "Bu işlem sizin için yeterli oldu mu?",
+	"PlatformId" : "1",
+	"OptionTypeId" : "2",
+	"BusinessTypeId" : null,
+	"ParentQuestion" : 18,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : null,
+	"Info" : ""
+},
+
+/* 20 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f414b"),
+	"QuestionId" : 20,
+	"Title" : "Size daha iyi hizmet verebilmemiz için lütfen açıklayınız.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 2,
+	"ParentQuestion" : 19,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : 4,
+	"Info" : ""
+},
+
+/* 21 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f414c"),
+	"QuestionId" : 21,
+	"Title" : "Bu işlem sizin için yeterli oldu mu?",
+	"PlatformId" : "1",
+	"OptionTypeId" : "2",
+	"BusinessTypeId" : null,
+	"ParentQuestion" : 17,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : null,
+	"Info" : ""
+},
+
+/* 22 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f414d"),
+	"QuestionId" : 22,
+	"Title" : "Size daha iyi hizmet verebilmemiz için lütfen açıklayınız.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 2,
+	"ParentQuestion" : 21,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : 4,
+	"Info" : ""
+},
+
+/* 23 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f414e"),
+	"QuestionId" : 23,
+	"Title" : "Bu işlem sizin için yeterli oldu mu?",
+	"PlatformId" : "1",
+	"OptionTypeId" : "2",
+	"BusinessTypeId" : null,
+	"ParentQuestion" : 12,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : null,
+	"Info" : ""
+},
+
+/* 24 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f414f"),
+	"QuestionId" : 24,
+	"Title" : "Size daha iyi hizmet verebilmemiz için lütfen açıklayınız.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 2,
+	"ParentQuestion" : 23,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : 4,
+	"Info" : ""
+},
+
+/* 25 createdAt:16.08.2024 17:54:30*/
+{
+	"_id" : ObjectId("66bf6826e7c35742cf4f4150"),
+	"QuestionId" : 25,
+	"Title" : "Hata ekran görüntüsünü yükleyiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "3",
+	"BusinessTypeId" : 7,
+	"ParentQuestion" : 2,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : ""
+}
+
+db.Option.insertMany([
+  {
+    "OptionId" : 1,
+    "Title" : "Servis/Anlaşmalı Servis",
+    "NextQuestionId" : 2,
+    "QuestionId" : 1,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  {
+    "OptionId" : 2,
+    "Title" : "İhbar Açma",
+    "NextQuestionId" : 25,
+    "QuestionId" : 2,
+    "PlatformId" : "1",
+    "Info" : "İhbar açma konusu yetkiniz dahilindedir, hata alıyor iseniz lütfen eke hata ekran görüntüsü paylaşarak akış oluşturun."
+  },
+  {
+    "OptionId" : 3,
+    "Title" : "Temlik İbra ve Teslim Onayı Form İndirme",
+    "NextQuestionId" : 18,
+    "QuestionId" : 2,
+    "PlatformId" : "1",
+    "Info" : "Lütfen aşağıdaki butona basarak ilgili belgeyi indirin ve ıslak imzalı olarak tarafımıza iletin."
+  },
+  
+  {
+    "OptionId" : 4,
+    "Title" : "Temlik İbra ve Teslim Onayı Form İletme",
+    "NextQuestionId" : 8,
+    "QuestionId" : 2,
+    "PlatformId" : "1",
+    "Info" : "Lütfen istenen belgeleri hazırlayınız. (Dosya No, Poliçe, Plaka, TCKN, Islak İmzalı Temlik İbra ve Teslim Onay Formu)"
+  },
+  
+  {
+    "OptionId" : 5,
+    "Title" : "Belge (Fatura, Muvafakatname, Meslek Belgesi vb.) İletme ",
+    "NextQuestionId" : 13,
+    "QuestionId" : 2,
+    "PlatformId" : "1",
+    "Info" : "Lütfen istenen belgeleri hazırlayınız. (Dosya No, Poliçe, Plaka, TCKN)"
+  },
+  
+  {
+    "OptionId" : 6,
+    "Title" : "Kusur Durumu İtiraz",
+    "NextQuestionId" : 13,
+    "QuestionId" : 2,
+    "PlatformId" : "1",
+    "Info" : "Lütfen istenen belgeleri hazırlayınız. (Dosya No, Poliçe, Plaka, TCKN)"
+  },
+  
+  {
+    "OptionId" : 7,
+    "Title" : "Pert Durumu Sorgulama",
+    "NextQuestionId" : 13,
+    "QuestionId" : 2,
+    "PlatformId" : "1",
+    "Info" : "Lütfen istenen belgeleri hazırlayınız. (Dosya No, Poliçe, Plaka, TCKN)"
+  },
+  {
+    "OptionId" : 32,
+    "Title" : "Hata Ekran Görüntüsü",
+    "NextQuestionId" : 3,
+    "QuestionId" : 25,
+    "PlatformId" : "1",
+    "Info" : "Lütfen istenen belgeleri hazırlayınız. (Beyan, KTT, Mağdur Ruhsat, Hasar Fotoğrafları)"
+  }
+  {
+    "OptionId" : 8,
+    "Title" : "Beyan",
+    "NextQuestionId" : 4,
+    "QuestionId" : 3,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  /* 9 createdAt:14.08.2024 10:53:39*/
+  {
+    "OptionId" : 9,
+    "Title" : "IBAN Ekran Görüntüsü",
+    "NextQuestionId" : 7,
+    "QuestionId" : 4,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  /* 10 createdAt:14.08.2024 10:53:39*/
+  {
+    "OptionId" : 10,
+    "Title" : "KTT Ekran Görüntüsü",
+    "NextQuestionId" : 6,
+    "QuestionId" : 7,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  /* 11 createdAt:14.08.2024 10:53:39*/
+  {
+    "OptionId" : 11,
+    "Title" : "Mağdur Ruhsat Ekran Görüntüsü",
+    "NextQuestionId" : 5,
+    "QuestionId" : 6,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  /* 12 createdAt:14.08.2024 10:53:39*/
+  {
+    "OptionId" : 12,
+    "Title" : "Hasar Fotoğrafları",
+    "NextQuestionId" : 19,
+    "QuestionId" : 5,
+    "PlatformId" : "1",
+    "Info" : "Talebiniz başarıyla alınmıştır. Size en kısa sürede dönüş yapılacaktır."
+  },
+  
+  /* 13 createdAt:14.08.2024 10:53:39*/
+  {
+    "OptionId" : 13,
+    "Title" : "Dosya Numarası",
+    "NextQuestionId" : 9,
+    "QuestionId" : 8,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  /* 14 createdAt:14.08.2024 10:53:39*/
+  {
+    "OptionId" : 14,
+    "Title" : "TCKN",
+    "NextQuestionId" : 10,
+    "QuestionId" : 9,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  /* 15 createdAt:14.08.2024 10:53:39*/
+  {
+    "OptionId" : 15,
+    "Title" : "Plaka",
+    "NextQuestionId" : 11,
+    "QuestionId" : 10,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  /* 16 createdAt:14.08.2024 10:53:39*/
+  {
+    "OptionId" : 16,
+    "Title" : "Poliçe No",
+    "NextQuestionId" : 12,
+    "QuestionId" : 11,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  /* 17 createdAt:14.08.2024 10:53:39*/
+  {
+    "OptionId" : 17,
+    "Title" : "Islak İmzalı Temlik İbra ve Teslim Onay Formu",
+    "NextQuestionId" : 19,
+    "QuestionId" : 12,
+    "PlatformId" : "1",
+    "Info" : "Talebiniz başarıyla alınmıştır. Size en kısa sürede dönüş yapılacaktır."
+  },
+  
+  /* 18 createdAt:14.08.2024 10:53:39*/
+  {
+    "OptionId" : 18,
+    "Title" : "Dosya Numarası",
+    "NextQuestionId" : 14,
+    "QuestionId" : 13,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  /* 19 createdAt:14.08.2024 10:53:39*/
+  {
+    "_id" : ObjectId("66bc628304ece3a410785f05"),
+    "OptionId" : 19,
+    "Title" : "TCKN",
+    "NextQuestionId" : 15,
+    "QuestionId" : 14,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  /* 20 createdAt:14.08.2024 10:53:39*/
+  {
+    "_id" : ObjectId("66bc628304ece3a410785f06"),
+    "OptionId" : 20,
+    "Title" : "Plaka",
+    "NextQuestionId" : 16,
+    "QuestionId" : 15,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  /* 21 createdAt:14.08.2024 10:53:39*/
+  {
+    "_id" : ObjectId("66bc628304ece3a410785f07"),
+    "OptionId" : 21,
+    "Title" : "Poliçe No",
+    "NextQuestionId" : 17,
+    "QuestionId" : 16,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  /* 22 createdAt:14.08.2024 10:53:39*/
+  {
+    "_id" : ObjectId("66bc628304ece3a410785f08"),
+    "OptionId" : 22,
+    "Title" : "Kaza Tarihi",
+    "NextQuestionId" : 19,
+    "QuestionId" : 17,
+    "PlatformId" : "1",
+    "Info" : "Talebiniz başarıyla alınmıştır. Size en kısa sürede dönüş yapılacaktır."
+  },
+  
+  /* 23 createdAt:14.08.2024 10:53:39*/
+  {
+    "_id" : ObjectId("66bc628304ece3a410785f09"),
+    "OptionId" : 23,
+    "Title" : "Evet",
+    "NextQuestionId" : null,
+    "QuestionId" : 19,
+    "PlatformId" : "1",
+    "Info" : "Yardımcı olabildiğim için mutluyum. Görüşmek üzere!"
+  },
+  
+  /* 24 createdAt:14.08.2024 10:53:39*/
+  {
+    "_id" : ObjectId("66bc628304ece3a410785f0a"),
+    "OptionId" : 24,
+    "Title" : "Hayır",
+    "NextQuestionId" : 20,
+    "QuestionId" : 19,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  /* 25 createdAt:14.08.2024 10:53:39*/
+  {
+    "_id" : ObjectId("66bc628304ece3a410785f0b"),
+    "OptionId" : 25,
+    "Title" : "Lütfen nedenini açıklayınız.",
+    "NextQuestionId" : null,
+    "PlatformId" : "1",
+    "QuestionId" : 20,
+    "Info" : "Görüşleriniz alınmıştır. Görüşmek üzere!"
+  },
+  
+  /* 26 createdAt:14.08.2024 10:53:39*/
+  {
+    "_id" : ObjectId("66bc628304ece3a410785f0c"),
+    "OptionId" : 26,
+    "Title" : "Evet",
+    "NextQuestionId" : null,
+    "QuestionId" : 21,
+    "PlatformId" : "1",
+    "Info" : "Yardımcı olabildiğim için mutluyum. Görüşmek üzere!"
+  },
+  
+  /* 27 createdAt:14.08.2024 10:53:39*/
+  {
+    "_id" : ObjectId("66bc628304ece3a410785f0d"),
+    "OptionId" : 27,
+    "Title" : "Hayır",
+    "NextQuestionId" : 22,
+    "QuestionId" : 21,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  /* 28 createdAt:14.08.2024 10:53:39*/
+  {
+    "_id" : ObjectId("66bc628304ece3a410785f0e"),
+    "OptionId" : 28,
+    "Title" : "Lütfen nedenini açıklayınız.",
+    "NextQuestionId" : null,
+    "PlatformId" : "1",
+    "QuestionId" : 22,
+    "Info" : "Görüşleriniz alınmıştır. Görüşmek üzere!"
+  },
+  
+  /* 29 createdAt:14.08.2024 10:53:39*/
+  {
+    "_id" : ObjectId("66bc628304ece3a410785f0f"),
+    "OptionId" : 29,
+    "Title" : "Evet",
+    "NextQuestionId" : null,
+    "QuestionId" : 23,
+    "PlatformId" : "1",
+    "Info" : "Yardımcı olabildiğim için mutluyum. Görüşmek üzere!"
+  },
+  
+  /* 30 createdAt:14.08.2024 10:53:39*/
+  {
+    "_id" : ObjectId("66bc628304ece3a410785f10"),
+    "OptionId" : 30,
+    "Title" : "Hayır",
+    "NextQuestionId" : 105481,
+    "QuestionId" : 23,
+    "PlatformId" : "1",
+    "Info" : ""
+  },
+  
+  /* 31 createdAt:14.08.2024 10:53:39*/
+  {
+    "_id" : ObjectId("66bc628304ece3a410785f11"),
+    "OptionId" : 31,
+    "Title" : "Lütfen nedenini açıklayınız.",
+    "NextQuestionId" : null,
+    "PlatformId" : "1",
+    "QuestionId" : 24,
+    "Info" : "Görüşleriniz alınmıştır. Görüşmek üzere!"
+  }
+  
+  /* 32 createdAt:16.08.2024 17:43:12*/
+  
+      ])
+
+
+
+
+      options ne w
+      /* 1 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d89"),
+	"OptionId" : 1,
+	"Title" : "Servis/Anlaşmalı Servis",
+	"NextQuestionId" : 2,
+	"QuestionId" : 1,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 2 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d8a"),
+	"OptionId" : 2,
+	"Title" : "İhbar Açma",
+	"NextQuestionId" : 3,
+	"QuestionId" : 2,
+	"PlatformId" : "1",
+	"Info" : "İhbar açma konusu yetkiniz dahilindedir, hata alıyor iseniz lütfen eke hata ekran görüntüsü paylaşarak akış oluşturun."
+},
+
+/* 3 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d8b"),
+	"OptionId" : 3,
+	"Title" : "Temlik İbra ve Teslim Onayı Form İndirme",
+	"NextQuestionId" : 11,
+	"QuestionId" : 2,
+	"PlatformId" : "1",
+	"Info" : "Lütfen aşağıdaki butona basarak ilgili belgeyi indirin ve ıslak imzalı olarak tarafımıza iletin."
+},
+
+/* 4 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d8c"),
+	"OptionId" : 4,
+	"Title" : "Temlik İbra ve Teslim Onayı Form İletme",
+	"NextQuestionId" : 12,
+	"QuestionId" : 2,
+	"PlatformId" : "1",
+	"Info" : "Lütfen istenen belgeleri hazırlayınız. (Dosya No, Poliçe, Plaka, TCKN, Islak İmzalı Temlik İbra ve Teslim Onay Formu)"
+},
+
+/* 5 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d8d"),
+	"OptionId" : 5,
+	"Title" : "Belge (Fatura, Muvafakatname, Meslek Belgesi vb.) İletme ",
+	"NextQuestionId" : 19,
+	"QuestionId" : 2,
+	"PlatformId" : "1",
+	"Info" : "Lütfen istenen belgeleri hazırlayınız. (Dosya No, Poliçe, Plaka, TCKN)"
+},
+
+/* 6 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d8e"),
+	"OptionId" : 6,
+	"Title" : "Kusur Durumu İtiraz",
+	"NextQuestionId" : 26,
+	"QuestionId" : 2,
+	"PlatformId" : "1",
+	"Info" : "Lütfen istenen belgeleri hazırlayınız. (Dosya No, Poliçe, Plaka, TCKN)"
+},
+
+/* 7 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d8f"),
+	"OptionId" : 7,
+	"Title" : "Pert Durumu Sorgulama",
+	"NextQuestionId" : 33,
+	"QuestionId" : 2,
+	"PlatformId" : "1",
+	"Info" : "Lütfen istenen belgeleri hazırlayınız. (Dosya No, Poliçe, Plaka, TCKN)"
+},
+
+/* 8 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d90"),
+	"OptionId" : 8,
+	"Title" : "Hata Ekran Görüntüsü",
+	"NextQuestionId" : 4,
+	"QuestionId" : 3,
+	"PlatformId" : "1",
+	"Info" : "Lütfen istenen belgeleri hazırlayınız. (Beyan, KTT, Mağdur Ruhsat, Hasar Fotoğrafları)"
+},
+
+/* 9 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d91"),
+	"OptionId" : 9,
+	"Title" : "Beyan",
+	"NextQuestionId" : 5,
+	"QuestionId" : 4,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 10 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d92"),
+	"OptionId" : 10,
+	"Title" : "IBAN Ekran Görüntüsü",
+	"NextQuestionId" : 6,
+	"QuestionId" : 5,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 11 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d93"),
+	"OptionId" : 11,
+	"Title" : "KTT Ekran Görüntüsü",
+	"NextQuestionId" : 7,
+	"QuestionId" : 6,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 12 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d94"),
+	"OptionId" : 12,
+	"Title" : "Mağdur Ruhsat Ekran Görüntüsü",
+	"NextQuestionId" : 8,
+	"QuestionId" : 7,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 13 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d95"),
+	"OptionId" : 13,
+	"Title" : "Hasar Fotoğrafları",
+	"NextQuestionId" : 9,
+	"QuestionId" : 8,
+	"PlatformId" : "1",
+	"Info" : "Talebiniz başarıyla alınmıştır. Size en kısa sürede dönüş yapılacaktır."
+},
+
+/* 14 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d96"),
+	"OptionId" : 14,
+	"Title" : "Evet",
+	"NextQuestionId" : null,
+	"QuestionId" : 9,
+	"PlatformId" : "1",
+	"Info" : "Yardımcı olabildiğim için mutluyum. Görüşmek üzere!"
+},
+
+/* 15 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d97"),
+	"OptionId" : 15,
+	"Title" : "Hayır",
+	"NextQuestionId" : 10,
+	"QuestionId" : 9,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 16 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d98"),
+	"OptionId" : 16,
+	"Title" : "Lütfen nedenini açıklayınız.",
+	"NextQuestionId" : null,
+	"PlatformId" : "1",
+	"QuestionId" : 10,
+	"Info" : "Görüşleriniz alınmıştır. Görüşmek üzere!"
+},
+
+/* 17 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d99"),
+	"OptionId" : 17,
+	"Title" : "Dosya Numarası",
+	"NextQuestionId" : 13,
+	"QuestionId" : 12,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 18 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d9a"),
+	"OptionId" : 18,
+	"Title" : "TCKN",
+	"NextQuestionId" : 14,
+	"QuestionId" : 13,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 19 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d9b"),
+	"OptionId" : 19,
+	"Title" : "Plaka",
+	"NextQuestionId" : 15,
+	"QuestionId" : 14,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 20 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d9c"),
+	"OptionId" : 20,
+	"Title" : "Poliçe No",
+	"NextQuestionId" : 16,
+	"QuestionId" : 15,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 21 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d9d"),
+	"OptionId" : 21,
+	"Title" : "Islak İmzalı Temlik İbra ve Teslim Onay Formu",
+	"NextQuestionId" : 17,
+	"QuestionId" : 16,
+	"PlatformId" : "1",
+	"Info" : "Talebiniz başarıyla alınmıştır. Size en kısa sürede dönüş yapılacaktır."
+},
+
+/* 22 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d9e"),
+	"OptionId" : 22,
+	"Title" : "Evet",
+	"NextQuestionId" : null,
+	"QuestionId" : 17,
+	"PlatformId" : "1",
+	"Info" : "Yardımcı olabildiğim için mutluyum. Görüşmek üzere!"
+},
+
+/* 23 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846d9f"),
+	"OptionId" : 23,
+	"Title" : "Hayır",
+	"NextQuestionId" : 18,
+	"QuestionId" : 17,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 24 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846da0"),
+	"OptionId" : 24,
+	"Title" : "Lütfen nedenini açıklayınız.",
+	"NextQuestionId" : null,
+	"PlatformId" : "1",
+	"QuestionId" : 18,
+	"Info" : "Görüşleriniz alınmıştır. Görüşmek üzere!"
+},
+
+/* 25 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846da1"),
+	"OptionId" : 25,
+	"Title" : "Dosya Numarası",
+	"NextQuestionId" : 20,
+	"QuestionId" : 19,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 26 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846da2"),
+	"OptionId" : 26,
+	"Title" : "TCKN",
+	"NextQuestionId" : 21,
+	"QuestionId" : 20,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 27 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846da3"),
+	"OptionId" : 27,
+	"Title" : "Plaka",
+	"NextQuestionId" : 22,
+	"QuestionId" : 21,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 28 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846da4"),
+	"OptionId" : 28,
+	"Title" : "Poliçe No",
+	"NextQuestionId" : 23,
+	"QuestionId" : 22,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 29 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846da5"),
+	"OptionId" : 29,
+	"Title" : "Kaza Tarihi",
+	"NextQuestionId" : 24,
+	"QuestionId" : 23,
+	"PlatformId" : "1",
+	"Info" : "Talebiniz başarıyla alınmıştır. Size en kısa sürede dönüş yapılacaktır."
+},
+
+/* 30 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846da6"),
+	"OptionId" : 30,
+	"Title" : "Evet",
+	"NextQuestionId" : null,
+	"QuestionId" : 24,
+	"PlatformId" : "1",
+	"Info" : "Yardımcı olabildiğim için mutluyum. Görüşmek üzere!"
+},
+
+/* 31 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846da7"),
+	"OptionId" : 31,
+	"Title" : "Hayır",
+	"NextQuestionId" : 25,
+	"QuestionId" : 24,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 32 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846da8"),
+	"OptionId" : 32,
+	"Title" : "Lütfen nedenini açıklayınız.",
+	"NextQuestionId" : null,
+	"PlatformId" : "1",
+	"QuestionId" : 25,
+	"Info" : "Görüşleriniz alınmıştır. Görüşmek üzere!"
+},
+
+/* 33 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846da9"),
+	"OptionId" : 33,
+	"Title" : "Dosya Numarası",
+	"NextQuestionId" : 27,
+	"QuestionId" : 26,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 34 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846daa"),
+	"OptionId" : 34,
+	"Title" : "TCKN",
+	"NextQuestionId" : 28,
+	"QuestionId" : 27,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 35 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846dab"),
+	"OptionId" : 35,
+	"Title" : "Plaka",
+	"NextQuestionId" : 29,
+	"QuestionId" : 28,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 36 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846dac"),
+	"OptionId" : 36,
+	"Title" : "Poliçe No",
+	"NextQuestionId" : 30,
+	"QuestionId" : 29,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 37 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846dad"),
+	"OptionId" : 37,
+	"Title" : "Kaza Tarihi",
+	"NextQuestionId" : 31,
+	"QuestionId" : 30,
+	"PlatformId" : "1",
+	"Info" : "Talebiniz başarıyla alınmıştır. Size en kısa sürede dönüş yapılacaktır."
+},
+
+/* 38 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846dae"),
+	"OptionId" : 38,
+	"Title" : "Evet",
+	"NextQuestionId" : null,
+	"QuestionId" : 31,
+	"PlatformId" : "1",
+	"Info" : "Yardımcı olabildiğim için mutluyum. Görüşmek üzere!"
+},
+
+/* 39 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846daf"),
+	"OptionId" : 39,
+	"Title" : "Hayır",
+	"NextQuestionId" : 32,
+	"QuestionId" : 31,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 40 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846db0"),
+	"OptionId" : 40,
+	"Title" : "Lütfen nedenini açıklayınız.",
+	"NextQuestionId" : null,
+	"PlatformId" : "1",
+	"QuestionId" : 32,
+	"Info" : "Görüşleriniz alınmıştır. Görüşmek üzere!"
+},
+
+/* 41 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846db1"),
+	"OptionId" : 41,
+	"Title" : "Dosya Numarası",
+	"NextQuestionId" : 34,
+	"QuestionId" : 33,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 42 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846db2"),
+	"OptionId" : 42,
+	"Title" : "TCKN",
+	"NextQuestionId" : 35,
+	"QuestionId" : 34,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 43 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846db3"),
+	"OptionId" : 43,
+	"Title" : "Plaka",
+	"NextQuestionId" : 36,
+	"QuestionId" : 35,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 44 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846db4"),
+	"OptionId" : 44,
+	"Title" : "Poliçe No",
+	"NextQuestionId" : 37,
+	"QuestionId" : 36,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 45 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846db5"),
+	"OptionId" : 45,
+	"Title" : "Kaza Tarihi",
+	"NextQuestionId" : 38,
+	"QuestionId" : 37,
+	"PlatformId" : "1",
+	"Info" : "Talebiniz başarıyla alınmıştır. Size en kısa sürede dönüş yapılacaktır."
+},
+
+/* 46 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846db6"),
+	"OptionId" : 46,
+	"Title" : "Evet",
+	"NextQuestionId" : null,
+	"QuestionId" : 38,
+	"PlatformId" : "1",
+	"Info" : "Yardımcı olabildiğim için mutluyum. Görüşmek üzere!"
+},
+
+/* 47 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846db7"),
+	"OptionId" : 47,
+	"Title" : "Hayır",
+	"NextQuestionId" : 39,
+	"QuestionId" : 38,
+	"PlatformId" : "1",
+	"Info" : ""
+},
+
+/* 48 createdAt:19.08.2024 11:02:52*/
+{
+	"_id" : ObjectId("66c2fc2ce2c70f2b07846db8"),
+	"OptionId" : 48,
+	"Title" : "Lütfen nedenini açıklayınız.",
+	"NextQuestionId" : null,
+	"PlatformId" : "1",
+	"QuestionId" : 39,
+	"Info" : "Görüşleriniz alınmıştır. Görüşmek üzere!"
+}
+
+qnew
+/* 1 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846de0"),
+	"QuestionId" : 1,
+	"Title" : "Merhaba, hangi konuda destek almak istersiniz?",
+	"PlatformId" : "1",
+	"OptionTypeId" : "2",
+	"BusinessTypeId" : null,
+	"ParentQuestion" : 0,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : null,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 2 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846de1"),
+	"QuestionId" : 2,
+	"Title" : "Hangi işlem ile devam etmek istersiniz?",
+	"PlatformId" : "1",
+	"OptionTypeId" : "2",
+	"BusinessTypeId" : null,
+	"ParentQuestion" : 1,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : null,
+	"Info" : "Belgelerinizi hazırlayınız.",
+	"Mandatory" : true
+},
+
+/* 3 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846de2"),
+	"QuestionId" : 3,
+	"Title" : "Hata ekran görüntüsünü yükleyiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "3",
+	"BusinessTypeId" : 7,
+	"ParentQuestion" : 2,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 4 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846de3"),
+	"QuestionId" : 4,
+	"Title" : "Beyan görüntüsünü yükleyiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "3",
+	"BusinessTypeId" : 7,
+	"ParentQuestion" : 3,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "Lütfen istenen belgeleri hazırlayınız. (Beyan, KTT, Mağdur Ruhsat, Hasar Fotoğrafları)",
+	"Mandatory" : true
+},
+
+/* 5 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846de4"),
+	"QuestionId" : 5,
+	"Title" : "Iban ekran görüntüsünü yükleyiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "3",
+	"BusinessTypeId" : 7,
+	"ParentQuestion" : 4,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 6 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846de5"),
+	"QuestionId" : 6,
+	"Title" : "KTT ekran görüntüsünü yükleyiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "3",
+	"BusinessTypeId" : 7,
+	"ParentQuestion" : 5,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 7 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846de6"),
+	"QuestionId" : 7,
+	"Title" : "Mağdur ruhsat ekran görüntüsünü yükleyiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "3",
+	"BusinessTypeId" : 7,
+	"ParentQuestion" : 6,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 8 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846de7"),
+	"QuestionId" : 8,
+	"Title" : "Hasar fotoğraflarını yükleyiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "3",
+	"BusinessTypeId" : 7,
+	"ParentQuestion" : 7,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 9 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846de8"),
+	"QuestionId" : 9,
+	"Title" : "Bu işlem sizin için yeterli oldu mu?",
+	"PlatformId" : "1",
+	"OptionTypeId" : "2",
+	"BusinessTypeId" : null,
+	"ParentQuestion" : 8,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : null,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 10 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846de9"),
+	"QuestionId" : 10,
+	"Title" : "Size daha iyi hizmet verebilmemiz için lütfen açıklayınız.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 2,
+	"ParentQuestion" : 9,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : 4,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 11 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846dea"),
+	"QuestionId" : 11,
+	"Title" : "İlgili belgeyi buradan indirebilirsiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "5",
+	"BusinessTypeId" : 8,
+	"ParentQuestion" : 10,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : null,
+	"Info" : "İlgili belgeyi indirmek için aşağıdaki linke tıklayınız.",
+	"Mandatory" : true
+},
+
+/* 12 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846deb"),
+	"QuestionId" : 12,
+	"Title" : "Dosya numarasını giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 5,
+	"ParentQuestion" : 2,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 13 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846dec"),
+	"QuestionId" : 13,
+	"Title" : "TCKN giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 3,
+	"ParentQuestion" : 12,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 5,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 14 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846ded"),
+	"QuestionId" : 14,
+	"Title" : "Plaka giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 4,
+	"ParentQuestion" : 13,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 15 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846dee"),
+	"QuestionId" : 15,
+	"Title" : "Poliçe numarasını giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 1,
+	"ParentQuestion" : 14,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 2,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 16 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846def"),
+	"QuestionId" : 16,
+	"Title" : "Islak İmzalı Temlik İbra ve Teslim Onay Formunu yükleyiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "3",
+	"BusinessTypeId" : 7,
+	"ParentQuestion" : 15,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 17 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846df0"),
+	"QuestionId" : 17,
+	"Title" : "Bu işlem sizin için yeterli oldu mu?",
+	"PlatformId" : "1",
+	"OptionTypeId" : "2",
+	"BusinessTypeId" : null,
+	"ParentQuestion" : 16,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : null,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 18 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846df1"),
+	"QuestionId" : 18,
+	"Title" : "Size daha iyi hizmet verebilmemiz için lütfen açıklayınız.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 2,
+	"ParentQuestion" : 17,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : 4,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 19 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846df2"),
+	"QuestionId" : 19,
+	"Title" : "Dosya numarasını giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 5,
+	"ParentQuestion" : 2,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 20 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846df3"),
+	"QuestionId" : 20,
+	"Title" : "TCKN giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 3,
+	"ParentQuestion" : 19,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 5,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 21 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846df4"),
+	"QuestionId" : 21,
+	"Title" : "Plaka giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 4,
+	"ParentQuestion" : 20,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 22 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846df5"),
+	"QuestionId" : 22,
+	"Title" : "Poliçe numarasını giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 1,
+	"ParentQuestion" : 21,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 2,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 23 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846df6"),
+	"QuestionId" : 23,
+	"Title" : "Kaza tarihini seçiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "4",
+	"BusinessTypeId" : 6,
+	"ParentQuestion" : 22,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 24 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846df7"),
+	"QuestionId" : 24,
+	"Title" : "Bu işlem sizin için yeterli oldu mu?",
+	"PlatformId" : "1",
+	"OptionTypeId" : "2",
+	"BusinessTypeId" : null,
+	"ParentQuestion" : 23,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : null,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 25 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846df8"),
+	"QuestionId" : 25,
+	"Title" : "Size daha iyi hizmet verebilmemiz için lütfen açıklayınız.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 2,
+	"ParentQuestion" : 24,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : 4,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 26 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846df9"),
+	"QuestionId" : 26,
+	"Title" : "Dosya numarasını giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 5,
+	"ParentQuestion" : 2,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 27 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846dfa"),
+	"QuestionId" : 27,
+	"Title" : "TCKN giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 3,
+	"ParentQuestion" : 26,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 5,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 28 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846dfb"),
+	"QuestionId" : 28,
+	"Title" : "Plaka giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 4,
+	"ParentQuestion" : 27,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 29 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846dfc"),
+	"QuestionId" : 29,
+	"Title" : "Poliçe numarasını giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 1,
+	"ParentQuestion" : 28,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 2,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 30 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846dfd"),
+	"QuestionId" : 30,
+	"Title" : "Kaza tarihini seçiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "4",
+	"BusinessTypeId" : 6,
+	"ParentQuestion" : 29,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 31 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846dfe"),
+	"QuestionId" : 31,
+	"Title" : "Bu işlem sizin için yeterli oldu mu?",
+	"PlatformId" : "1",
+	"OptionTypeId" : "2",
+	"BusinessTypeId" : null,
+	"ParentQuestion" : 30,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : null,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 32 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846dff"),
+	"QuestionId" : 32,
+	"Title" : "Size daha iyi hizmet verebilmemiz için lütfen açıklayınız.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 2,
+	"ParentQuestion" : 31,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : 4,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 33 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846e00"),
+	"QuestionId" : 33,
+	"Title" : "Dosya numarasını giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 5,
+	"ParentQuestion" : 2,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 34 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846e01"),
+	"QuestionId" : 34,
+	"Title" : "TCKN giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 3,
+	"ParentQuestion" : 33,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 5,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 35 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846e02"),
+	"QuestionId" : 55,
+	"Title" : "Plaka giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 4,
+	"ParentQuestion" : 34,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 36 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846e03"),
+	"QuestionId" : 36,
+	"Title" : "Poliçe numarasını giriniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 1,
+	"ParentQuestion" : 35,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 2,
+	"Info" : "",
+	"Mandatory" : false
+},
+
+/* 37 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846e04"),
+	"QuestionId" : 37,
+	"Title" : "Kaza tarihini seçiniz.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "4",
+	"BusinessTypeId" : 6,
+	"ParentQuestion" : 36,
+	"IsLastQuestion" : false,
+	"ValidationRuleId" : 1,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 38 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846e05"),
+	"QuestionId" : 38,
+	"Title" : "Bu işlem sizin için yeterli oldu mu?",
+	"PlatformId" : "1",
+	"OptionTypeId" : "2",
+	"BusinessTypeId" : null,
+	"ParentQuestion" : 37,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : null,
+	"Info" : "",
+	"Mandatory" : true
+},
+
+/* 39 createdAt:19.08.2024 11:10:26*/
+{
+	"_id" : ObjectId("66c2fdf2e2c70f2b07846e06"),
+	"QuestionId" : 39,
+	"Title" : "Size daha iyi hizmet verebilmemiz için lütfen açıklayınız.",
+	"PlatformId" : "1",
+	"OptionTypeId" : "1",
+	"BusinessTypeId" : 2,
+	"ParentQuestion" : 38,
+	"IsLastQuestion" : true,
+	"ValidationRuleId" : 4,
+	"Info" : "",
+	"Mandatory" : true
+}

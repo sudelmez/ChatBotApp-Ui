@@ -5,6 +5,7 @@ export interface Question {
     title: string;
     businessTypeId : number | null;
     info: string | null;
+    mandatory: boolean;
     optionType: {
       title: string;
       optionTypeId: string;
@@ -15,8 +16,9 @@ export interface Question {
       nextQuestionId: number | null;
       optionId: string;
       info: string | null;
+      businessTypeId: number | null;
     }[];
-    validationRule: ValidationRuleModel
+    validationRules: ValidationRuleModel[]
 }
 export interface GetQuestion{
   nextQuestionId: number | null;

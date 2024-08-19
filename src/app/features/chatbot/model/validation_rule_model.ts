@@ -4,4 +4,5 @@ export interface ValidationRuleModel{
     maxLength: number | null;
     message: string;
     inputType: string | null;
+    businessTypeId: number | null;
 }

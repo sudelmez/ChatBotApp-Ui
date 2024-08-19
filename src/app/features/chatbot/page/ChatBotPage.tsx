@@ -12,6 +12,8 @@ import CustomFileInput from "../../../components/form/file_input/file_input";
 import CustomDateInput from "../../../components/form/date_input/date_input";
 import { ApiResponse } from "../../../api/response/api_response";
 import { AutoResponseModel } from "../model/auto_response_model";
+import CustomButton from "../../../components/form/button/CustomButton";
+import SelectableInput from "../../../components/form/selectable_input/selectable_input";
 function ChatBotPage() {
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [end, setEnd] = useState<string>("");
@@ -68,7 +70,12 @@ function ChatBotPage() {
         formData.append('formFiles', element);
       });}
     formData.append('jsonDatas', JSON.stringify(data));
+    
+    console.log("step 3")
     const response = await service.sendBusinessOperation(formData);
+    console.log("step 4")
+    console.log("res 3", response)
+    console.log("res 4", data)
       return response;
     } catch (error) {
       console.error(error);
@@ -90,9 +97,10 @@ function ChatBotPage() {
       businessTypeId: businessTypeId,
       transactionId: transactionId
     };
+    console.log("step 1")
     const res= await postBusinessOperationModel(document, log );
-    console.log("res1", res)
-
+    console.log("step 2")
+    console.log("res 1", res)
     if (res?.success) {
       await fetchQuestion(nextId ?? null);
       setSelectedInfo(optionInfo);
@@ -160,9 +168,9 @@ function ChatBotPage() {
             {!value.isLastQuestion && alertComponent}
             {questionComponent}
             <CustomInput
-              type={value.validationRule.inputType ?? "text"}
+              type={value.validationRules[0].inputType ?? "text"}
               optionId={value.options[0].optionId}
-              validationRule={value.validationRule}
+              validationRule={value.validationRules[0]}
               isLasted={!isCurrent}
               callback={async (val) => {
                 callbackHandlePress(null,value.questionId,value.options[0].optionId ,value.options[0].info ?? "", value.businessTypeId, val, value.options[0].nextQuestionId);
@@ -171,6 +179,22 @@ function ChatBotPage() {
             {value.isLastQuestion && alertComponent}
           </div>
         );
+        case "selectableInput":
+          return (
+            <div>
+              {!value.isLastQuestion && alertComponent}
+              {questionComponent}
+              <SelectableInput 
+                optionId={value.options[0].optionId}
+                validationRule={value.validationRules}
+                isLasted={!isCurrent}
+                optionvalues={value.options}
+                callback={async (val, opt) => {
+                  callbackHandlePress(null, value.questionId, opt.optionId , opt.info ?? "", opt.businessTypeId, val,  opt.nextQuestionId);
+              }}></SelectableInput>
+              {value.isLastQuestion && alertComponent}
+            </div>
+          );
       case "fileInput":
         return (
           <div>
@@ -188,8 +212,10 @@ function ChatBotPage() {
       case "fileDownload":
         return (
           <div>
-            {value.isLastQuestion && alertComponent}
+            {!value.isLastQuestion && alertComponent}
             {questionComponent}
+            <CustomButton toDownload={true} title="İndir" handlePress={()=>{}} pressed={!isCurrent}></CustomButton>
+            {value.isLastQuestion && alertComponent}
           </div>
         );
       case "dateInput":
@@ -223,7 +249,6 @@ function ChatBotPage() {
           <div className="col">
             <div className="paddingArrange">{
               <div> {questionList.map((value, index) => {
-                console.log(value);
                 const isCurrent = value.questionId === currentQuestionId;
                 return (
                   <div key={index} className="item-padding" ref={isCurrent ? lastQuestionRef : null}>

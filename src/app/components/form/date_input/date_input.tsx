@@ -29,6 +29,7 @@ const CustomDateInput: React.FC<CustomDateInputProps> = ({ isLasted, title, type
       const [hours, minutes] = selectedTime.split(":").map(Number);
       const combinedDate = new Date(selectedDate);
       combinedDate.setHours(hours, minutes);
+      setActiveButton(false);
       callback(combinedDate, typeDate);
     }
   };
