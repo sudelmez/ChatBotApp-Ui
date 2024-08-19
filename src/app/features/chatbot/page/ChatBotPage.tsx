@@ -70,12 +70,7 @@ function ChatBotPage() {
         formData.append('formFiles', element);
       });}
     formData.append('jsonDatas', JSON.stringify(data));
-    
-    console.log("step 3")
     const response = await service.sendBusinessOperation(formData);
-    console.log("step 4")
-    console.log("res 3", response)
-    console.log("res 4", data)
       return response;
     } catch (error) {
       console.error(error);
@@ -97,13 +92,10 @@ function ChatBotPage() {
       businessTypeId: businessTypeId,
       transactionId: transactionId
     };
-    console.log("step 1")
     const res= await postBusinessOperationModel(document, log );
-    console.log("step 2")
-    console.log("res 1", res)
     if (res?.success) {
-      await fetchQuestion(nextId ?? null);
       setSelectedInfo(optionInfo);
+      await fetchQuestion(nextId ?? null);
     } else if (res?.success === false && res.message!== null && res.message!=="") {
       setProblem(res.message);
     }
@@ -149,7 +141,7 @@ function ChatBotPage() {
       case "select":
         return (
           <div>
-            {!value.isLastQuestion && alertComponent}
+            {!value.isEnd && alertComponent}
             {questionComponent}
             <CustomSelect
               isLasted={!isCurrent}
@@ -159,13 +151,13 @@ function ChatBotPage() {
               businessTypeId={value.businessTypeId}
               index = {index}
             />
-            {value.isLastQuestion && alertComponent}
+            {value.isEnd && alertComponent}
           </div>
         );
       case "input":
         return (
           <div>
-            {!value.isLastQuestion && alertComponent}
+            {!value.isEnd && alertComponent}
             {questionComponent}
             <CustomInput
               type={value.validationRules[0].inputType ?? "text"}
@@ -176,13 +168,13 @@ function ChatBotPage() {
                 callbackHandlePress(null,value.questionId,value.options[0].optionId ,value.options[0].info ?? "", value.businessTypeId, val, value.options[0].nextQuestionId);
               }}
             />
-            {value.isLastQuestion && alertComponent}
+            {value.isEnd && alertComponent}
           </div>
         );
         case "selectableInput":
           return (
             <div>
-              {!value.isLastQuestion && alertComponent}
+              {!value.isEnd && alertComponent}
               {questionComponent}
               <SelectableInput 
                 optionId={value.options[0].optionId}
@@ -192,13 +184,13 @@ function ChatBotPage() {
                 callback={async (val, opt) => {
                   callbackHandlePress(null, value.questionId, opt.optionId , opt.info ?? "", opt.businessTypeId, val,  opt.nextQuestionId);
               }}></SelectableInput>
-              {value.isLastQuestion && alertComponent}
+              {value.isEnd &&  alertComponent}
             </div>
           );
       case "fileInput":
         return (
           <div>
-            {!value.isLastQuestion && alertComponent}
+            {!value.isEnd && alertComponent}
             {questionComponent}
             <CustomFileInput
               callback={(val) => 
@@ -206,22 +198,22 @@ function ChatBotPage() {
               }
               isLasted={!isCurrent}
             />
-            {value.isLastQuestion && alertComponent}
+            {value.isEnd && alertComponent}
           </div>
         );
       case "fileDownload":
         return (
           <div>
-            {!value.isLastQuestion && alertComponent}
+            {!value.isEnd && alertComponent}
             {questionComponent}
             <CustomButton toDownload={true} title="İndir" handlePress={()=>{}} pressed={!isCurrent}></CustomButton>
-            {value.isLastQuestion && alertComponent}
+            {value.isEnd && alertComponent}
           </div>
         );
       case "dateInput":
         return (
           <div>
-            {!value.isLastQuestion && alertComponent}
+            {!value.isEnd && alertComponent}
             {questionComponent}
             <CustomDateInput
               typeDate={value.businessTypeId ?? 0}
@@ -230,7 +222,8 @@ function ChatBotPage() {
               }}
               isLasted={!isCurrent}
               title={value.title}
-            />{value.isLastQuestion && alertComponent}
+            />
+            {value.isEnd && alertComponent}
           </div>
         );
       default:

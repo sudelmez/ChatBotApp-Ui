@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import * as Yup from 'yup';
 import { Formik } from 'formik';
@@ -19,11 +19,8 @@ interface SelectableInputProps {
 const SelectableInput: React.FC<SelectableInputProps> = ({ callback, isLasted, validationRule, optionId, isSelectable = false, optionvalues }) => {
   const [radioValue, setRadioValue] = useState(optionvalues[0]?.optionId || '');
   const [selInputValue, setSelInputValue] = useState(optionvalues[0]?.title || '');
-  const [val, setVal]= useState<ValidationRuleModel>();
-  const [inputVal, setInputVal] = useState(() => {
-    const savedValue = localStorage.getItem(`input-value-${optionId}`);
-    return savedValue ? savedValue : "";
-  });
+  const [val, setVal] = useState<ValidationRuleModel | null>(validationRule?.find((v) => v.businessTypeId?.toString() === optionvalues[0]?.businessTypeId?.toString()) || null);
+  const [inputVal, setInputVal] = useState("");
   const [activeButton, setActiveButton] = useState(false);
   const schema = Yup.string().required("Değer zorunludur.");
   const validationSchema = Yup.object().shape({
@@ -46,7 +43,7 @@ const SelectableInput: React.FC<SelectableInputProps> = ({ callback, isLasted, v
         localStorage.setItem(`input-value-${optionId}`, values.value);
       }}>
       {({ handleSubmit, handleChange, values, errors, touched, validateForm }) => (
-        <div className="col-md-12">
+        <div className="col-md-12" style={{zIndex:"0"}}>
           <ButtonGroup className="col-md-12">
             {optionvalues.map((item, idx) => (
               <ToggleButton 
@@ -62,10 +59,7 @@ const SelectableInput: React.FC<SelectableInputProps> = ({ callback, isLasted, v
                   if (selectedOption) {
                     setRadioValue(e.currentTarget.value);
                     setSelInputValue(selectedOption.title);
-                    const valRule = validationRule?.find((v)=> v.businessTypeId?.toString() === selectedOption.businessTypeId?.toString());
-                    console.log("rules: ", valRule);
-                    console.log("valrules: ", validationRule);
-                    console.log("businessTypeId: ", selectedOption.businessTypeId);
+                    const valRule = validationRule?.find((v) => v.businessTypeId?.toString() === selectedOption.businessTypeId?.toString()) || null;
                     setVal(valRule);
                   }
                 }}

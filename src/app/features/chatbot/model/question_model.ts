@@ -10,7 +10,8 @@ export interface Question {
       title: string;
       optionTypeId: string;
     };
-    isLastQuestion: boolean
+    isLastQuestion: boolean;
+    isEnd: boolean;
     options: {
       title: string;
       nextQuestionId: number | null;
