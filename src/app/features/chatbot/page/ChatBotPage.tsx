@@ -24,13 +24,13 @@ function ChatBotPage() {
   const { token, user, transactionId } = useUserContext();
   const [selectedInfo, setSelectedInfo] = useState<string | null>(null);
   const lastQuestionRef = useRef<HTMLDivElement>(null);
+  const [bResponse, setBResponse] = useState("");
 
   const fetchQuestion = async (nextQuestionId?: number | null) => {
     try {
       setProblem("");
-      setLoading(true);
       const nextQuestion = await service.getQuestion(nextQuestionId ?? null, token ?? "");
-      setLoading(false);
+      //setLoading(false);
       if (!nextQuestion) {
         setEnd("Sohbet sona erdi.");
         console.error(`Soru bulunamadı id: ${nextQuestionId}`);
@@ -43,7 +43,6 @@ function ChatBotPage() {
         return [...prevQuestionList, nextQuestion];
       });
     } catch (error) {
-      setLoading(false);
       setProblem("Bir sorun oluştu.");
       console.error('Error fetching question:', error);
     }
@@ -51,6 +50,8 @@ function ChatBotPage() {
 
   useEffect(() => {
     setProblem("");
+    setSelectedInfo("");
+    setBResponse("");
     localStorage.clear();
     fetchQuestion();
   }, []);
@@ -71,6 +72,7 @@ function ChatBotPage() {
       });}
     formData.append('jsonDatas', JSON.stringify(data));
     const response = await service.sendBusinessOperation(formData);
+    setBResponse(response?.message ?? "");
       return response;
     } catch (error) {
       console.error(error);
@@ -115,11 +117,6 @@ function ChatBotPage() {
     const selectedOption = questionList
       .find(q => q.questionId === questionId)
       ?.options.find(option => option.optionId === answerId);
-    // const questionIndex = questionList.findIndex(q => q.questionId === questionId);
-    // if (questionIndex !== -1 && questionIndex !== null) {
-    //   const newList = questionList.slice(0, questionIndex + 1);
-    //   setQuestionList(newList);
-    // }
     await callbackHandlePress(null,questionId, answerId, selectedOption?.info ?? "", businessType, answerInputValue, nextId);
     return;
   };
@@ -131,16 +128,13 @@ function ChatBotPage() {
     const questionComponent = (<div className="header-padding">
       <h2 className={isCurrent ? "header": "header-last"}>{value.title}</h2>
     </div>);
-    // if(loading && isCurrent){return(
-    //   <div className="loadingCenter">
-    //   <div className="col-md-12">
-    //     <Spinner animation="grow" />
-    //   </div></div>
-    // ) }
     switch (value.optionType.title) {
       case "select":
         return (
           <div>
+            {value.isEnd && isCurrent && bResponse !== null && bResponse !== "" && (
+              <CustomAlert title={bResponse} />
+            )}
             {!value.isEnd && alertComponent}
             {questionComponent}
             <CustomSelect
@@ -157,6 +151,9 @@ function ChatBotPage() {
       case "input":
         return (
           <div>
+            {value.isEnd &&isCurrent && bResponse !== null && bResponse !== "" && (
+              <CustomAlert title={bResponse} />
+            )}
             {!value.isEnd && alertComponent}
             {questionComponent}
             <CustomInput
@@ -174,6 +171,9 @@ function ChatBotPage() {
         case "selectableInput":
           return (
             <div>
+              {value.isEnd && isCurrent && bResponse !== null && bResponse !== "" && (
+              <CustomAlert title={bResponse} />
+            )}
               {!value.isEnd && alertComponent}
               {questionComponent}
               <SelectableInput 
@@ -190,6 +190,9 @@ function ChatBotPage() {
       case "fileInput":
         return (
           <div>
+            { value.isEnd &&isCurrent && bResponse !== null && bResponse !== "" && (
+              <CustomAlert title={bResponse} />
+            )}
             {!value.isEnd && alertComponent}
             {questionComponent}
             <CustomFileInput
@@ -204,6 +207,9 @@ function ChatBotPage() {
       case "fileDownload":
         return (
           <div>
+            {value.isEnd && isCurrent && bResponse !== null && bResponse !== "" && (
+              <CustomAlert title={bResponse} />
+            )}
             {!value.isEnd && alertComponent}
             {questionComponent}
             <CustomButton toDownload={true} title="İndir" handlePress={()=>{}} pressed={!isCurrent}></CustomButton>
@@ -213,6 +219,9 @@ function ChatBotPage() {
       case "dateInput":
         return (
           <div>
+            {value.isEnd && isCurrent && bResponse !== null && bResponse !== "" && (
+              <CustomAlert title={bResponse} />
+            )}
             {!value.isEnd && alertComponent}
             {questionComponent}
             <CustomDateInput
@@ -230,7 +239,6 @@ function ChatBotPage() {
         return null;
     }
   };
-  
   return (
       <div className="container-fluid">
         <div className="row">

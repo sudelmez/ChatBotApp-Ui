@@ -34,8 +34,8 @@ const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback })
         if(res.success===false && res.validationErrors.length > 0){
           setErrorMessage(res.validationErrors[0]);
         }else if(res.success===true && res.message!==null){
-          // setResMessage("Dosya başarıyla kaydedildi.");
-          setResMessage(res.message);
+          setResMessage("Dosya başarıyla kaydedildi.");
+          //setResMessage(res.message);
         }
       }
       setActiveButton(false);
