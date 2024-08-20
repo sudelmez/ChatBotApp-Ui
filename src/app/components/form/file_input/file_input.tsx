@@ -1,16 +1,20 @@
 import React, { useState } from "react";
 import Form from 'react-bootstrap/Form';
 import CustomButton from "../button/CustomButton";
+import { AutoResponseModel } from "../../../features/chatbot/model/auto_response_model";
+import { ApiResponse } from "../../../api/response/api_response";
+import CustomAlert, { AlertType } from "../../ui/alerts/custom_alert";
 
 interface CustomFileInputProps {
   isLasted: boolean;
-  callback: (file: File[]) => void;
-  optionId:  string
+  callback: (file: File[]) =>  Promise<ApiResponse<AutoResponseModel> | undefined> | void; 
 }
 
-const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback, optionId }) => {
+const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [activeButton, setActiveButton] = useState(false);
+  const [resMessage, setResMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -21,9 +25,19 @@ const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback, o
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit =async () => {
     if (selectedFiles.length > 0) {
-      callback(selectedFiles);
+      setResMessage("");
+      setErrorMessage("");
+      const res = await callback(selectedFiles);
+      if (res) {
+        if(res.success===false && res.validationErrors.length > 0){
+          setErrorMessage(res.validationErrors[0]);
+        }else if(res.success===true && res.message!==null){
+          setResMessage("Dosya başarıyla kaydedildi.");
+          //setResMessage(res.message);
+        }
+      }
       setActiveButton(false);
       setSelectedFiles([]);
     }
@@ -46,8 +60,9 @@ const CustomFileInput: React.FC<CustomFileInputProps> = ({ isLasted, callback, o
             borderStyle: 'solid'
           }}
         />
-        
       </Form.Group>
+      {resMessage!=="" && resMessage!==null && (<CustomAlert type={AlertType.Success} title={resMessage}></CustomAlert>)}
+      {errorMessage!=="" && errorMessage!==null && (<CustomAlert type={AlertType.Danger} title={errorMessage}></CustomAlert>)}
       {activeButton && (<CustomButton pressed={false} title="Kaydet" handlePress={handleSubmit}/>)}
     </div>
   );

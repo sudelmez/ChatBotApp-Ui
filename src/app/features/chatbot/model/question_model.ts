@@ -5,18 +5,21 @@ export interface Question {
     title: string;
     businessTypeId : number | null;
     info: string | null;
+    mandatory: boolean;
     optionType: {
       title: string;
       optionTypeId: string;
     };
-    isLastQuestion: boolean
+    isLastQuestion: boolean;
+    isEnd: boolean;
     options: {
       title: string;
       nextQuestionId: number | null;
       optionId: string;
       info: string | null;
+      businessTypeId: number | null;
     }[];
-    validationRule: ValidationRuleModel
+    validationRules: ValidationRuleModel[]
 }
 export interface GetQuestion{
   nextQuestionId: number | null;

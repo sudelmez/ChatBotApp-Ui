@@ -6,10 +6,14 @@ import QuestionService from "../services/QuestionService";
 import { Question } from "../model/question_model";
 import { AnswerLog } from "../model/answer_log_model";
 import { useUserContext } from "../../../context/user_context";
-import CustomAlert from "../../../components/ui/alerts/custom_alert";
+import CustomAlert, { AlertType } from "../../../components/ui/alerts/custom_alert";
 import Spinner from 'react-bootstrap/Spinner';
 import CustomFileInput from "../../../components/form/file_input/file_input";
 import CustomDateInput from "../../../components/form/date_input/date_input";
+import { ApiResponse } from "../../../api/response/api_response";
+import { AutoResponseModel } from "../model/auto_response_model";
+import CustomButton from "../../../components/form/button/CustomButton";
+import SelectableInput from "../../../components/form/selectable_input/selectable_input";
 function ChatBotPage() {
   const [questionList, setQuestionList] = useState<Question[]>([]);
   const [end, setEnd] = useState<string>("");
@@ -20,18 +24,18 @@ function ChatBotPage() {
   const { token, user, transactionId } = useUserContext();
   const [selectedInfo, setSelectedInfo] = useState<string | null>(null);
   const lastQuestionRef = useRef<HTMLDivElement>(null);
+  const [bResponse, setBResponse] = useState("");
 
   const fetchQuestion = async (nextQuestionId?: number | null) => {
     try {
-      setLoading(true);
+      setProblem("");
       const nextQuestion = await service.getQuestion(nextQuestionId ?? null, token ?? "");
-      setLoading(false);
+      //setLoading(false);
       if (!nextQuestion) {
         setEnd("Sohbet sona erdi.");
         console.error(`Soru bulunamadı id: ${nextQuestionId}`);
         return;
       }
-      setProblem("");
       setQuestionList(prevQuestionList => {
         if (prevQuestionList.some(q => q.questionId === nextQuestion.questionId)) {
           return prevQuestionList;
@@ -39,13 +43,15 @@ function ChatBotPage() {
         return [...prevQuestionList, nextQuestion];
       });
     } catch (error) {
-      setLoading(false);
       setProblem("Bir sorun oluştu.");
       console.error('Error fetching question:', error);
     }
   };
 
   useEffect(() => {
+    setProblem("");
+    setSelectedInfo("");
+    setBResponse("");
     localStorage.clear();
     fetchQuestion();
   }, []);
@@ -66,13 +72,14 @@ function ChatBotPage() {
       });}
     formData.append('jsonDatas', JSON.stringify(data));
     const response = await service.sendBusinessOperation(formData);
+    setBResponse(response?.message ?? "");
       return response;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
-  const callbackHandlePress = async(document: File[] | null, questionId: number, optionId: string | null, optionInfo: string, businessTypeId: number | null, input?: string | null, nextId?: number | null)=>{
+  const callbackHandlePress = async(document: File[] | null, questionId: number, optionId: string | null, optionInfo: string, businessTypeId: number | null, input?: string | null, nextId?: number | null) : Promise<ApiResponse<AutoResponseModel>  | undefined>=>{
     const questionIndex = questionList.findIndex(q => q.questionId === questionId);
     if (questionIndex !== -1 && questionIndex !== null) {
       const newList = questionList.slice(0, questionIndex + 1);
@@ -87,15 +94,14 @@ function ChatBotPage() {
       businessTypeId: businessTypeId,
       transactionId: transactionId
     };
-    console.log("document", document);
     const res= await postBusinessOperationModel(document, log );
     if (res?.success) {
-      await fetchQuestion(nextId ?? null);
       setSelectedInfo(optionInfo);
-      return;
-    } else if (res?.success === false) {
-      setProblem(res.message ?? res.validationErrors[0] ?? "");
+      await fetchQuestion(nextId ?? null);
+    } else if (res?.success === false && res.message!== null && res.message!=="") {
+      setProblem(res.message);
     }
+    return res;
     } catch (error) {
       setProblem("Bir sorun oluştu.");
     }
@@ -111,11 +117,6 @@ function ChatBotPage() {
     const selectedOption = questionList
       .find(q => q.questionId === questionId)
       ?.options.find(option => option.optionId === answerId);
-    // const questionIndex = questionList.findIndex(q => q.questionId === questionId);
-    // if (questionIndex !== -1 && questionIndex !== null) {
-    //   const newList = questionList.slice(0, questionIndex + 1);
-    //   setQuestionList(newList);
-    // }
     await callbackHandlePress(null,questionId, answerId, selectedOption?.info ?? "", businessType, answerInputValue, nextId);
     return;
   };
@@ -127,17 +128,14 @@ function ChatBotPage() {
     const questionComponent = (<div className="header-padding">
       <h2 className={isCurrent ? "header": "header-last"}>{value.title}</h2>
     </div>);
-    // if(loading && isCurrent){return(
-    //   <div className="loadingCenter">
-    //   <div className="col-md-12">
-    //     <Spinner animation="grow" />
-    //   </div></div>
-    // ) }
     switch (value.optionType.title) {
       case "select":
         return (
           <div>
-            {!value.isLastQuestion && alertComponent}
+            {value.isEnd && isCurrent && bResponse !== null && bResponse !== "" && (
+              <CustomAlert title={bResponse} />
+            )}
+            {!value.isEnd && alertComponent}
             {questionComponent}
             <CustomSelect
               isLasted={!isCurrent}
@@ -147,51 +145,84 @@ function ChatBotPage() {
               businessTypeId={value.businessTypeId}
               index = {index}
             />
-            {value.isLastQuestion && alertComponent}
+            {value.isEnd && alertComponent}
           </div>
         );
       case "input":
         return (
           <div>
-            {!value.isLastQuestion && alertComponent}
+            {value.isEnd &&isCurrent && bResponse !== null && bResponse !== "" && (
+              <CustomAlert title={bResponse} />
+            )}
+            {!value.isEnd && alertComponent}
             {questionComponent}
             <CustomInput
+              type={value.validationRules[0].inputType ?? "text"}
               optionId={value.options[0].optionId}
-              validationRule={value.validationRule}
+              validationRule={value.validationRules[0]}
               isLasted={!isCurrent}
               callback={async (val) => {
                 callbackHandlePress(null,value.questionId,value.options[0].optionId ,value.options[0].info ?? "", value.businessTypeId, val, value.options[0].nextQuestionId);
               }}
             />
-            {value.isLastQuestion && alertComponent}
+            {value.isEnd && alertComponent}
           </div>
         );
+        case "selectableInput":
+          return (
+            <div>
+              {value.isEnd && isCurrent && bResponse !== null && bResponse !== "" && (
+              <CustomAlert title={bResponse} />
+            )}
+              {!value.isEnd && alertComponent}
+              {questionComponent}
+              <SelectableInput 
+                optionId={value.options[0].optionId}
+                validationRule={value.validationRules}
+                isLasted={!isCurrent}
+                optionvalues={value.options}
+                callback={async (val, opt) => {
+                  callbackHandlePress(null, value.questionId, opt.optionId , opt.info ?? "", opt.businessTypeId, val,  opt.nextQuestionId);
+              }}></SelectableInput>
+              {value.isEnd &&  alertComponent}
+            </div>
+          );
       case "fileInput":
         return (
           <div>
-            {!value.isLastQuestion && alertComponent}
+            { value.isEnd &&isCurrent && bResponse !== null && bResponse !== "" && (
+              <CustomAlert title={bResponse} />
+            )}
+            {!value.isEnd && alertComponent}
             {questionComponent}
             <CustomFileInput
-              optionId={value.options[0].optionId}
               callback={(val) => 
                 callbackHandlePress(val, value.questionId, value.options[0].optionId, value.options[0].info ?? "", value.businessTypeId, null, value.options[0].nextQuestionId)
               }
               isLasted={!isCurrent}
             />
-            {value.isLastQuestion && alertComponent}
+            {value.isEnd && alertComponent}
           </div>
         );
       case "fileDownload":
         return (
           <div>
-            {value.isLastQuestion && alertComponent}
+            {value.isEnd && isCurrent && bResponse !== null && bResponse !== "" && (
+              <CustomAlert title={bResponse} />
+            )}
+            {!value.isEnd && alertComponent}
             {questionComponent}
+            <CustomButton toDownload={true} title="İndir" handlePress={()=>{}} pressed={!isCurrent}></CustomButton>
+            {value.isEnd && alertComponent}
           </div>
         );
       case "dateInput":
         return (
           <div>
-            {!value.isLastQuestion && alertComponent}
+            {value.isEnd && isCurrent && bResponse !== null && bResponse !== "" && (
+              <CustomAlert title={bResponse} />
+            )}
+            {!value.isEnd && alertComponent}
             {questionComponent}
             <CustomDateInput
               typeDate={value.businessTypeId ?? 0}
@@ -200,14 +231,14 @@ function ChatBotPage() {
               }}
               isLasted={!isCurrent}
               title={value.title}
-            />{value.isLastQuestion && alertComponent}
+            />
+            {value.isEnd && alertComponent}
           </div>
         );
       default:
         return null;
     }
   };
-  
   return (
       <div className="container-fluid">
         <div className="row">
@@ -228,7 +259,7 @@ function ChatBotPage() {
               })}
               {(end !== null && end !=="") && (<CustomAlert title={end}></CustomAlert>)}</div>
             }
-            {(problem!==null && problem!=="") && (<CustomAlert isError= {true} title={problem}></CustomAlert>)}
+            {(problem!==null && problem!=="") && (<CustomAlert type={AlertType.Danger} title={problem}></CustomAlert>)}
             </div>
             </div>
           </div>

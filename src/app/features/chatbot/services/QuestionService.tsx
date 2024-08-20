@@ -17,7 +17,6 @@ class QuestionService {
           platformId:"1",
         }
         const question = await this.questionsApi.post(ApiEndpoints.QUESTION, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'application/json', 'Authorization' : `Bearer ${token}`});
-        console.log(question);
         return question.data!; 
       } catch (error) {
         console.error('Error fetching questions:', error);
@@ -26,9 +25,7 @@ class QuestionService {
     }
     async sendBusinessOperation(data: FormData){
       try {
-        console.log(data);
         const res= await this.fileApi.post(ApiEndpoints.BUSINESS, ApiEndUrls.ANY, data, {'accept': 'text/plain', 'Content-Type': 'multipart/form-data'});
-        console.log(res);
         return res;
       } catch (error) {
         console.error('Error sending business:', error);

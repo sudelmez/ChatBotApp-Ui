@@ -8,7 +8,6 @@ import { useEffect } from 'react';
 function App() {
   const {token} = useUserContext();
   useEffect(()=>{
-    console.log(token);
   },[token])
   return (
     <Routes>
